@@ -9,7 +9,7 @@ public:
 
   double etat() const;  // Renvoie l'état du pressuriseur
   double etatResistance() const;  // Renvoie l'état de la résistance du pressuriseur
-  void temperatureDemandee(int valeur); // Modifie la température du pressuriseur demandée
+  int temperatureDemandee() const; // Renvoie la température du pressuriseur demandée
   int temperatureActuel() const;  // Renvoie la température du pressuriseur actuel
 
   ~Pressuriseur();  // Destructeur

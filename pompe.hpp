@@ -7,7 +7,6 @@ class Pompe
 public:
   Pompe();  // Constructeur
 
-  void ajusterRendement(double valeurDemandee); // Modifie le rendement de la pompe
   double rendement() const; // Renvoie le rendement de la pompe
   double etat() const;  // Renvoie l'état de la pompe
 

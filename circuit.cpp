@@ -19,9 +19,9 @@ double Circuit::etatPompe() const
   return m_pompe.etat();
 }
 
-void Circuit::rendementPompe(double valeur)
+double Circuit::rendementPompe() const
 {
-  m_pompe.ajusterRendement(valeur);
+  return m_pompe.rendement();
 }
 
 double Circuit::debitEau() const

@@ -17,9 +17,9 @@ double Pressuriseur::etatResistance() const
   return m_etatResistance;
 }
 
-void Pressuriseur::temperatureDemandee(int valeur)
+int Pressuriseur::temperatureDemandee() const
 {
-  m_tempDemandee = valeur;
+  return m_tempDemandee;
 }
 
 int Pressuriseur::temperatureActuel() const

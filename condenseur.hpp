@@ -10,7 +10,7 @@ public:
   Condenseur(); // Constructeur
 
   double etat() const;  // Renvoie l'état du condenseur
-  void rendementPompe(double valeur); // Modifie le rendement de la pompe du condenseur
+  double rendementPompe() const; // Renvoie le rendement de la pompe du condenseur
   double debit() const; // Renvoie le débit au niveau du condenseur
   double differenceChaleur() const; // Renvoie la différence de chaleur entre l'entrée et la sortie du condenseur
 

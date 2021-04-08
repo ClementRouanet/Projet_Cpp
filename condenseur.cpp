@@ -13,9 +13,9 @@ double Condenseur::etat() const
   return m_etat;
 }
 
-void Condenseur::rendementPompe(double valeur)
+double Condenseur::rendementPompe() const
 {
-  m_pompe.ajusterRendement(valeur);
+  return m_pompe.rendement();
 }
 
 double Condenseur::debit() const

@@ -12,7 +12,7 @@ public:
 
   double etatGenerateurVapeur() const;  // Renvoie l'état du générateur de vapeur
   double etatCondenseur() const;  // Renvoie l'état du condenseur
-  void rendementPompeCondenseur(double valeur); // Modifie le rendement de la pompe du condenseur
+  double rendementPompeCondenseur() const; // Renvoie le rendement de la pompe du condenseur
   double temperatureVapeur() const; // Renvoie la température de la vapeur
   double pressionvapeur() const;  // Renvoie la pression exercée par la vapeur
   double debitCondenseur() const; // Renvoie le débit au niveau du condenseur

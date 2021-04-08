@@ -13,8 +13,8 @@ public:
   double etatPressuriseur() const;  // Renvoie l'état du pressuriseur
   double etatResistancePressuriseur() const;  // Renvoie l'état de la résistance du pressuriseur
   double etatEchangeurChaleur() const;  // Renvoie l'état de l'échangeur de chaleur
-  void tempPressuriseurDemande(int valeur); // Modifie la température du pressuriseur demandée
-  double tempPressuriseurActuel() const;  // Renvoie la température du pressuriseur actuel
+  int tempPressuriseurDemande() const; // Renvoie la température du pressuriseur demandée
+  int tempPressuriseurActuel() const;  // Renvoie la température du pressuriseur actuel
   double pression() const;  // Renvoie la pression
   double temperatureEau() const;  // renvoie la température de l'eau dans le circuit
 

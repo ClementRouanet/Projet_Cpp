@@ -17,9 +17,9 @@ double CircuitSec::etatCondenseur() const
   return m_condenseur.etat();
 }
 
-void CircuitSec::rendementPompeCondenseur(double valeur)
+double CircuitSec::rendementPompeCondenseur() const
 {
-  m_condenseur.rendementPompe(valeur);
+  return m_condenseur.rendementPompe();
 }
 
 double CircuitSec::temperatureVapeur() const
