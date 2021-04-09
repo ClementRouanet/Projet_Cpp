@@ -1,35 +1,33 @@
-CC = g++
-CFLAGS = -Wall -O
+CXX = g++
+CXXFLAGS = -O3 -march=native -Wall -O
 EXEC = nuclearalert.exe
+
+LIBS = -I include
 
 all : $(EXEC)
 
-nuclearalert.exe : main.o circuit.o circuit_primaire.o circuit_secondaire.o pompe.o pressuriseur.o condenseur.o
-	$(CC) -o nuclearalert.exe main.o circuit.o circuit_primaire.o circuit_secondaire.o pompe.o pressuriseur.o condenseur.o
+OBJS = obj/circuit.o obj/circuit_primaire.o obj/circuit_secondaire.o obj/pompe.o obj/pressuriseur.o obj/condenseur.o
 
-main.o : main.cpp circuit_primaire.hpp circuit_secondaire.hpp
-	$(CC) -o main.o -c main.cpp
+obj/pompe.o : include/pompe.hpp src/pompe.cpp
+	$(CXX) $(CXXFLAGS) -c src/pompe.cpp -o obj/pompe.o $(LIBS)
 
-circuit.o : circuit.cpp circuit.hpp pompe.hpp
-	$(CC) -o circuit.o -c circuit.cpp
+obj/pressuriseur.o : include/pressuriseur.hpp src/pressuriseur.cpp
+	$(CXX) $(CXXFLAGS) -c src/pressuriseur.cpp -o obj/pressuriseur.o $(LIBS)
 
-circuit_primaire.o : circuit_primaire.cpp circuit_primaire.hpp circuit.hpp pressuriseur.hpp
-	$(CC) -o circuit_primaire.o -c circuit_primaire.cpp
+obj/condenseur.o : include/condenseur.hpp src/condenseur.cpp
+	$(CXX) $(CXXFLAGS) -c src/condenseur.cpp -o obj/condenseur.o $(LIBS)
 
-circuit_secondaire.o : circuit_secondaire.cpp circuit_secondaire.hpp circuit.hpp condenseur.hpp
-	$(CC) -o circuit_secondaire.o -c circuit_secondaire.cpp
+obj/circuit.o : include/circuit.hpp include/pompe.hpp src/circuit.cpp
+	$(CXX) $(CXXFLAGS) -c src/circuit.cpp -o obj/circuit.o $(LIBS)
 
-pompe.o : pompe.cpp pompe.hpp
-	$(CC) -o pompe.o -c pompe.cpp
+obj/circuit_primaire.o : include/circuit_primaire.hpp include/circuit.hpp include/pressuriseur.hpp src/circuit_primaire.cpp
+	$(CXX) $(CXXFLAGS) -c src/circuit_primaire.cpp -o obj/circuit_primaire.o $(LIBS)
 
-pressuriseur.o : pressuriseur.cpp pressuriseur.hpp
-	$(CC) -o pressuriseur.o -c pressuriseur.cpp
+obj/circuit_secondaire.o : include/circuit_secondaire.hpp include/circuit.hpp include/condenseur.hpp src/circuit_secondaire.cpp
+	$(CXX) $(CXXFLAGS) -c src/circuit_secondaire.cpp -o obj/circuit_secondaire.o $(LIBS)
 
-condenseur.o : condenseur.cpp condenseur.hpp
-	$(CC) -o condenseur.o -c condenseur.cpp
+nuclearalert.exe : $(OBJS) src/main.cpp
+	$(CXX) $(CXXFLAGS) $(OBJS) src/main.cpp -o nuclearalert.exe $(LIBS)
 
 clean :
-	rm -f *.o core
-
-mrpropre : clean
-	rm -f $(EXEC)
+	@rm -f obj/*.o *.exe src/*~ core
