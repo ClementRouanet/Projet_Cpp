@@ -1,4 +1,11 @@
+#include <iostream>
+#include <chrono>
+#include <random>
+#include <functional>
+#include <algorithm>
+
 #include "circuit_primaire.hpp"
+#include "circuit_secondaire.hpp"
 
 using namespace std;
 
@@ -22,12 +29,12 @@ double CircuitPrim::etatEchangeurChaleur() const
   return m_echangChal;
 }
 
-int CircuitPrim::tempPressuriseurDemande() const
+double CircuitPrim::tempPressuriseurDemande() const
 {
   return m_pressuriseur.temperatureDemandee();
 }
 
-int CircuitPrim::tempPressuriseurActuel() const
+double CircuitPrim::tempPressuriseurActuel() const
 {
   return m_pressuriseur.temperatureActuel();
 }
@@ -42,6 +49,61 @@ double CircuitPrim::temperatureEau() const
   return m_temperatureEau;
 }
 
+void CircuitPrim::modifPression()
+{
+  double tempPressuriseurActuel = m_pressuriseur.temperatureActuel();
+  m_pression = max((tempPressuriseurActuel-25)/3.24 + (m_temperatureEau-100)/83.3*(m_etatCircuit+0.1)*(m_echangChal+0.1), 1.);
+}
+/*
+void CircuitPrim::modifDebitEau()
+{
+  double rendementPompe = m_pompe.rendement();
+  m_debit = m_etatCircuit*ETATCUVE*rendementPompe*90; //////////////////
+}
+
+void CircuitPrim::modifInertietemperature(CircuitSec const& circuitSec)
+{
+  double Tvap = circuitSec.temperatureVapeur();
+
+  random_device hgenerateur;
+  default_random_engine generateur1(hgenerateur());
+  default_random_engine generateur2(hgenerateur());
+
+  uniform_real_distribution<double> genrand1(0,26);
+  uniform_real_distribution<double> genrand2(0,16);
+
+  auto rnd1 = bind(genrand1, generateur1);
+  auto rnd2 = bind(genrand2, generateur2);
+
+  double RND1 = rnd1();
+  double RND2 = rnd2();
+
+  if(m_echangChal<50 && TBEFF<25 && TGREFF<50) ///////////////////////
+    m_inertieTemp += RND1;
+
+  if(Tvap<m_temperatureEau)
+    m_inertieTemp += (Tvap-m_temperatureEau)/3;
+  else
+    m_inertieTemp = max(0., m_inertieTemp-RND2);
+}
+
+void CircuitPrim::modifTemperatureEau()
+{
+  m_temperatureEau = max(25, (0.5-TBEFF)/0.5*(645*TGREFF-140*m_debit/90+2*m_pression)+26+m_inertieTemp) /////////////////////
+}
+
+void CircuitPrim::modifRadioactivite()
+{
+  random_device hgenerateur;
+  default_random_engine generateur(hgenerateur());
+  uniform_real_distribution<double> genrand(0,90);
+
+  auto rnd = bind(genrand, generateur);
+  double RND = rnd();
+
+  m_radioactivite = 98*(m_debit+1) + RND + (0.5-TBEFF)*(MW+0.1)*6.54; ////////////////
+}
+*/
 CircuitPrim::~CircuitPrim()
 {
 }

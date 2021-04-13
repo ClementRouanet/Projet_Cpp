@@ -9,16 +9,16 @@ public:
 
   double etat() const;  // Renvoie l'état du pressuriseur
   double etatResistance() const;  // Renvoie l'état de la résistance du pressuriseur
-  int temperatureDemandee() const; // Renvoie la température du pressuriseur demandée
-  int temperatureActuel() const;  // Renvoie la température du pressuriseur actuel
+  double temperatureDemandee() const; // Renvoie la température du pressuriseur demandée
+  double temperatureActuel() const;  // Renvoie la température du pressuriseur actuel
 
   ~Pressuriseur();  // Destructeur
 
 private:
   double m_etat;  //Epress
   double m_etatResistance;  //Eres
-  int m_tempDemandee; //Tpress
-  int m_temp_actuel;  //TPeff
+  double m_tempDemandee; //Tpress
+  double m_temp_actuel;  //TPeff
 };
 
 #endif

@@ -17,12 +17,12 @@ double Pressuriseur::etatResistance() const
   return m_etatResistance;
 }
 
-int Pressuriseur::temperatureDemandee() const
+double Pressuriseur::temperatureDemandee() const
 {
   return m_tempDemandee;
 }
 
-int Pressuriseur::temperatureActuel() const
+double Pressuriseur::temperatureActuel() const
 {
   return m_temp_actuel;
 }

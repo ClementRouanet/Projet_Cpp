@@ -28,6 +28,16 @@ double Condenseur::differenceChaleur() const
   return m_diffChaleur;
 }
 
+void Condenseur::modifDebit(double valeur)
+{
+  m_debit = valeur;
+}
+
+void Condenseur::modifDifferenceChaleur(double valeur)
+{
+  m_diffChaleur = valeur;
+}
+
 Condenseur::~Condenseur()
 {
 }
