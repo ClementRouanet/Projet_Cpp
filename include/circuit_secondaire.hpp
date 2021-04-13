@@ -2,7 +2,6 @@
 #define CUIRCUIT_SECONDAIRE_HPP_
 
 #include "circuit.hpp"
-#include "circuit_primaire.hpp"
 #include "condenseur.hpp"
 
 
@@ -19,13 +18,13 @@ public:
   double debitCondenseur() const; // Renvoie le débit au niveau du condenseur
   double diffChaleurCondenseur() const; // Renvoie la différence de chaleur entre l'entrée et la sortie du condenseur
 
-  void modifTemperatureVapeur(CircuitPrim const& circuitPrim);  // Modifie la température de la vapeur
+  void modifTemperatureVapeur(double etatEchangChaleur, double temperature1);  // Modifie la température de la vapeur
   void modifPressionVapeur(); // Modifie la pression exercée par la vapeur
   void modifDebitEau(); // Modifie le débit de l'eau
   void modifDebitCondenseur();  // Modifie le débit au niveau du condenseur
   void modifDiffChaleurCondenseur();  // modifie la différence de chaleur entre l'entrée et la sortie du condenseur
-  void modifInertieTemperature(CircuitPrim const& circuitPrim); // Modifie l'inertie température eau circuit
-  void modifRadioactivite(CircuitPrim const& circuitPrim);  // Modifie la radioactivité du circuit
+  void modifInertieTemperature(double temperatureEau); // Modifie l'inertie température eau circuit
+  void modifRadioactivite(double etatEchangChaleur, double radioactivite1);  // Modifie la radioactivité du circuit
 
   ~CircuitSec();  // Destructeur
 

@@ -61,10 +61,8 @@ void CircuitPrim::modifDebitEau()
   m_debit = m_etatCircuit*ETATCUVE*rendementPompe*90; //////////////////
 }
 
-void CircuitPrim::modifInertietemperature(CircuitSec const& circuitSec)
+void CircuitPrim::modifInertietemperature(double Tvap)  // Tvap = circuitSec.temperatureVapeur()
 {
-  double Tvap = circuitSec.temperatureVapeur();
-
   random_device hgenerateur;
   default_random_engine generateur1(hgenerateur());
   default_random_engine generateur2(hgenerateur());
@@ -104,6 +102,12 @@ void CircuitPrim::modifRadioactivite()
   m_radioactivite = 98*(m_debit+1) + RND + (0.5-TBEFF)*(MW+0.1)*6.54; ////////////////
 }
 */
+
+void CircuitPrim::securiteCircuitPrim() const
+{
+
+}
+
 CircuitPrim::~CircuitPrim()
 {
 }

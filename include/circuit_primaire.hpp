@@ -2,7 +2,6 @@
 #define CUIRCUIT_PRIMAIRE_HPP_
 
 #include "circuit.hpp"
-#include "circuit_secondaire.hpp"
 #include "pressuriseur.hpp"
 
 
@@ -21,9 +20,11 @@ public:
 
   void modifPression(); // Modifie la pression
   void modifDebitEau(); // Modifie le débit de l'eau
-  void modifInertietemperature(CircuitSec const& circuitSec); // Modifie l'inertie température eau circuit
+  void modifInertietemperature(double Tvap); // Modifie l'inertie température eau circuit
   void modifTemperatureEau(); // Modifie la température de l'eau dans le circuit
   void modifRadioactivite();  // Modifie la radioactivité du circuit
+
+  void securiteCircuitPrim() const;
 
   ~CircuitPrim(); // Destructeur
 

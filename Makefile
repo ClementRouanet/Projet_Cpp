@@ -47,10 +47,10 @@ obj/condenseur.o : include/condenseur.hpp src/condenseur.cpp
 obj/circuit.o : include/circuit.hpp include/pompe.hpp src/circuit.cpp
 	$(CXX) $(CXXFLAGS) -c src/circuit.cpp -o obj/circuit.o $(LIBS)
 
-obj/circuit_primaire.o : include/circuit_primaire.hpp include/circuit.hpp include/circuit_secondaire.hpp include/pressuriseur.hpp src/circuit_primaire.cpp
+obj/circuit_primaire.o : include/circuit_primaire.hpp include/circuit.hpp include/pressuriseur.hpp src/circuit_primaire.cpp
 	$(CXX) $(CXXFLAGS) -c src/circuit_primaire.cpp -o obj/circuit_primaire.o $(LIBS)
 
-obj/circuit_secondaire.o : include/circuit_secondaire.hpp include/circuit.hpp include/circuit_primaire.hpp include/condenseur.hpp src/circuit_secondaire.cpp
+obj/circuit_secondaire.o : include/circuit_secondaire.hpp include/circuit.hpp include/condenseur.hpp src/circuit_secondaire.cpp
 	$(CXX) $(CXXFLAGS) -c src/circuit_secondaire.cpp -o obj/circuit_secondaire.o $(LIBS)
 
 nuclearalert.exe : $(OBJS) $(SDL2) src/main.cpp

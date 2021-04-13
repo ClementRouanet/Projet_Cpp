@@ -50,10 +50,8 @@ double CircuitSec::diffChaleurCondenseur() const
   return m_condenseur.differenceChaleur();
 }
 
-void CircuitSec::modifTemperatureVapeur(CircuitPrim const& circuitPrim)
+void CircuitSec::modifTemperatureVapeur(double etatEchangChaleur, double temperature1) // etatEchangChaleur = circuitPrim.etatEchangeurChaleur() & temperature1 = circuitPrim.temperatureEau()
 {
-  double etatEchangChaleur = circuitPrim.etatEchangeurChaleur();
-  double temperature1 = circuitPrim.temperatureEau();
   m_temperatureVapeur = max(etatEchangChaleur*(temperature1/1.51)+26+(m_inertieTemp*(m_inertieTemp>3)), 99.);
 }
 
@@ -93,13 +91,11 @@ void CircuitSec::modifDiffChaleurCondenseur()
   double debitCondenseur = m_condenseur.debit();
 
   double valeur = debitCondenseur/7.5;
-  m_condenseur = modifDifferenceChaleur(valeur);
+  m_condenseur.modifDifferenceChaleur(valeur);
 }
 
-void CircuitSec::modifInertieTemperature(CircuitPrim const& circuitPrim)
+void CircuitSec::modifInertieTemperature(double temperatureEau) // temperatureEau = circuitPrim.temperatureEau()
 {
-  double temperatureEau = circuitPrim.temperatureEau();
-
   random_device hgenerateur;
   default_random_engine generateur1(hgenerateur());
   default_random_engine generateur2(hgenerateur());
@@ -125,11 +121,8 @@ void CircuitSec::modifInertieTemperature(CircuitPrim const& circuitPrim)
     m_inertieTemp = max(m_inertieTemp-RND3, 0.);
 }
 
-void CircuitSec::modifRadioactivite(CircuitPrim const& circuitPrim)
+void CircuitSec::modifRadioactivite(double etatEchangChaleur, double radioactivite1) // etatEchangChaleur = circuitPrim.etatEchangeurChaleur() & radioactivite1 = circuitPrim.radioactivite()
 {
-  double etatEchangChaleur = circuitPrim.etatEchangeurChaleur();
-  double radioactivite1 = circuitPrim.radioactivite();
-
   m_radioactivite = max(m_radioactivite, (1.-etatEchangChaleur)*radioactivite1);
 }
 
