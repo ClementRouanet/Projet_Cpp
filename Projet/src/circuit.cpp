@@ -3,6 +3,7 @@
 
 using namespace std;
 
+
 Circuit::Circuit()
     : m_etatCircuit(1.), m_debit(0.), m_inertieTemp(0.), m_radioactivite(0.)
 {

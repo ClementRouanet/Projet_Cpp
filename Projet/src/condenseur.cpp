@@ -3,6 +3,7 @@
 
 using namespace std;
 
+
 Condenseur::Condenseur() : m_etat(1.), m_debit(0.), m_diffChaleur(0.)
 {
 }
@@ -25,6 +26,16 @@ double Condenseur::debit() const
 double Condenseur::differenceChaleur() const
 {
   return m_diffChaleur;
+}
+
+void Condenseur::modifDebit(double valeur)
+{
+  m_debit = valeur;
+}
+
+void Condenseur::modifDifferenceChaleur(double valeur)
+{
+  m_diffChaleur = valeur;
 }
 
 Condenseur::~Condenseur()

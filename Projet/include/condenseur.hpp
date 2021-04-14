@@ -1,6 +1,8 @@
 #ifndef CONDENSEUR_HPP_
 #define CONDENSEUR_HPP_
+
 #include "pompe.hpp"
+
 
 class Condenseur
 {
@@ -11,6 +13,9 @@ public:
   double rendementPompe() const; // Renvoie le rendement de la pompe du condenseur
   double debit() const; // Renvoie le débit au niveau du condenseur
   double differenceChaleur() const; // Renvoie la différence de chaleur entre l'entrée et la sortie du condenseur
+
+  void modifDebit(double valeur); // Modifie le débit au niveau du condenseur
+  void modifDifferenceChaleur(double valeur); // Modifie la différence de chaleur entre l'entrée et la sortie du condenseur
 
   ~Condenseur();  // Destructeur
 
