@@ -15,7 +15,7 @@ Centrale::Centrale():m_etat(1.),m_production(0.)
 
 }
 
-/*
+
 double Centrale::EtatEnceinte() const
 {
   return enceinte.etat();
@@ -26,11 +26,11 @@ double Centrale::PressionEnceinte() const
   return enceinte.pression();
 }
 
-double RadioactiviteEnceinte() const
+double Centrale::RadioactiviteEnceinte() const
 {
   return enceinte.radioactivite();
 }
-*/
+
 
 double Centrale::EtatCentrale() const
 {
@@ -108,10 +108,15 @@ if (enceinte.etat() < 0.1)
 }
 
 
+
+
 void Centrale::majEtatCentrale(CircuitPrim& primaire,CircuitSec& secondaire)
 {
   m_etat = (reacteur.Ecanaux+2*reacteur.Ebarre+8*reacteur.Ecuve+3*reacteur.Episc+primaire.etatPompe()+secondaire.etatPompe()+5*primaire.etatEchangeurChaleur()+4*secondaire.etatGenerateurVapeur()+primaire.etatPressuriseur()+primaire.etatResistancePressuriseur()+4*m_etat+8*primaire.etatCircuit()+3*secondaire.etatCircuit()+reacteur.Ebore+reacteur.Ecd)/44;
 }
+
+
+
 
 void Centrale::majProductionCentrale(CircuitPrim& primaire,CircuitSec& secondaire)
 {

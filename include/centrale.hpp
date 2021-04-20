@@ -13,9 +13,9 @@ class Centrale
 public:
 
 Centrale(); //Constrcteur
-//double EtatEnceinte() const;
-//double PressionEnceinte() const;
-//double RadioactiviteEnceinte() const;
+double EtatEnceinte() const;
+double PressionEnceinte() const;
+double RadioactiviteEnceinte() const;
 double EtatCentrale() const;
 double ProductionCentrale() const;
 
@@ -29,8 +29,7 @@ void majProductionCentrale(CircuitPrim& primaire,CircuitSec& secondaire); // met
 ~Centrale(); //Destructeur
 
 private:
-//CircuitPrim primaire;
-//CircuitSec secondaire;
+
 Enceinte enceinte;
 double m_etat;
 double m_production;
