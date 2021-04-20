@@ -5,7 +5,6 @@
 #include <algorithm>
 
 #include "circuit_secondaire.hpp"
-#include "circuit_primaire.hpp"
 
 
 using namespace std;
