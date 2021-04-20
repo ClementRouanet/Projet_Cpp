@@ -10,11 +10,11 @@ class Centrale
 {
 public:
   Centrale(); //Constructeur
-  double EtatEnceinte() const;
-  double PressionEnceinte() const;
-  double RadioactiviteEnceinte() const;
-  double EtatCentrale() const;
-  double ProductionCentrale() const;
+  double etatEnceinte() const;
+  double pressionEnceinte() const;
+  double radioactiviteEnceinte() const;
+  double etatCentrale() const;
+  double productionCentrale() const;
 
   void majPressionEnceinte(CircuitPrim& primaire,CircuitSec& secondaire); // met à jour la Pression subit par l'enceinte de Confinement
   void majRadioactiviteEnceinte(CircuitPrim& primaire,CircuitSec& secondaire); // met à jour la radioactivité de l'enceinte de confinement

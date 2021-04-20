@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "sdl2.hpp"
-//#include "centrale.hpp"
+#include "centrale.hpp"
 #include "circuit_primaire.hpp"
 #include "circuit_secondaire.hpp"
 #include "salle_de_controle.hpp"
@@ -14,14 +14,19 @@ void debut()
 {
   SalleDeControle sdc;
   CircuitPrim cp;
+  CircuitSec cs;
+  Centrale cent;
 
   sdl2::window fenetre("Nuclear Alert", {1400,750});
-  //sdl2::font fonte_titre("./data/Lato-Bold.ttf",28);
-  //sdl2::texte titre ("Console d'application élaborée", fonte_titre, fenetre, {0x00,0xFF,0xFF,0xFF});
-  //titre.at(0,0);
+
   sdc.cadre(fenetre);
-  sdc.afficheCircuitPrim(fenetre,cp);
-  //fenetre << titre;
+  sdc.affichageProdElec(fenetre, cent);
+  sdc.afficheCircuitPrim(fenetre, cp);
+  sdc.afficheCircuitSec(fenetre,cs);
+  sdc.affichePressionEnceinte(fenetre,cent);
+  sdc.afficheSystRefroidissement(fenetre,cs);
+  sdc.afficheCommandes(fenetre);
+  
   fenetre << sdl2::flush;
 
   bool quitting = false;

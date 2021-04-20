@@ -16,29 +16,29 @@ Centrale::Centrale(): m_etat(1.), m_production(0.)
 }
 
 
-double Centrale::EtatEnceinte() const
+double Centrale::etatEnceinte() const
 {
   return enceinte.etat();
 }
 
-double Centrale::PressionEnceinte() const
+double Centrale::pressionEnceinte() const
 {
   return enceinte.pression();
 }
 
-double Centrale::RadioactiviteEnceinte() const
+double Centrale::radioactiviteEnceinte() const
 {
   return enceinte.radioactivite();
 }
 
 
-double Centrale::EtatCentrale() const
+double Centrale::etatCentrale() const
 {
   return m_etat;
 }
 
 
-double Centrale::ProductionCentrale() const
+double Centrale::productionCentrale() const
 {
   return m_production;
 }
