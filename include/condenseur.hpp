@@ -14,8 +14,8 @@ public:
   double debit() const; // Renvoie le débit au niveau du condenseur
   double differenceChaleur() const; // Renvoie la différence de chaleur entre l'entrée et la sortie du condenseur
 
-  void modifDebit(double valeur); // Modifie le débit au niveau du condenseur
-  void modifDifferenceChaleur(double valeur); // Modifie la différence de chaleur entre l'entrée et la sortie du condenseur
+  void majDebit(double valeur); // Modifie le débit au niveau du condenseur
+  void majDifferenceChaleur(double valeur); // Modifie la différence de chaleur entre l'entrée et la sortie du condenseur
 
   ~Condenseur();  // Destructeur
 

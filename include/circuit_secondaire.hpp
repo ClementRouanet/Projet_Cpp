@@ -18,13 +18,13 @@ public:
   double debitCondenseur() const; // Renvoie le débit au niveau du condenseur
   double diffChaleurCondenseur() const; // Renvoie la différence de chaleur entre l'entrée et la sortie du condenseur
 
-  void modifTemperatureVapeur(double etatEchangChaleur, double temperature1);  // Modifie la température de la vapeur
-  void modifPressionVapeur(); // Modifie la pression exercée par la vapeur
-  void modifDebitEau(); // Modifie le débit de l'eau
-  void modifDebitCondenseur();  // Modifie le débit au niveau du condenseur
-  void modifDiffChaleurCondenseur();  // modifie la différence de chaleur entre l'entrée et la sortie du condenseur
-  void modifInertieTemperature(double temperatureEau); // Modifie l'inertie température eau circuit
-  void modifRadioactivite(double etatEchangChaleur, double radioactivite1);  // Modifie la radioactivité du circuit
+  void majTemperatureVapeur(double etatEchangChaleur, double temperature1);  // Modifie la température de la vapeur
+  void majPressionVapeur(); // Modifie la pression exercée par la vapeur
+  void majDebitEau(); // Modifie le débit de l'eau
+  void majDebitCondenseur();  // Modifie le débit au niveau du condenseur
+  void majDiffChaleurCondenseur();  // modifie la différence de chaleur entre l'entrée et la sortie du condenseur
+  void majInertieTemperature(double temperatureEau); // Modifie l'inertie température eau circuit
+  void majRadioactivite(double etatEchangChaleur, double radioactivite1);  // Modifie la radioactivité du circuit
 
   ~CircuitSec();  // Destructeur
 

@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "sdl2.hpp"
+//#include "centrale.hpp"
 #include "circuit_primaire.hpp"
 #include "circuit_secondaire.hpp"
 #include "salle_de_controle.hpp"

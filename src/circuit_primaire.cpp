@@ -9,7 +9,7 @@
 using namespace std;
 
 
-CircuitPrim::CircuitPrim() : Circuit(), m_echangChal(1.), m_pression(1.), m_temperatureEau(25)
+CircuitPrim::CircuitPrim() : Circuit(), m_echangChal(1.), m_pression(1.), m_temperatureEau(25.)
 {
 }
 
@@ -48,19 +48,19 @@ double CircuitPrim::temperatureEau() const
   return m_temperatureEau;
 }
 
-void CircuitPrim::modifPression()
+void CircuitPrim::majPression()
 {
   double tempPressuriseurActuel = m_pressuriseur.temperatureActuel();
   m_pression = max((tempPressuriseurActuel-25)/3.24 + (m_temperatureEau-100)/83.3*(m_etatCircuit+0.1)*(m_echangChal+0.1), 1.);
 }
 /*
-void CircuitPrim::modifDebitEau()
+void CircuitPrim::majDebitEau()
 {
   double rendementPompe = m_pompe.rendement();
   m_debit = m_etatCircuit*ETATCUVE*rendementPompe*90; //////////////////
 }
 
-void CircuitPrim::modifInertietemperature(double Tvap)  // Tvap = circuitSec.temperatureVapeur()
+void CircuitPrim::majInertietemperature(double Tvap)  // Tvap = circuitSec.temperatureVapeur()
 {
   random_device hgenerateur;
   default_random_engine generateur1(hgenerateur());
@@ -84,12 +84,12 @@ void CircuitPrim::modifInertietemperature(double Tvap)  // Tvap = circuitSec.tem
     m_inertieTemp = max(0., m_inertieTemp-RND2);
 }
 
-void CircuitPrim::modifTemperatureEau()
+void CircuitPrim::majTemperatureEau()
 {
   m_temperatureEau = max(25, (0.5-TBEFF)/0.5*(645*TGREFF-140*m_debit/90+2*m_pression)+26+m_inertieTemp) /////////////////////
 }
 
-void CircuitPrim::modifRadioactivite()
+void CircuitPrim::majRadioactivite()
 {
   random_device hgenerateur;
   default_random_engine generateur(hgenerateur());
@@ -101,11 +101,6 @@ void CircuitPrim::modifRadioactivite()
   m_radioactivite = 98*(m_debit+1) + RND + (0.5-TBEFF)*(MW+0.1)*6.54; ////////////////
 }
 */
-
-void CircuitPrim::securiteCircuitPrim() const
-{
-
-}
 
 CircuitPrim::~CircuitPrim()
 {
