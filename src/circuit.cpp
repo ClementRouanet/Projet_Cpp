@@ -56,7 +56,7 @@ void Circuit::majEtatPompe(double valeur)
 
 void Circuit::majRendementPompe(double valeur)
 {
-  m_pompe.majRendement(valeur);
+  m_pompe.majRendement(valeur, m_etatCircuit);
 }
 
 Circuit::~Circuit()

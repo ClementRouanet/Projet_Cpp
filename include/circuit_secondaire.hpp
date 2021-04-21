@@ -18,6 +18,8 @@ public:
   double debitCondenseur() const; // Renvoie le débit au niveau du condenseur
   double diffChaleurCondenseur() const; // Renvoie la différence de chaleur entre l'entrée et la sortie du condenseur
 
+  void majEtatGenerateurVapeur(double valeur);  // Modifie l'état du générateur de vapeur
+  void majEtatCondenseur(double valeur);  // Modifie l'état du condenseur
   void majRendementPompeCondenseur(double valeur);  // Modifie le rendement de la pompe du condenseur
   void majTemperatureVapeur(double etatEchangChaleur, double temperature1);  // Modifie la température de la vapeur
   void majPressionVapeur(); // Modifie la pression exercée par la vapeur

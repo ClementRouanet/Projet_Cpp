@@ -50,27 +50,32 @@ double CircuitPrim::temperatureEau() const
 
 void CircuitPrim::majEtatPressuriseur(double valeur)
 {
-
+  m_pressuriseur.majEtat(valeur);
 }
 
 void CircuitPrim::majEtatResistancePressuriseur(double valeur)
 {
-
+  m_pressuriseur.majEtatResistance(valeur);
 }
 
 void CircuitPrim::majEtatEchangeurChaleur(double valeur)
 {
-
+  if(valeur>=0 && valeur<=1)
+    m_echangChal = valeur;
+  else if(valeur<0)
+    m_echangChal = 0;
+  else
+    m_echangChal = 1;
 }
 
 void CircuitPrim::majTempPressuriseurDemande(double valeur)
 {
-
+  m_pressuriseur.majTemperatureDemandee(valeur);
 }
 
-void CircuitPrim::majTempPressuriseurActuel(double valeur)
+void CircuitPrim::majTempPressuriseurActuel()
 {
-
+  m_pressuriseur.majTemperatureActuel();
 }
 
 void CircuitPrim::majPression()

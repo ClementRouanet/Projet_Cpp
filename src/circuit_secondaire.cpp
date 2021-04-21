@@ -49,6 +49,21 @@ double CircuitSec::diffChaleurCondenseur() const
   return m_condenseur.differenceChaleur();
 }
 
+void CircuitSec::majEtatGenerateurVapeur(double valeur)
+{
+  if(valeur>=0 && valeur<=1)
+    m_etatGenerateurVapeur = valeur;
+  else if(valeur<0)
+    m_etatGenerateurVapeur = 0;
+  else
+    m_etatGenerateurVapeur = 1;
+}
+
+void CircuitSec::majEtatCondenseur(double valeur)
+{
+  m_condenseur.majEtat(valeur);
+}
+
 void CircuitSec::majRendementPompeCondenseur(double valeur)
 {
   m_condenseur.majRendementPompe(valeur);

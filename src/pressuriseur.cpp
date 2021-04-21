@@ -3,7 +3,7 @@
 using namespace std;
 
 
-Pressuriseur::Pressuriseur() : m_etat(1.), m_etatResistance(1.), m_tempDemandee(25), m_temp_actuel(25)
+Pressuriseur::Pressuriseur() : m_etat(1.), m_etatResistance(1.), m_tempDemandee(25), m_tempActuel(25)
 {
 }
 
@@ -24,7 +24,7 @@ double Pressuriseur::temperatureDemandee() const
 
 double Pressuriseur::temperatureActuel() const
 {
-  return m_temp_actuel;
+  return m_tempActuel;
 }
 
 void Pressuriseur::majEtat(double valeur)
@@ -59,11 +59,11 @@ void Pressuriseur::majTemperatureDemandee(double valeur)
 
 void Pressuriseur::majTemperatureActuel()
 {
-  if(m_temp_actuel < m_tempDemandee)
-    m_temp_actuel += 1;
+  if(m_tempActuel < m_tempDemandee)
+    m_tempActuel += 1;
 
-  if(m_temp_actuel > m_tempDemandee)
-    m_temp_actuel -= 1;
+  if(m_tempActuel > m_tempDemandee)
+    m_tempActuel -= 1;
 }
 
 Pressuriseur::~Pressuriseur()

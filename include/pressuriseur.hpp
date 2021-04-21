@@ -23,7 +23,7 @@ private:
   double m_etat;  //Epress
   double m_etatResistance;  //Eres
   double m_tempDemandee; //Tpress
-  double m_temp_actuel;  //TPeff
+  double m_tempActuel;  //TPeff
 };
 
 #endif
