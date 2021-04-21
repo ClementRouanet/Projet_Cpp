@@ -14,7 +14,7 @@ public:
   // Affichage fenêtre graphique
   void cadre(sdl2::window& fenetre) const; // Affiche un cadre
   void affichageReacteur(sdl2::window& fenetre) const; // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
-  void affichageCircuitPrim(sdl2::window& fenetre,CircuitPrim& primaire) const;  // Affiche le circuit primaire (état, pompe, pressuriseur, résistances électriques et l'injecteur)
+  void affichageCircuitPrim(sdl2::window& fenetre,Centrale& centrale) const;  // Affiche le circuit primaire (état, pompe, pressuriseur, résistances électriques et l'injecteur)
   void affichageCircuitSec() const; //Affiche le circuit secondaire (état, pompe, générateur de vapeur, échangeur de chaleur)
   void affichageEnceinteConfinement() const;  // Affiche l'état de l'enceinte de confinement
   void affichageCondenseur() const; // Affiche l'état du condenseur

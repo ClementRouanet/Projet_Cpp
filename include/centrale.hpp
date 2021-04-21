@@ -21,15 +21,15 @@ double etatEnceinte() const;
 double pressionEnceinte() const;
 double radioactiviteEnceinte() const;
 
-//void majPressionEnceinte(); // met à jour la Pression subit par l'enceinte de Confinement
-//void majRadioactiviteEnceinte(); // met à jour la radioactivité de l'enceinte de confinement
+void majPressionEnceinte(); // met à jour la Pression subit par l'enceinte de Confinement
+void majRadioactiviteEnceinte(); // met à jour la radioactivité de l'enceinte de confinement
 
 //FONCTION DE LA CENTRALE
 double etatCentrale() const;
 double productionCentrale() const;
 
-//void majEtatCentrale(); // met à jour l'état général de la centrale
-//void majProductionCentrale(); // met à jour la production générale de la centrale
+void majEtatCentrale(); // met à jour l'état général de la centrale
+void majProductionCentrale(); // met à jour la production générale de la centrale
 
 
 
@@ -87,7 +87,29 @@ void majInertieTemperatureSec(double temperatureEau); // Modifie l'inertie temp�
 void majRadioactivite(double etatEchangChaleur, double radioactivite1);  // Modifie la radioactivité du circuit
 
 
-//FONCTION DU REACTEUR
+//FONCTIONS DU REACTEUR
+double propGrAct() const;
+double propGrDemande() const;
+double tauxBoreDemande() const;
+double tauxBoreActuel() const;
+double etatCuve() const;
+double radPiscine() const;
+double etatPiscine() const;
+double etatBarresGr() const;
+double etatCanaux() const;
+double etatInjBore() const;
+
+void majPropGrDemandee(double valeur_demandee);
+void majPropGrAct();
+void majTauxBoreDemande(double valeur_demandee);
+void majTauxBoreAct();
+void majEtatCuve(double valeur_demandee);
+void majRadPiscine(double R1);
+void majEtatPiscine(double valeur_demandee);
+void majEtatBarresGr(double valeur_demandee);
+void majEtatCanaux(double valeur_demandee);
+void majEtatInjBore(double valeur_demandee);
+
 
 
 //fini
