@@ -1,7 +1,5 @@
 #include <iostream>
-#include <chrono>
 #include <random>
-#include <functional>
 #include <algorithm>
 
 #include "circuit_primaire.hpp"
@@ -92,18 +90,8 @@ void CircuitPrim::majDebitEau(double Ecuve)
 
 void CircuitPrim::majInertietemperature(double Tvap, double TBeff, double TGreff)  // Tvap = circuitSec.temperatureVapeur()
 {
-  random_device hgenerateur;
-  default_random_engine generateur1(hgenerateur());
-  default_random_engine generateur2(hgenerateur());
-
-  uniform_real_distribution<double> genrand1(0,26);
-  uniform_real_distribution<double> genrand2(0,16);
-
-  auto rnd1 = bind(genrand1, generateur1);
-  auto rnd2 = bind(genrand2, generateur2);
-
-  double RND1 = rnd1();
-  double RND2 = rnd2();
+  auto RND1 = ((float)(rand()))/((float)(RAND_MAX))*26;
+  auto RND2 = ((float)(rand()))/((float)(RAND_MAX))*16;
 
   if(m_echangChal<50 && TBeff<25 && TGreff<50)
     m_inertieTemp += RND1;
@@ -121,12 +109,7 @@ void CircuitPrim::majTemperatureEau(double TBeff, double TGreff)
 
 void CircuitPrim::majRadioactivite(double TBeff, double MW)
 {
-  random_device hgenerateur;
-  default_random_engine generateur(hgenerateur());
-  uniform_real_distribution<double> genrand(0,90);
-
-  auto rnd = bind(genrand, generateur);
-  double RND = rnd();
+  auto RND = ((float)(rand()))/((float)(RAND_MAX))*90;
 
   m_radioactivite = 98*(m_debit+1) + RND + (0.5-TBeff)*(MW+0.1)*6.54;
 }

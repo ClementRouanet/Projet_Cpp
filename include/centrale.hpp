@@ -4,7 +4,7 @@
 #include "enceinte.hpp"
 #include "circuit_primaire.hpp"
 #include "circuit_secondaire.hpp"
-//#include "reacteur.hpp"
+#include "reacteur.hpp"
 
 
 class Centrale
@@ -18,15 +18,15 @@ public:
   double pressionEnceinte() const;
   double radioactiviteEnceinte() const;
 
-  //void majPressionEnceinte(); // met à jour la Pression subit par l'enceinte de Confinement
-  //void majRadioactiviteEnceinte(); // met à jour la radioactivité de l'enceinte de confinement
+  void majPressionEnceinte(); // met à jour la Pression subit par l'enceinte de Confinement
+  void majRadioactiviteEnceinte(); // met à jour la radioactivité de l'enceinte de confinement
 
   //FONCTION DE LA CENTRALE
   double etatCentrale() const;
   double productionCentrale() const;
 
-  //void majEtatCentrale(); // met à jour l'état général de la centrale
-  //void majProductionCentrale(); // met à jour la production générale de la centrale
+  void majEtatCentrale(); // met à jour l'état général de la centrale
+  void majProductionCentrale(); // met à jour la production générale de la centrale
 
 
   //FONCTION DU CIRCUIT PRIMAIRE
@@ -53,10 +53,10 @@ public:
   void majTempPressuriseurDemande(double valeur); // Modifie la température du pressuriseur demandée
   void majTempPressuriseurActuel();  // Modifie la température du pressuriseur actuel
   void majPressionEau(); // Modifie la pression de l'eau
-  void majDebitEauPrim(double Ecuve); // Modifie le débit de l'eau
-  void majInertietemperaturePrim(double Tvap, double TBeff, double TGreff); // Modifie l'inertie température eau circuit
-  void majTemperatureEau(double TBeff, double TGreff); // Modifie la température de l'eau dans le circuit
-  void majRadioactivitePrim(double TBeff, double MW);  // Modifie la radioactivité du circuit
+  void majDebitEauPrim(); // Modifie le débit de l'eau
+  void majInertietemperaturePrim(); // Modifie l'inertie température eau circuit
+  void majTemperatureEau(); // Modifie la température de l'eau dans le circuit
+  void majRadioactivitePrim();  // Modifie la radioactivité du circuit
 
 
   //FONCTION DU CIRCUIT SECONDAIRE
@@ -88,21 +88,40 @@ public:
   void majInertieTemperatureSec(); // Modifie l'inertie température eau circuit
   void majRadioactivite();  // Modifie la radioactivité du circuit
 
+//FONCTIONS DU REACTEUR
+double propGrActuel() const;
+double propGrDemande() const;
+double tauxBoreDemande() const;
+double tauxBoreActuel() const;
+double etatCuve() const;
+double radPiscine() const;
+double etatPiscine() const;
+double etatBarresGr() const;
+double etatCanaux() const;
+double etatInjBore() const;
 
-  //FONCTION DU REACTEUR
+void majPropGrDemandee(double valeur_demandee);
+void majPropGrAct();
+void majTauxBoreDemande(double valeur_demandee);
+void majTauxBoreAct();
+void majEtatCuve(double valeur_demandee);
+void majRadPiscine();
+void majEtatPiscine(double valeur_demandee);
+void majEtatBarresGr(double valeur_demandee);
+void majEtatCanaux(double valeur_demandee);
+void majEtatInjBore(double valeur_demandee);
 
 
 
-  //fini
-  ~Centrale(); //Destructeur
+//fini
+~Centrale(); //Destructeur
 
 private:
-  CircuitPrim primaire;
-  CircuitSec secondaire;
-  //Reacteur reacteur;
-  Enceinte enceinte;
-  double m_etat;
-  double m_production;
+CircuitPrim primaire;
+CircuitSec secondaire;
+Reacteur reacteur;
+Enceinte enceinte;
+double m_etat;
+double m_production;
 };
-
 #endif

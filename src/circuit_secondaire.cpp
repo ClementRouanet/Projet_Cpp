@@ -1,7 +1,5 @@
 #include <iostream>
-#include <chrono>
 #include <random>
-#include <functional>
 #include <algorithm>
 
 #include "circuit_secondaire.hpp"
@@ -115,22 +113,9 @@ void CircuitSec::majDiffChaleurCondenseur()
 
 void CircuitSec::majInertieTemperature(double temperatureEau) // temperatureEau = circuitPrim.temperatureEau()
 {
-  random_device hgenerateur;
-  default_random_engine generateur1(hgenerateur());
-  default_random_engine generateur2(hgenerateur());
-  default_random_engine generateur3(hgenerateur());
-
-  uniform_real_distribution<double> genrand1(0,0.15);
-  uniform_real_distribution<double> genrand2(0,temperatureEau/100);
-  uniform_real_distribution<double> genrand3(0,3);
-
-  auto rnd1 = bind(genrand1, generateur1);
-  auto rnd2 = bind(genrand2, generateur2);
-  auto rnd3 = bind(genrand3, generateur3);
-
-  double RND1 = rnd1();
-  double RND2 = rnd2();
-  double RND3 = rnd3();
+  auto RND1 = ((float)(rand()))/((float)(RAND_MAX))*0.15;
+  auto RND2 = ((float)(rand()))/((float)(RAND_MAX))*(temperatureEau/100);
+  auto RND3 = ((float)(rand()))/((float)(RAND_MAX))*3;
 
   double regimePompe = m_pompe.rendement();
 

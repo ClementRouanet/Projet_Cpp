@@ -308,31 +308,34 @@ void SalleDeControle::majRendementPompeCircuitPrim(sdl2::window& fenetre, Centra
     auto events = queue.pull_events();
     for (const auto& e : events)
     {
-      auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
-
-      if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
       {
-        switch (key_ev.code())
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+        if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
         {
-          case 13 :
-            quitter = true;
-            break;
+          switch (key_ev.code())
+          {
+            case 13 :
+              quitter = true;
+              break;
 
-          case sdl2::event_keyboard::up :
-            rendement = centrale.rendementPompePrim();
-            centrale.majRendementPompePrim(rendement + 0.05);
-            break;
+            case sdl2::event_keyboard::up :
+              rendement = centrale.rendementPompePrim();
+              centrale.majRendementPompePrim(rendement + 0.05);
+              break;
 
-          case sdl2::event_keyboard::down :
-            rendement = centrale.rendementPompePrim();
-            centrale.majRendementPompePrim(rendement - 0.05);
-            break;
+            case sdl2::event_keyboard::down :
+              rendement = centrale.rendementPompePrim();
+              centrale.majRendementPompePrim(rendement - 0.05);
+              break;
+          }
+          majAffichage(fenetre, centrale);
+          iskey_down = true;
         }
-        majAffichage(fenetre, centrale);
-        iskey_down = true;
-      }
       if (key_ev.type_of_event() == sdl2::event::key_up)
           iskey_down = false;
+      }
     }
   }
 }
@@ -351,31 +354,34 @@ void SalleDeControle::majRendementPompeCircuitSec(sdl2::window& fenetre, Central
     auto events = queue.pull_events();
     for (const auto& e : events)
     {
-      auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
-
-      if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
       {
-        switch (key_ev.code())
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+        if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
         {
-          case 13 :
-            quitter = true;
-            break;
+          switch (key_ev.code())
+          {
+            case 13 :
+              quitter = true;
+              break;
 
-          case sdl2::event_keyboard::up :
-            rendement = centrale.rendementPompeSec();
-            centrale.majRendementPompeSec(rendement + 0.05);
-            break;
+            case sdl2::event_keyboard::up :
+              rendement = centrale.rendementPompeSec();
+              centrale.majRendementPompeSec(rendement + 0.05);
+              break;
 
-          case sdl2::event_keyboard::down :
-            rendement = centrale.rendementPompeSec();
-            centrale.majRendementPompeSec(rendement - 0.05);
-            break;
+            case sdl2::event_keyboard::down :
+              rendement = centrale.rendementPompeSec();
+              centrale.majRendementPompeSec(rendement - 0.05);
+              break;
+          }
+          majAffichage(fenetre, centrale);
+          iskey_down = true;
         }
-        majAffichage(fenetre, centrale);
-        iskey_down = true;
+        if (key_ev.type_of_event() == sdl2::event::key_up)
+            iskey_down = false;
       }
-      if (key_ev.type_of_event() == sdl2::event::key_up)
-          iskey_down = false;
     }
   }
 }
@@ -412,31 +418,34 @@ void SalleDeControle::majRendementPompeCondenseur(sdl2::window& fenetre, Central
     auto events = queue.pull_events();
     for (const auto& e : events)
     {
-      auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
-
-      if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
       {
-        switch (key_ev.code())
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+        if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
         {
-          case 13 :
-            quitter = true;
-            break;
+          switch (key_ev.code())
+          {
+            case 13 :
+              quitter = true;
+              break;
 
-          case sdl2::event_keyboard::up :
-            rendement = centrale.rendementPompeCondenseur();
-            centrale.majRendementPompeCondenseur(rendement + 0.05);
-            break;
+            case sdl2::event_keyboard::up :
+              rendement = centrale.rendementPompeCondenseur();
+              centrale.majRendementPompeCondenseur(rendement + 0.05);
+              break;
 
-          case sdl2::event_keyboard::down :
-            rendement = centrale.rendementPompeCondenseur();
-            centrale.majRendementPompeCondenseur(rendement - 0.05);
-            break;
+            case sdl2::event_keyboard::down :
+              rendement = centrale.rendementPompeCondenseur();
+              centrale.majRendementPompeCondenseur(rendement - 0.05);
+              break;
+          }
+          majAffichage(fenetre, centrale);
+          iskey_down = true;
         }
-        majAffichage(fenetre, centrale);
-        iskey_down = true;
+        if (key_ev.type_of_event() == sdl2::event::key_up)
+            iskey_down = false;
       }
-      if (key_ev.type_of_event() == sdl2::event::key_up)
-          iskey_down = false;
     }
   }
 }
@@ -461,10 +470,13 @@ bool SalleDeControle::finSession()
     auto events = queue.pull_events();
     for (const auto& e : events)
     {
-      auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
+      {
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
 
-      if (key_ev.type_of_event() == sdl2::event::key_up)
-          iskey_down = false;
+        if (key_ev.type_of_event() == sdl2::event::key_up)
+            iskey_down = false;
+      }
     }
   }
   end = chrono::system_clock::now();
