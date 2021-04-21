@@ -15,17 +15,17 @@ SalleDeControle::SalleDeControle()
 {
 }
 
-void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale)
 {
   cadre(fenetre);
   affichageDispatching(fenetre);
   affichageProdElec(fenetre, centrale);
   afficheTauxBorePiscine(fenetre);
-  afficheCircuitPrim(fenetre, circuitPrim);
-  afficheCircuitSec(fenetre, circuitSec);
+  afficheCircuitPrim(fenetre, centrale);
+  afficheCircuitSec(fenetre, centrale);
   afficheSystSecurite(fenetre);
   affichePressionEnceinte(fenetre, centrale);
-  afficheSystRefroidissement(fenetre, circuitSec);
+  afficheSystRefroidissement(fenetre, centrale);
   afficheEtatBarreGraphite(fenetre);
   afficheCommandes(fenetre);
 
@@ -72,13 +72,13 @@ void SalleDeControle::afficheTauxBorePiscine(sdl2::window& fenetre) const
 }
 
 
-void SalleDeControle::afficheCircuitPrim(sdl2::window& fenetre, CircuitPrim& circuitPrim) const
+void SalleDeControle::afficheCircuitPrim(sdl2::window& fenetre, Centrale& centrale) const
 {
-  double rendement = circuitPrim.rendementPompe();
-  double temperature = circuitPrim.temperatureEau();
-  double debit = circuitPrim.debitEau();
-  double pression = circuitPrim.pression();
-  double radioactivite = circuitPrim.radioactivite();
+  double rendement = centrale.rendementPompePrim();
+  double temperature = centrale.temperatureEau();
+  double debit = centrale.debitEauPrim();
+  double pression = centrale.pressionPrim();
+  double radioactivite = centrale.radioactivitePrim();
 
   string sRendement(to_string(rendement*100));
   string sTemperature(to_string(temperature));
@@ -109,13 +109,13 @@ void SalleDeControle::afficheCircuitPrim(sdl2::window& fenetre, CircuitPrim& cir
 }
 
 
-void SalleDeControle::afficheCircuitSec(sdl2::window& fenetre, CircuitSec& circuitSec) const
+void SalleDeControle::afficheCircuitSec(sdl2::window& fenetre, Centrale& centrale) const
 {
-  double rendement = circuitSec.rendementPompe();
-  double temperature = circuitSec.temperatureVapeur();
-  double debit = circuitSec.debitEau();
-  double pression = circuitSec.pressionVapeur();
-  double radioactivite = circuitSec.radioactivite();
+  double rendement = centrale.rendementPompeSec();
+  double temperature = centrale.temperatureVapeur();
+  double debit = centrale.debitEauSec();
+  double pression = centrale.pressionVapeur();
+  double radioactivite = centrale.radioactiviteSec();
 
   string sRendement(to_string(rendement*100));
   string sTemperature(to_string(temperature));
@@ -177,11 +177,11 @@ void SalleDeControle::affichePressionEnceinte(sdl2::window& fenetre, Centrale& c
 }
 
 
-void SalleDeControle::afficheSystRefroidissement(sdl2::window& fenetre, CircuitSec& circuitSec) const
+void SalleDeControle::afficheSystRefroidissement(sdl2::window& fenetre, Centrale& centrale) const
 {
-  double rendement = circuitSec.rendementPompeCondenseur();
-  double debit = circuitSec.debitCondenseur();
-  double difference = circuitSec.diffChaleurCondenseur();
+  double rendement = centrale.rendementPompeCondenseur();
+  double debit = centrale.debitCondenseur();
+  double difference = centrale.diffChaleurCondenseur();
 
   string sRendement(to_string(rendement*100));
   string sDebit(to_string(debit));
@@ -247,36 +247,36 @@ void SalleDeControle::afficheCommandes(sdl2::window& fenetre) const
 }
 
 
-bool SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+bool SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale)
 {
     switch (touche)
     {
       case 49 :  // 1
-        majRendementPompeCircuitPrim(fenetre, centrale, circuitPrim, circuitSec);
+        majRendementPompeCircuitPrim(fenetre, centrale);
         break;
 
       case 50 :  // 2
-        majRendementPompeCircuitSec(fenetre, centrale, circuitPrim, circuitSec);
+        majRendementPompeCircuitSec(fenetre, centrale);
         break;
 
       case 98 :  // b
-        majBarreControle(fenetre, centrale, circuitPrim, circuitSec);
+        majBarreControle(fenetre, centrale);
         break;
 
       case 116 :  // t
-        majTauxAcideBorique(fenetre, centrale, circuitPrim, circuitSec);
+        majTauxAcideBorique(fenetre, centrale);
         break;
 
       case 112 :  // p
-        majRendementPressuriseur(fenetre, centrale, circuitPrim, circuitSec);
+        majRendementPressuriseur(fenetre, centrale);
         break;
 
       case 114 :  // r
-        majRendementPompeCondenseur(fenetre, centrale, circuitPrim, circuitSec);
+        majRendementPompeCondenseur(fenetre, centrale);
         break;
 
       case 117 :  // u
-        arretUrgence(fenetre, centrale, circuitPrim, circuitSec);
+        arretUrgence(fenetre, centrale);
         break;
 
       case 115 :  // s
@@ -284,18 +284,18 @@ bool SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Centrale& 
         break;
 
       case 9 :  // tab
-        affichageSchemaCentrale(fenetre, centrale, circuitPrim, circuitSec);
+        affichageSchemaCentrale(fenetre, centrale);
         break;
 
       case 32 : // Espace
-        passagePosteSecurite(fenetre, centrale, circuitPrim, circuitSec);
+        passagePosteSecurite(fenetre, centrale);
         break;
     }
     return false;
 }
 
 
-void SalleDeControle::majRendementPompeCircuitPrim(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+void SalleDeControle::majRendementPompeCircuitPrim(sdl2::window& fenetre, Centrale& centrale)
 {
   double rendement;
 
@@ -319,16 +319,16 @@ void SalleDeControle::majRendementPompeCircuitPrim(sdl2::window& fenetre, Centra
             break;
 
           case sdl2::event_keyboard::up :
-            rendement = circuitPrim.rendementPompe();
-            circuitPrim.majRendementPompe(rendement + 0.05);
+            rendement = centrale.rendementPompePrim();
+            centrale.majRendementPompePrim(rendement + 0.05);
             break;
 
           case sdl2::event_keyboard::down :
-            rendement = circuitPrim.rendementPompe();
-            circuitPrim.majRendementPompe(rendement - 0.05);
+            rendement = centrale.rendementPompePrim();
+            centrale.majRendementPompePrim(rendement - 0.05);
             break;
         }
-        majAffichage(fenetre, centrale, circuitPrim, circuitSec);
+        majAffichage(fenetre, centrale);
         iskey_down = true;
       }
       if (key_ev.type_of_event() == sdl2::event::key_up)
@@ -338,7 +338,7 @@ void SalleDeControle::majRendementPompeCircuitPrim(sdl2::window& fenetre, Centra
 }
 
 
-void SalleDeControle::majRendementPompeCircuitSec(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+void SalleDeControle::majRendementPompeCircuitSec(sdl2::window& fenetre, Centrale& centrale)
 {
   double rendement;
 
@@ -362,16 +362,16 @@ void SalleDeControle::majRendementPompeCircuitSec(sdl2::window& fenetre, Central
             break;
 
           case sdl2::event_keyboard::up :
-            rendement = circuitSec.rendementPompe();
-            circuitSec.majRendementPompe(rendement + 0.05);
+            rendement = centrale.rendementPompeSec();
+            centrale.majRendementPompeSec(rendement + 0.05);
             break;
 
           case sdl2::event_keyboard::down :
-            rendement = circuitSec.rendementPompe();
-            circuitSec.majRendementPompe(rendement - 0.05);
+            rendement = centrale.rendementPompeSec();
+            centrale.majRendementPompeSec(rendement - 0.05);
             break;
         }
-        majAffichage(fenetre, centrale, circuitPrim, circuitSec);
+        majAffichage(fenetre, centrale);
         iskey_down = true;
       }
       if (key_ev.type_of_event() == sdl2::event::key_up)
@@ -381,25 +381,25 @@ void SalleDeControle::majRendementPompeCircuitSec(sdl2::window& fenetre, Central
 }
 
 
-void SalleDeControle::majBarreControle(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+void SalleDeControle::majBarreControle(sdl2::window& fenetre, Centrale& centrale)
 {
 
 }
 
 
-void SalleDeControle::majTauxAcideBorique(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+void SalleDeControle::majTauxAcideBorique(sdl2::window& fenetre, Centrale& centrale)
 {
 
 }
 
 
-void SalleDeControle::majRendementPressuriseur(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+void SalleDeControle::majRendementPressuriseur(sdl2::window& fenetre, Centrale& centrale)
 {
   /// PB pas de rendement pressuriseur
 }
 
 
-void SalleDeControle::majRendementPompeCondenseur(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+void SalleDeControle::majRendementPompeCondenseur(sdl2::window& fenetre, Centrale& centrale)
 {
   double rendement;
 
@@ -423,16 +423,16 @@ void SalleDeControle::majRendementPompeCondenseur(sdl2::window& fenetre, Central
             break;
 
           case sdl2::event_keyboard::up :
-            rendement = circuitSec.rendementPompeCondenseur();
-            circuitSec.majRendementPompeCondenseur(rendement + 0.05);
+            rendement = centrale.rendementPompeCondenseur();
+            centrale.majRendementPompeCondenseur(rendement + 0.05);
             break;
 
           case sdl2::event_keyboard::down :
-            rendement = circuitSec.rendementPompeCondenseur();
-            circuitSec.majRendementPompeCondenseur(rendement - 0.05);
+            rendement = centrale.rendementPompeCondenseur();
+            centrale.majRendementPompeCondenseur(rendement - 0.05);
             break;
         }
-        majAffichage(fenetre, centrale, circuitPrim, circuitSec);
+        majAffichage(fenetre, centrale);
         iskey_down = true;
       }
       if (key_ev.type_of_event() == sdl2::event::key_up)
@@ -442,7 +442,7 @@ void SalleDeControle::majRendementPompeCondenseur(sdl2::window& fenetre, Central
 }
 
 
-void SalleDeControle::arretUrgence(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+void SalleDeControle::arretUrgence(sdl2::window& fenetre, Centrale& centrale)
 {
 
 }

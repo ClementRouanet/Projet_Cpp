@@ -24,10 +24,10 @@ public:
   void majTempPressuriseurDemande(double valeur); // Modifie la température du pressuriseur demandée
   void majTempPressuriseurActuel();  // Modifie la température du pressuriseur actuel
   void majPression(); // Modifie la pression
-  void majDebitEau(); // Modifie le débit de l'eau
-  void majInertietemperature(double Tvap); // Modifie l'inertie température eau circuit
-  void majTemperatureEau(); // Modifie la température de l'eau dans le circuit
-  void majRadioactivite();  // Modifie la radioactivité du circuit
+  void majDebitEau(double Ecuve); // Modifie le débit de l'eau
+  void majInertietemperature(double Tvap, double TBeff, double TGreff); // Modifie l'inertie température eau circuit
+  void majTemperatureEau(double TBeff, double TGreff); // Modifie la température de l'eau dans le circuit
+  void majRadioactivite(double TBeff, double MW);  // Modifie la radioactivité du circuit
 
   ~CircuitPrim(); // Destructeur
 

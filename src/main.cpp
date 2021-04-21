@@ -1,4 +1,6 @@
 #include <iostream>
+#include <random>
+#include <chrono>
 
 #include "sdl2.hpp"
 #include "centrale.hpp"
@@ -51,6 +53,8 @@ void debut()
 int main(int argc, char* args[])
 {
   sdl2::init(argc,args);
+  srand(time(nullptr));
+
   debut();
   sdl2::finalize();
   return 0;
