@@ -477,13 +477,13 @@ bool SalleDeControle::finSession()
 }
 
 
-void SalleDeControle::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+void SalleDeControle::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& centrale)
 {
 
 }
 
 
-void SalleDeControle::passagePosteSecurite(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+void SalleDeControle::passagePosteSecurite(sdl2::window& fenetre, Centrale& centrale)
 {
 
 }

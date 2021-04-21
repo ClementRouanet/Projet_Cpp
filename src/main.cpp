@@ -4,8 +4,8 @@
 
 #include "sdl2.hpp"
 #include "centrale.hpp"
-#include "circuit_primaire.hpp"
-#include "circuit_secondaire.hpp"
+//#include "circuit_primaire.hpp"
+//#include "circuit_secondaire.hpp"
 #include "salle_de_controle.hpp"
 
 
@@ -27,7 +27,7 @@ void debut()
 
   while (not quitting && finSession == false)
   {
-    sdc.majAffichage(fenetre, cent, cp, cs);
+    sdc.majAffichage(fenetre, cent);
 
     auto events = queue.pull_events();
     for ( const auto& e : events)
@@ -40,7 +40,7 @@ void debut()
         auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
         //char keychar = key_ev.ascci_code();
         int key =  key_ev.ascci_code();
-        finSession = sdc.majCommandes(fenetre, key, cent, cp, cs);
+        finSession = sdc.majCommandes(fenetre, key, cent);
         //auto keychar = key_ev.code();
         //cout << keychar << endl;
       /*  if (keychar == 'a')
