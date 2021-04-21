@@ -18,6 +18,11 @@ public:
   double pression() const;  // Renvoie la pression
   double temperatureEau() const;  // renvoie la température de l'eau dans le circuit
 
+  void majEtatPressuriseur(double valeur);  // Modifie l'état du pressuriseur
+  void majEtatResistancePressuriseur(double valeur);  // Modifie l'état de la résistance du pressuriseur
+  void majEtatEchangeurChaleur(double valeur);  // Modifie l'état de l'échangeur de chaleur
+  void majTempPressuriseurDemande(double valeur); // Modifie la température du pressuriseur demandée
+  void majTempPressuriseurActuel(double valeur);  // Modifie la température du pressuriseur actuel
   void majPression(); // Modifie la pression
   void majDebitEau(); // Modifie le débit de l'eau
   void majInertietemperature(double Tvap); // Modifie l'inertie température eau circuit

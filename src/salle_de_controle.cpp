@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <chrono>
 
 #include "salle_de_controle.hpp"
 #include "centrale.hpp"
@@ -12,6 +13,23 @@ using namespace std;
 
 SalleDeControle::SalleDeControle()
 {
+}
+
+void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+{
+  cadre(fenetre);
+  affichageDispatching(fenetre);
+  affichageProdElec(fenetre, centrale);
+  afficheTauxBorePiscine(fenetre);
+  afficheCircuitPrim(fenetre, circuitPrim);
+  afficheCircuitSec(fenetre, circuitSec);
+  afficheSystSecurite(fenetre);
+  affichePressionEnceinte(fenetre, centrale);
+  afficheSystRefroidissement(fenetre, circuitSec);
+  afficheEtatBarreGraphite(fenetre);
+  afficheCommandes(fenetre);
+
+  fenetre << sdl2::flush;
 }
 
 void SalleDeControle::cadre(sdl2::window& fenetre) const
@@ -62,7 +80,7 @@ void SalleDeControle::afficheCircuitPrim(sdl2::window& fenetre, CircuitPrim& cir
   double pression = circuitPrim.pression();
   double radioactivite = circuitPrim.radioactivite();
 
-  string sRendement(to_string(rendement));
+  string sRendement(to_string(rendement*100));
   string sTemperature(to_string(temperature));
   string sDebit(to_string(debit));
   string sPression(to_string(pression));
@@ -99,7 +117,7 @@ void SalleDeControle::afficheCircuitSec(sdl2::window& fenetre, CircuitSec& circu
   double pression = circuitSec.pressionVapeur();
   double radioactivite = circuitSec.radioactivite();
 
-  string sRendement(to_string(rendement));
+  string sRendement(to_string(rendement*100));
   string sTemperature(to_string(temperature));
   string sDebit(to_string(debit));
   string sPression(to_string(pression));
@@ -165,7 +183,7 @@ void SalleDeControle::afficheSystRefroidissement(sdl2::window& fenetre, CircuitS
   double debit = circuitSec.debitCondenseur();
   double difference = circuitSec.diffChaleurCondenseur();
 
-  string sRendement(to_string(rendement));
+  string sRendement(to_string(rendement*100));
   string sDebit(to_string(debit));
   string sDifference(to_string(difference));
 
@@ -226,6 +244,248 @@ void SalleDeControle::afficheCommandes(sdl2::window& fenetre) const
   texteEspace.at(3*wph/4-40,750);
 
   fenetre << texte << texte1 << texte2 << texteB << texteT << texteP << texteR << texteU << texteS << texteTab << texteEspace;
+}
+
+
+bool SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+{
+    switch (touche)
+    {
+      case 49 :  // 1
+        majRendementPompeCircuitPrim(fenetre, centrale, circuitPrim, circuitSec);
+        break;
+
+      case 50 :  // 2
+        majRendementPompeCircuitSec(fenetre, centrale, circuitPrim, circuitSec);
+        break;
+
+      case 98 :  // b
+        majBarreControle(fenetre, centrale, circuitPrim, circuitSec);
+        break;
+
+      case 116 :  // t
+        majTauxAcideBorique(fenetre, centrale, circuitPrim, circuitSec);
+        break;
+
+      case 112 :  // p
+        majRendementPressuriseur(fenetre, centrale, circuitPrim, circuitSec);
+        break;
+
+      case 114 :  // r
+        majRendementPompeCondenseur(fenetre, centrale, circuitPrim, circuitSec);
+        break;
+
+      case 117 :  // u
+        arretUrgence(fenetre, centrale, circuitPrim, circuitSec);
+        break;
+
+      case 115 :  // s
+        return finSession();
+        break;
+
+      case 9 :  // tab
+        affichageSchemaCentrale(fenetre, centrale, circuitPrim, circuitSec);
+        break;
+
+      case 32 : // Espace
+        passagePosteSecurite(fenetre, centrale, circuitPrim, circuitSec);
+        break;
+    }
+    return false;
+}
+
+
+void SalleDeControle::majRendementPompeCircuitPrim(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+{
+  double rendement;
+
+  bool quitter = false;
+  bool iskey_down = false;
+  sdl2::event_queue queue;
+
+  while (not quitter)
+  {
+    auto events = queue.pull_events();
+    for (const auto& e : events)
+    {
+      auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+      if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+      {
+        switch (key_ev.code())
+        {
+          case 13 :
+            quitter = true;
+            break;
+
+          case sdl2::event_keyboard::up :
+            rendement = circuitPrim.rendementPompe();
+            circuitPrim.majRendementPompe(rendement + 0.05);
+            break;
+
+          case sdl2::event_keyboard::down :
+            rendement = circuitPrim.rendementPompe();
+            circuitPrim.majRendementPompe(rendement - 0.05);
+            break;
+        }
+        majAffichage(fenetre, centrale, circuitPrim, circuitSec);
+        iskey_down = true;
+      }
+      if (key_ev.type_of_event() == sdl2::event::key_up)
+          iskey_down = false;
+    }
+  }
+}
+
+
+void SalleDeControle::majRendementPompeCircuitSec(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+{
+  double rendement;
+
+  bool quitter = false;
+  bool iskey_down = false;
+  sdl2::event_queue queue;
+
+  while (not quitter)
+  {
+    auto events = queue.pull_events();
+    for (const auto& e : events)
+    {
+      auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+      if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+      {
+        switch (key_ev.code())
+        {
+          case 13 :
+            quitter = true;
+            break;
+
+          case sdl2::event_keyboard::up :
+            rendement = circuitSec.rendementPompe();
+            circuitSec.majRendementPompe(rendement + 0.05);
+            break;
+
+          case sdl2::event_keyboard::down :
+            rendement = circuitSec.rendementPompe();
+            circuitSec.majRendementPompe(rendement - 0.05);
+            break;
+        }
+        majAffichage(fenetre, centrale, circuitPrim, circuitSec);
+        iskey_down = true;
+      }
+      if (key_ev.type_of_event() == sdl2::event::key_up)
+          iskey_down = false;
+    }
+  }
+}
+
+
+void SalleDeControle::majBarreControle(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+{
+
+}
+
+
+void SalleDeControle::majTauxAcideBorique(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+{
+
+}
+
+
+void SalleDeControle::majRendementPressuriseur(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+{
+  /// PB pas de rendement pressuriseur
+}
+
+
+void SalleDeControle::majRendementPompeCondenseur(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+{
+  double rendement;
+
+  bool quitter = false;
+  bool iskey_down = false;
+  sdl2::event_queue queue;
+
+  while (not quitter)
+  {
+    auto events = queue.pull_events();
+    for (const auto& e : events)
+    {
+      auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+      if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+      {
+        switch (key_ev.code())
+        {
+          case 13 :
+            quitter = true;
+            break;
+
+          case sdl2::event_keyboard::up :
+            rendement = circuitSec.rendementPompeCondenseur();
+            circuitSec.majRendementPompeCondenseur(rendement + 0.05);
+            break;
+
+          case sdl2::event_keyboard::down :
+            rendement = circuitSec.rendementPompeCondenseur();
+            circuitSec.majRendementPompeCondenseur(rendement - 0.05);
+            break;
+        }
+        majAffichage(fenetre, centrale, circuitPrim, circuitSec);
+        iskey_down = true;
+      }
+      if (key_ev.type_of_event() == sdl2::event::key_up)
+          iskey_down = false;
+    }
+  }
+}
+
+
+void SalleDeControle::arretUrgence(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+{
+
+}
+
+
+bool SalleDeControle::finSession()
+{
+  bool iskey_down = true;
+  sdl2::event_queue queue;
+
+  chrono::time_point<chrono::system_clock> start, end;
+  start = chrono::system_clock::now();
+
+  while (iskey_down == true)
+  {
+    auto events = queue.pull_events();
+    for (const auto& e : events)
+    {
+      auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+      if (key_ev.type_of_event() == sdl2::event::key_up)
+          iskey_down = false;
+    }
+  }
+  end = chrono::system_clock::now();
+  chrono::duration<double> secondesEcoulees = end - start;
+
+  if (secondesEcoulees.count() >= 2)
+    return true;
+
+  return false;
+}
+
+
+void SalleDeControle::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+{
+
+}
+
+
+void SalleDeControle::passagePosteSecurite(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec)
+{
+
 }
 
 

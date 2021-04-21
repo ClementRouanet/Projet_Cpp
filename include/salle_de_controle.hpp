@@ -1,6 +1,8 @@
 #ifndef SALLE_DE_CONTROLE_HPP_
 #define SALLE_DE_CONTROLE_HPP_
 
+#include <iostream>
+
 #include "sdl2.hpp"
 #include "centrale.hpp"
 #include "circuit_primaire.hpp"
@@ -13,7 +15,8 @@ public:
   SalleDeControle();  // Constructeur
 
   // Affichage fenêtre graphique
-  void cadre(sdl2::window& fenetre) const; // Affiche un cadre
+  void majAffichage(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec); // Met à jour l'affichage de la fenêtre graphique
+  void cadre(sdl2::window& fenetre) const; // Affiche les cadres
   void affichageDispatching(sdl2::window& fenetre) const;  // Affiche les ordres provenant du dispatching national
   void affichageProdElec(sdl2::window& fenetre, Centrale& centrale) const; // Affiche la production d'électricité (en MW)
   void afficheTauxBorePiscine(sdl2::window& fenetre) const;  // Affiche le taux de bore dans la piscine
@@ -26,7 +29,17 @@ public:
   void afficheCommandes(sdl2::window& fenetre) const;  // Affiche les commandes disponibles pour effectuer des actions
 
   // Modification valeurs avec les commandes
-  void majCommandes(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec);
+  bool majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec); // Appelle les fonction dessous en fonction de la touche associée
+  void majRendementPompeCircuitPrim(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec); // Modifie le rendement de la pompe du circuit primaire
+  void majRendementPompeCircuitSec(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec);  // Modifie le rendement de la pompe du circuit secondaire
+  void majBarreControle(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec); // Modifie l'action sur les barres de contrôle
+  void majTauxAcideBorique(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec);  // Modifie le taux d'acide borique
+  void majRendementPressuriseur(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec); // Modifie le rendement du pressuriseur
+  void majRendementPompeCondenseur(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec);  // Modifie le rendement pompe condenseur
+  void arretUrgence(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec); // Simule l'arrêt d'urgence avec l'enfoncement rapide des barres dans le réacteur
+  bool finSession(); // Arrête la partie en cours
+  void affichageSchemaCentrale(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec);  // Affiche le schéma de la centrale
+  void passagePosteSecurite(sdl2::window& fenetre, Centrale& centrale, CircuitPrim& circuitPrim, CircuitSec& circuitSec); // Passe au poste de sécurité radioprotection
 
   ~SalleDeControle(); // Destructeur
 

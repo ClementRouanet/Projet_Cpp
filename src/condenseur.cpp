@@ -28,6 +28,11 @@ double Condenseur::differenceChaleur() const
   return m_diffChaleur;
 }
 
+void Condenseur::majRendementPompe(double valeur)
+{
+  m_pompe.majRendement(valeur);
+}
+
 void Condenseur::majDebit(double valeur)
 {
   m_debit = valeur;

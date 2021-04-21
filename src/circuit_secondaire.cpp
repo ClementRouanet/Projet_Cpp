@@ -49,6 +49,11 @@ double CircuitSec::diffChaleurCondenseur() const
   return m_condenseur.differenceChaleur();
 }
 
+void CircuitSec::majRendementPompeCondenseur(double valeur)
+{
+  m_condenseur.majRendementPompe(valeur);
+}
+
 void CircuitSec::majTemperatureVapeur(double etatEchangChaleur, double temperature1) // etatEchangChaleur = circuitPrim.etatEchangeurChaleur() & temperature1 = circuitPrim.temperatureEau()
 {
   m_temperatureVapeur = max(etatEchangChaleur*(temperature1/1.51)+26+(m_inertieTemp*(m_inertieTemp>3)), 99.);

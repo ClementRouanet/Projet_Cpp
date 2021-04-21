@@ -12,6 +12,11 @@ public:
   double temperatureDemandee() const; // Renvoie la température du pressuriseur demandée
   double temperatureActuel() const;  // Renvoie la température du pressuriseur actuel
 
+  void majEtat(double valeur);  // Modifie l'état du pressuriseur
+  void majEtatResistance(double valeur);  // Modifie l'état de la résistance du pressuriseur
+  void majTemperatureDemandee(double valeur); // Modifie la température du pressuriseur demandée
+  void majTemperatureActuel(); // Modifie la température du pressuriseur actuel
+
   ~Pressuriseur();  // Destructeur
 
 private:
