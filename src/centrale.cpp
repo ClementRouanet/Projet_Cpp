@@ -1,6 +1,7 @@
 #include "centrale.hpp"
 #include "circuit_primaire.hpp"
 #include "circuit_secondaire.hpp"
+//#include "reacteur.hpp"
 #include <algorithm> //min,max
 #include <stdlib.h> //rand
 #include <iostream>
@@ -15,44 +16,31 @@ Centrale::Centrale():m_etat(1.),m_production(0.)
 
 }
 
-
-double Centrale::EtatEnceinte() const
+//------------------------ENCEINTE-----------------------------------//
+double Centrale::etatEnceinte() const
 {
   return enceinte.etat();
 }
 
-double Centrale::PressionEnceinte() const
+double Centrale::pressionEnceinte() const
 {
   return enceinte.pression();
 }
 
-double Centrale::RadioactiviteEnceinte() const
+double Centrale::radioactiviteEnceinte() const
 {
   return enceinte.radioactivite();
 }
 
-
-double Centrale::EtatCentrale() const
-{
-  return m_etat;
-}
-
-double Centrale::ProductionCentrale() const
-{
-  return m_production;
-}
-
-
-
 //Pression subit par l’enceinte de confinement
-
-void Centrale::majPressionEnceinte(CircuitPrim& primaire,CircuitSec& secondaire)
+/*
+void Centrale::majPressionEnceinte()
 {
   if (((primaire.pression()>8)&&(Centrale.reacteur.Ecuve<1)&&(Centrale.reacteur.Episc<1))||((Centrale.reacteur.Ecuve<0.3)&&(Centrale.reacteur.Episc<0.4)))
   {
     enceinte.majPression((2.-Centrale.reacteur.Ecuve-Centrale.reacteur.pisc)/23+enceinte.pression());
   }
-  if (((primaire.etatCircuit()<0.6)&&(primaire.pression()>12))||(primaire.etatCircuit()<0.2))
+  if (((primaire.etatCircuit()<0.6)&&(pressionPrim()>12))||(primaire.etatCircuit()<0.2))
   {
     enceinte.majPression((1-primaire.etatCircuit())/30+enceinte.pression());
   }
@@ -106,10 +94,27 @@ if (enceinte.etat() < 0.1)
    enceinte.majRadioactivite(enceinte.radioactivite()/1.5);
 }
 }
+*/
+
+
+//-------------------------------CENTRALE------------------------------------//
+double Centrale::etatCentrale() const
+{
+  return m_etat;
+}
+
+double Centrale::productionCentrale() const
+{
+  return m_production;
+}
 
 
 
 
+
+
+
+/*
 void Centrale::majEtatCentrale(CircuitPrim& primaire,CircuitSec& secondaire)
 {
   m_etat = (reacteur.Ecanaux+2*reacteur.Ebarre+8*reacteur.Ecuve+3*reacteur.Episc+primaire.etatPompe()+secondaire.etatPompe()+5*primaire.etatEchangeurChaleur()+4*secondaire.etatGenerateurVapeur()+primaire.etatPressuriseur()+primaire.etatResistancePressuriseur()+4*m_etat+8*primaire.etatCircuit()+3*secondaire.etatCircuit()+reacteur.Ebore+reacteur.Ecd)/44;
@@ -142,7 +147,246 @@ void Centrale::majProductionCentrale(CircuitPrim& primaire,CircuitSec& secondair
    m_production = 1400;
   }
 }
+*/
 
+
+
+//-----------------------------CIRCUIT PRIMAIRE -----------------------/
+double Centrale::etatCircuitPrim() const // Renvoie l'état du circuit
+{
+  return primaire.etatCircuit();
+}
+
+double Centrale::etatPompePrim() const
+{
+  return primaire.etatPompe();
+}
+
+double Centrale::rendementPompePrim() const
+{
+  return primaire.rendementPompe();
+}
+
+double Centrale::debitEauPrim() const
+{
+  return primaire.debitEau();
+}
+
+double Centrale::inertieTemperaturePrim() const
+{
+  return primaire.inertieTemperature();
+}
+
+double Centrale::radioactivitePrim() const
+{
+  return primaire.radioactivite();
+}
+
+double Centrale::etatPressuriseur() const
+{
+  return primaire.etatPressuriseur();
+}
+
+double Centrale::etatResistancePressuriseur() const
+{
+  return primaire.etatResistancePressuriseur();
+}
+
+double Centrale::etatEchangeurChaleur() const
+{
+  return primaire.etatEchangeurChaleur();
+}
+
+int Centrale::tempPressuriseurDemande() const
+{
+  return primaire.tempPressuriseurDemande();
+}
+
+int Centrale::tempPressuriseurActuel() const
+{
+  return primaire.tempPressuriseurActuel();
+}
+
+double Centrale::pressionPrim() const
+{
+  return primaire.pression();
+}
+
+double Centrale::temperatureEau() const
+{
+  return primaire.temperatureEau();
+}
+
+void Centrale::majEtatPressuriseur(double valeur)
+{
+  return primaire.majEtatPressuriseur(valeur);
+}
+
+void Centrale::majEtatResistancePressuriseur(double valeur)
+{
+  return primaire.majEtatResistancePressuriseur(valeur);
+}
+
+void Centrale::majEtatEchangeurChaleur(double valeur)
+{
+  return primaire.majEtatEchangeurChaleur(valeur);
+}
+
+void Centrale::majTempPressuriseurDemande(double valeur)
+{
+  return primaire.majTempPressuriseurDemande(valeur);
+}
+
+void Centrale::majTempPressuriseurActuel()
+{
+  return primaire.majTempPressuriseurActuel();
+}
+
+void Centrale::majPressionEau()
+{
+  return primaire.majPression();
+}
+
+void Centrale::majDebitEauPrim()
+{
+  return primaire.majDebitEau();
+}
+
+void Centrale::majInertietemperaturePrim(double Tvap)
+{
+  return primaire.majInertietemperature(Tvap);
+}
+
+void Centrale::majTemperatureEau()
+{
+  return primaire.majTemperatureEau();
+}
+
+void Centrale::majRadioactivitePrim()
+{
+  return primaire.majRadioactivite();
+}
+
+
+
+//---------------------------CIRCUIT SECONDAIRE --------------------------------//
+double Centrale::etatCircuitSec() const // Renvoie l'état du circuit
+{
+  return secondaire.etatCircuit();
+}
+
+double Centrale::etatPompeSec() const
+{
+  return secondaire.etatPompe();
+}
+
+double Centrale::rendementPompeSec() const
+{
+  return secondaire.rendementPompe();
+}
+
+double Centrale::debitEauSec() const
+{
+  return secondaire.debitEau();
+}
+
+double Centrale::inertieTemperatureSec() const
+{
+  return secondaire.inertieTemperature();
+}
+
+double Centrale::radioactiviteSec() const
+{
+  return secondaire.radioactivite();
+}
+
+double Centrale::etatGenerateurVapeur() const
+{
+  return secondaire.etatGenerateurVapeur();
+}
+
+double Centrale::etatCondenseur() const
+{
+  return secondaire.etatCondenseur();
+}
+
+double Centrale::rendementPompeCondenseur() const
+{
+  return secondaire.rendementPompeCondenseur();
+}
+
+double Centrale::temperatureVapeur() const
+{
+  return secondaire.temperatureVapeur();
+}
+
+double Centrale::pressionVapeur() const
+{
+  return secondaire.pressionVapeur();
+}
+
+double Centrale::debitCondenseur() const
+{
+  return secondaire.debitCondenseur();
+}
+
+double Centrale::diffChaleurCondenseur() const
+{
+  return secondaire.diffChaleurCondenseur();
+}
+
+void Centrale::majEtatGenerateurVapeur(double valeur)
+{
+  return secondaire.majEtatGenerateurVapeur(valeur);
+}
+
+void Centrale::majEtatCondenseur(double valeur)
+{
+  return secondaire.majEtatCondenseur(valeur);
+}
+
+void Centrale::majRendementPompeCondenseur(double valeur)
+{
+  return secondaire.majRendementPompeCondenseur(valeur);
+}
+
+void Centrale::majTemperatureVapeur(double etatEchangChaleur, double temperature1)
+{
+  return secondaire.majTemperatureVapeur(etatEchangChaleur,temperature1);
+}
+
+void Centrale::majPressionVapeur()
+{
+  return secondaire.majPressionVapeur();
+}
+
+void Centrale::majDebitEauSec()
+{
+  return secondaire.majDebitEau();
+}
+
+void Centrale::majDebitCondenseur()
+{
+  return secondaire.majDebitCondenseur();
+}
+
+void Centrale::majDiffChaleurCondenseur()
+{
+  return secondaire.majDiffChaleurCondenseur();
+}
+
+void Centrale::majInertieTemperatureSec(double temperatureEau)
+{
+  return secondaire.majInertietemperature(temperatureEau);
+}
+
+void Centrale::majRadioactivite(double etatEchangChaleur, double radioactivite1)
+{
+  return secondaire.majRadioactivite(etatEchangChaleur,radioactivite1);
+}
+
+
+//--------------------------------------REACTEUR------------------------------------///
 Centrale::~Centrale()
 {
 

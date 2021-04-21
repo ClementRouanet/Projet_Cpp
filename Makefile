@@ -7,7 +7,7 @@ LIBS = $(LIBSSDL2) -I include
 
 all : $(EXEC)
 
-OBJS = obj/circuit.o obj/circuit_primaire.o obj/circuit_secondaire.o obj/pompe.o obj/pressuriseur.o obj/condenseur.o obj/centrale.o obj/enceinte.o
+OBJS = obj/centrale.o obj/circuit.o obj/circuit_primaire.o obj/circuit_secondaire.o obj/pompe.o obj/pressuriseur.o obj/condenseur.o obj/enceinte.o obj/salle_de_controle.o obj/poste_de_securite.o
 SDL2 = SDL2/sdl2.o SDL2/geometry.o SDL2/window.o SDL2/font.o SDL2/event.o SDL2/texte.o SDL2/image.o SDL2/formated_text.o
 
 SDL2/sdl2.o:	SDL2/sdl2.hpp SDL2/sdl2.cpp
@@ -44,6 +44,9 @@ obj/pressuriseur.o : include/pressuriseur.hpp src/pressuriseur.cpp
 obj/condenseur.o : include/condenseur.hpp src/condenseur.cpp
 	$(CXX) $(CXXFLAGS) -c src/condenseur.cpp -o obj/condenseur.o $(LIBS)
 
+obj/enceinte.o : include/enceinte.hpp src/enceinte.cpp
+	$(CXX) $(CXXFLAGS) -c src/enceinte.cpp -o obj/enceinte.o $(LIBS)
+
 obj/circuit.o : include/circuit.hpp include/pompe.hpp src/circuit.cpp
 	$(CXX) $(CXXFLAGS) -c src/circuit.cpp -o obj/circuit.o $(LIBS)
 
@@ -53,11 +56,14 @@ obj/circuit_primaire.o : include/circuit_primaire.hpp include/circuit.hpp includ
 obj/circuit_secondaire.o : include/circuit_secondaire.hpp include/circuit.hpp include/condenseur.hpp src/circuit_secondaire.cpp
 	$(CXX) $(CXXFLAGS) -c src/circuit_secondaire.cpp -o obj/circuit_secondaire.o $(LIBS)
 
-obj/enceinte.o : 	include/enceinte.hpp src/enceinte.cpp
-	$(CXX) $(CXXFLAGS) -c src/enceinte.cpp -o obj/enceinte.o $(LIBS)
-
-obj/centrale.o : include/enceinte.hpp include/circuit_primaire.hpp include/circuit_secondaire.hpp src/centrale.cpp
+obj/centrale.o : include/centrale.hpp src/centrale.cpp
 	$(CXX) $(CXXFLAGS) -c src/centrale.cpp -o obj/centrale.o $(LIBS)
+
+obj/salle_de_controle.o : include/salle_de_controle.hpp src/salle_de_controle.cpp
+	$(CXX) $(CXXFLAGS) -c src/salle_de_controle.cpp -o obj/salle_de_controle.o $(LIBS)
+
+obj/salle_de_controle.o : include/poste_de_securite.hpp src/poste_de_securite.cpp
+	$(CXX) $(CXXFLAGS) -c src/poste_de_securite.cpp -o obj/poste_de_securite.o $(LIBS)
 
 nuclearalert.exe : $(OBJS) $(SDL2) src/main.cpp
 	$(CXX) $(CXXFLAGS) $(OBJS) $(SDL2) src/main.cpp -o nuclearalert.exe $(LIBS)

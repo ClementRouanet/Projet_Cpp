@@ -1,4 +1,12 @@
+
+#include <iostream>
+#include <chrono>
+#include <random>
+#include <functional>
+#include <algorithm>
+
 #include "circuit_secondaire.hpp"
+
 
 using namespace std;
 
@@ -27,7 +35,7 @@ double CircuitSec::temperatureVapeur() const
   return m_temperatureVapeur;
 }
 
-double CircuitSec::pressionvapeur() const
+double CircuitSec::pressionVapeur() const
 {
   return m_pressionVapeur;
 }
@@ -37,7 +45,7 @@ double CircuitSec::debitCondenseur() const
   return m_condenseur.debit();
 }
 
-double CircuitSec::differenceChaleurCondenseur() const
+double CircuitSec::diffChaleurCondenseur() const
 {
   return m_condenseur.differenceChaleur();
 }

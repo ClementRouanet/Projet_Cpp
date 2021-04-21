@@ -1,26 +1,66 @@
 #include <iostream>
 
 #include "sdl2.hpp"
+#include "centrale.hpp"
 #include "circuit_primaire.hpp"
 #include "circuit_secondaire.hpp"
+#include "salle_de_controle.hpp"
+#include "poste_de_securite.hpp"
 
 
 using namespace std;
 
-void test();
+
+void debut()
+{
+  //SalleDeControle sdc;
+  PosteDeSecurite pds;
+  CircuitPrim cp;
+  CircuitSec cs;
+  Centrale cent;
+
+  sdl2::window fenetre("Nuclear Alert", {1400,750});
+
+ /*
+  sdc.cadre(fenetre);
+  sdc.affichageProdElec(fenetre, cent);
+  sdc.afficheCircuitPrim(fenetre, cp);
+  sdc.afficheCircuitSec(fenetre,cs);
+  sdc.affichePressionEnceinte(fenetre,cent);
+  sdc.afficheSystRefroidissement(fenetre,cs);
+  sdc.afficheCommandes(fenetre);
+*/
+
+  pds.cadre(fenetre);
+  pds.affichageCircuitPrim(fenetre,cp);
+  fenetre << sdl2::flush;
+
+  bool quitting = false;
+  sdl2::event_queue queue;
+
+  while (not quitting)
+  {
+    auto events = queue.pull_events();
+    for ( const auto& e : events)
+    {
+      if (e->kind_of_event() == sdl2::event::quit)
+          quitting = true;
+
+      if ( (e->kind_of_event() == sdl2::event::key_down))
+      {
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+        char keychar = key_ev.ascci_code();
+        if (keychar == 'a')
+          quitting = true;
+     }
+    }
+  }
+}
 
 int main(int argc, char* args[])
 {
-  CircuitPrim cp;
-  cout << cp.etatCircuit() << endl;
-
   sdl2::init(argc,args);
-  test();
+  debut();
   sdl2::finalize();
   return 0;
-}
-
-void test()
-{
-  sdl2::window fenetre("La zone", {800,600});
 }

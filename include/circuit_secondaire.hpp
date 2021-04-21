@@ -14,9 +14,9 @@ public:
   double etatCondenseur() const;  // Renvoie l'état du condenseur
   double rendementPompeCondenseur() const; // Renvoie le rendement de la pompe du condenseur
   double temperatureVapeur() const; // Renvoie la température de la vapeur
-  double pressionvapeur() const;  // Renvoie la pression exercée par la vapeur
+  double pressionVapeur() const;  // Renvoie la pression exercée par la vapeur
   double debitCondenseur() const; // Renvoie le débit au niveau du condenseur
-  double differenceChaleurCondenseur() const; // Renvoie la différence de chaleur entre l'entrée et la sortie du condenseur
+  double diffChaleurCondenseur() const; // Renvoie la différence de chaleur entre l'entrée et la sortie du condenseur
 
   ~CircuitSec();  // Destructeur
 

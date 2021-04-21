@@ -12,13 +12,18 @@ public:
   int temperatureDemandee() const; // Renvoie la température du pressuriseur demandée
   int temperatureActuel() const;  // Renvoie la température du pressuriseur actuel
 
+  void majEtat(double valeur);  // Modifie l'état du pressuriseur
+  void majEtatResistance(double valeur);  // Modifie l'état de la résistance du pressuriseur
+  void majTemperatureDemandee(double valeur); // Modifie la température du pressuriseur demandée
+  void majTemperatureActuel(); // Modifie la température du pressuriseur actuel
+
   ~Pressuriseur();  // Destructeur
 
 private:
   double m_etat;  //Epress
   double m_etatResistance;  //Eres
   int m_tempDemandee; //Tpress
-  int m_temp_actuel;  //TPeff
+  int m_tempActuel;  //TPeff
 };
 
 #endif

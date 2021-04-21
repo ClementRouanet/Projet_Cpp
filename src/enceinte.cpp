@@ -7,30 +7,35 @@ m_pression = 1;
 m_radioactivite = 0.00002;
 }
 
-double etat() const
+double Enceinte::etat() const
 {
  return m_etat;
 }
-double pression() const
+double Enceinte::pression() const
 {
  return m_pression;
 }
-double radioactivite() const
+double Enceinte::radioactivite() const
 {
  return m_radioactivite;
 }
 
-void majPression(double valeur)
+void Enceinte::majPression(double valeur)
 {
  m_pression = valeur;
 }
 
-void majEtat(double valeur)
+void Enceinte::majEtat(double valeur)
 {
  m_etat = valeur;
 }
 
-void majRadioactivite(double valeur)
+void Enceinte::majRadioactivite(double valeur)
 {
  m_radioactivite = valeur;
+}
+
+Enceinte::~Enceinte()
+{
+  
 }
