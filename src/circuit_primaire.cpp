@@ -29,12 +29,12 @@ double CircuitPrim::etatEchangeurChaleur() const
   return m_echangChal;
 }
 
-int CircuitPrim::tempPressuriseurDemande() const
+double CircuitPrim::tempPressuriseurDemande() const
 {
   return m_pressuriseur.temperatureDemandee();
 }
 
-int CircuitPrim::tempPressuriseurActuel() const
+double CircuitPrim::tempPressuriseurActuel() const
 {
   return m_pressuriseur.temperatureActuel();
 }

@@ -8,7 +8,7 @@
 #include "centrale.hpp"
 #include "circuit_primaire.hpp"
 #include "circuit_secondaire.hpp"
-//#include "reacteur.hpp"
+#include "reacteur.hpp"
 
 using namespace std;
 
@@ -69,7 +69,7 @@ void Centrale::majPressionEnceinte()
 
 
 //Radioactivité de l’enceinte de confinement à l’intérieur.
-void Centrale::majRadioactiviteEnceinte(CircuitPrim& primaire,CircuitSec& secondaire)
+void Centrale::majRadioactiviteEnceinte()
 {
   random_device hgenerateur;
   default_random_engine generateur(hgenerateur());
