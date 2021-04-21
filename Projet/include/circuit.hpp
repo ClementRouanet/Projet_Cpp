@@ -16,6 +16,10 @@ public:
   double inertieTemperature() const;  // Renvoie l'inertie température eau circuit
   double radioactivite() const; // Renvoie la radioactivité du circuit
 
+  void majEtatCircuit(double valeur); // Modifie l'état du circuit
+  void majEtatPompe(double valeur); // Modifie l'état de la pompe
+  void majRendementPompe(double valeur); // Modifie le rendement de la pompe
+
   ~Circuit(); // Destructeur
 
 protected:

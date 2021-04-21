@@ -10,6 +10,9 @@ public:
   double rendement() const; // Renvoie le rendement de la pompe
   double etat() const;  // Renvoie l'état de la pompe
 
+  void majRendement(double valeur, double etat); // Modifie le rendement de la pompe
+  void majEtat(double valeur);  // Modifie l'état de la pompe
+
   ~Pompe(); // Destructeur
 
 private:

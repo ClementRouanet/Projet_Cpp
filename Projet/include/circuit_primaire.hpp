@@ -18,13 +18,16 @@ public:
   double pression() const;  // Renvoie la pression
   double temperatureEau() const;  // renvoie la température de l'eau dans le circuit
 
-  void modifPression(); // Modifie la pression
-  void modifDebitEau(); // Modifie le débit de l'eau
-  void modifInertietemperature(double Tvap); // Modifie l'inertie température eau circuit
-  void modifTemperatureEau(); // Modifie la température de l'eau dans le circuit
-  void modifRadioactivite();  // Modifie la radioactivité du circuit
-
-  void securiteCircuitPrim() const;
+  void majEtatPressuriseur(double valeur);  // Modifie l'état du pressuriseur
+  void majEtatResistancePressuriseur(double valeur);  // Modifie l'état de la résistance du pressuriseur
+  void majEtatEchangeurChaleur(double valeur);  // Modifie l'état de l'échangeur de chaleur
+  void majTempPressuriseurDemande(double valeur); // Modifie la température du pressuriseur demandée
+  void majTempPressuriseurActuel();  // Modifie la température du pressuriseur actuel
+  void majPression(); // Modifie la pression
+  void majDebitEau(double Ecuve); // Modifie le débit de l'eau
+  void majInertietemperature(double Tvap, double TBeff, double TGreff); // Modifie l'inertie température eau circuit
+  void majTemperatureEau(double TBeff, double TGreff); // Modifie la température de l'eau dans le circuit
+  void majRadioactivite(double TBeff, double MW);  // Modifie la radioactivité du circuit
 
   ~CircuitPrim(); // Destructeur
 

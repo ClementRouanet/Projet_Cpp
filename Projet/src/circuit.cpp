@@ -39,6 +39,26 @@ double Circuit::radioactivite() const
   return m_radioactivite;
 }
 
+void Circuit::majEtatCircuit(double valeur)
+{
+  if(valeur>=0 && valeur<=1)
+    m_etatCircuit = valeur;
+  else if(valeur<0)
+    m_etatCircuit = 0;
+  else
+    m_etatCircuit = 1;
+}
+
+void Circuit::majEtatPompe(double valeur)
+{
+  m_pompe.majEtat(valeur);
+}
+
+void Circuit::majRendementPompe(double valeur)
+{
+  m_pompe.majRendement(valeur, m_etatCircuit);
+}
+
 Circuit::~Circuit()
 {
 }

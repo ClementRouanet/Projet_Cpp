@@ -5,13 +5,12 @@
 #include <algorithm>
 
 #include "circuit_secondaire.hpp"
-#include "circuit_primaire.hpp"
 
 
 using namespace std;
 
 
-CircuitSec::CircuitSec() : m_etatGenerateurVapeur(1.), m_temperatureVapeur(25), m_pressionVapeur(1.)
+CircuitSec::CircuitSec() : m_etatGenerateurVapeur(1.), m_temperatureVapeur(25.), m_pressionVapeur(1.)
 {
 }
 
@@ -50,12 +49,32 @@ double CircuitSec::diffChaleurCondenseur() const
   return m_condenseur.differenceChaleur();
 }
 
-void CircuitSec::modifTemperatureVapeur(double etatEchangChaleur, double temperature1) // etatEchangChaleur = circuitPrim.etatEchangeurChaleur() & temperature1 = circuitPrim.temperatureEau()
+void CircuitSec::majEtatGenerateurVapeur(double valeur)
+{
+  if(valeur>=0 && valeur<=1)
+    m_etatGenerateurVapeur = valeur;
+  else if(valeur<0)
+    m_etatGenerateurVapeur = 0;
+  else
+    m_etatGenerateurVapeur = 1;
+}
+
+void CircuitSec::majEtatCondenseur(double valeur)
+{
+  m_condenseur.majEtat(valeur);
+}
+
+void CircuitSec::majRendementPompeCondenseur(double valeur)
+{
+  m_condenseur.majRendementPompe(valeur);
+}
+
+void CircuitSec::majTemperatureVapeur(double etatEchangChaleur, double temperature1) // etatEchangChaleur = circuitPrim.etatEchangeurChaleur() & temperature1 = circuitPrim.temperatureEau()
 {
   m_temperatureVapeur = max(etatEchangChaleur*(temperature1/1.51)+26+(m_inertieTemp*(m_inertieTemp>3)), 99.);
 }
 
-void CircuitSec::modifPressionVapeur()
+void CircuitSec::majPressionVapeur()
 {
   double regimePompe = m_pompe.rendement();
   if (m_temperatureVapeur < 120)
@@ -64,7 +83,7 @@ void CircuitSec::modifPressionVapeur()
     m_pressionVapeur = max(1., (m_etatCircuit+0.1)*m_etatGenerateurVapeur*(regimePompe/50+(m_temperatureVapeur-135)/10));
 }
 
-void CircuitSec::modifDebitEau()
+void CircuitSec::majDebitEau()
 {
   double etatCondenseur = m_condenseur.etat();
   double regimePompe = m_pompe.rendement();
@@ -77,24 +96,24 @@ void CircuitSec::modifDebitEau()
     m_debit = Z;
 }
 
-void CircuitSec::modifDebitCondenseur()
+void CircuitSec::majDebitCondenseur()
 {
   double etatCondenseur = m_condenseur.etat();
   double regimePompeCondenseur = m_condenseur.rendementPompe();
 
   double valeur = etatCondenseur*regimePompeCondenseur*150;
-  m_condenseur.modifDebit(valeur);
+  m_condenseur.majDebit(valeur);
 }
 
-void CircuitSec::modifDiffChaleurCondenseur()
+void CircuitSec::majDiffChaleurCondenseur()
 {
   double debitCondenseur = m_condenseur.debit();
 
   double valeur = debitCondenseur/7.5;
-  m_condenseur.modifDifferenceChaleur(valeur);
+  m_condenseur.majDifferenceChaleur(valeur);
 }
 
-void CircuitSec::modifInertieTemperature(double temperatureEau) // temperatureEau = circuitPrim.temperatureEau()
+void CircuitSec::majInertieTemperature(double temperatureEau) // temperatureEau = circuitPrim.temperatureEau()
 {
   random_device hgenerateur;
   default_random_engine generateur1(hgenerateur());
@@ -121,7 +140,7 @@ void CircuitSec::modifInertieTemperature(double temperatureEau) // temperatureEa
     m_inertieTemp = max(m_inertieTemp-RND3, 0.);
 }
 
-void CircuitSec::modifRadioactivite(double etatEchangChaleur, double radioactivite1) // etatEchangChaleur = circuitPrim.etatEchangeurChaleur() & radioactivite1 = circuitPrim.radioactivite()
+void CircuitSec::majRadioactivite(double etatEchangChaleur, double radioactivite1) // etatEchangChaleur = circuitPrim.etatEchangeurChaleur() & radioactivite1 = circuitPrim.radioactivite()
 {
   m_radioactivite = max(m_radioactivite, (1.-etatEchangChaleur)*radioactivite1);
 }
