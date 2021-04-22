@@ -25,7 +25,7 @@ void debut()
   bool quitting = false;
   sdl2::event_queue queue;
 
-  while (not quitting && finSession == false)
+  while (not quitting && finSession == 0)
   {
     sdc.majAffichage(fenetre, cent);
 

@@ -57,7 +57,8 @@ double Reacteur::getEtatInjBore() const
 
 void Reacteur::majPropGrDemandee(double valeur_demandee)
 {
-  if(1-m_etatBarresGr<=valeur_demandee && valeur_demandee<=1.)
+  m_propGrAct = m_propGrDemandee;
+  if((1-m_etatBarresGr)<=valeur_demandee && valeur_demandee<=1.)
     m_propGrDemandee = valeur_demandee;
   else if(valeur_demandee<1-m_etatBarresGr)
     m_propGrDemandee = 1-m_etatBarresGr;
@@ -67,14 +68,16 @@ void Reacteur::majPropGrDemandee(double valeur_demandee)
 
 void Reacteur::majPropGrAct()
 {
-  if(m_propGrAct<=m_propGrDemandee)
+  if(m_propGrAct<m_propGrDemandee)
     m_propGrAct += 0.01;
-  else
+
+  if(m_propGrAct>m_propGrDemandee)
     m_propGrAct -= 0.01;
 }
 
 void Reacteur::majTauxBoreDemande(double valeur_demandee)
 {
+  m_tauxBoreAct = m_tauxBoreDemande;
   if(0<=valeur_demandee && valeur_demandee<=0.5)
     m_tauxBoreDemande = valeur_demandee;
   else if(valeur_demandee<0)
@@ -85,9 +88,10 @@ void Reacteur::majTauxBoreDemande(double valeur_demandee)
 
 void Reacteur::majTauxBoreAct()
 {
-  if(m_tauxBoreAct<=m_tauxBoreDemande)
+  if(m_tauxBoreAct<m_tauxBoreDemande)
     m_tauxBoreAct += 0.01;
-  else
+
+  if(m_tauxBoreAct>m_tauxBoreDemande)
     m_tauxBoreAct -= 0.01;
 }
 
@@ -104,7 +108,7 @@ void Reacteur::majEtatCuve(double valeur_demandee)
 void Reacteur::majRadPiscine(double R1)
 {
   auto RND = ((float)(rand()))/((float)(RAND_MAX))*45;
-  m_radPiscine = (1-m_etatCuve)*R1+100+RND;
+  m_radPiscine = (1-m_etatCuve)*R1 + 100 + RND;
 }
 
 void Reacteur::majEtatPiscine(double valeur_demandee)

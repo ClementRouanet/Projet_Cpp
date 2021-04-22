@@ -4,8 +4,6 @@
 
 #include "salle_de_controle.hpp"
 #include "centrale.hpp"
-#include "circuit_primaire.hpp"
-#include "circuit_secondaire.hpp"
 #include "sdl2.hpp"
 
 using namespace std;
@@ -20,13 +18,13 @@ void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale)
   cadre(fenetre);
   affichageDispatching(fenetre);
   affichageProdElec(fenetre, centrale);
-  afficheTauxBorePiscine(fenetre);
+  afficheTauxBorePiscine(fenetre, centrale);
   afficheCircuitPrim(fenetre, centrale);
   afficheCircuitSec(fenetre, centrale);
   afficheSystSecurite(fenetre);
   affichePressionEnceinte(fenetre, centrale);
   afficheSystRefroidissement(fenetre, centrale);
-  afficheEtatBarreGraphite(fenetre);
+  afficheEtatBarreGraphite(fenetre, centrale);
   afficheCommandes(fenetre);
 
   fenetre << sdl2::flush;
@@ -66,9 +64,18 @@ void SalleDeControle::affichageProdElec(sdl2::window& fenetre, Centrale& central
   fenetre << texteProduction;
 }
 
-void SalleDeControle::afficheTauxBorePiscine(sdl2::window& fenetre) const
+void SalleDeControle::afficheTauxBorePiscine(sdl2::window& fenetre, Centrale& centrale) const
 {
+  double bore = centrale.tauxBoreActuel();
 
+  string sBore(to_string(bore));
+
+  auto [wph, hph] = fenetre.dimensions();
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::texte texteBore("Taux de bore dans la piscine : " + sBore, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  texteBore.at(3*wph/4-40,140);
+
+  fenetre << texteBore;
 }
 
 
@@ -206,9 +213,18 @@ void SalleDeControle::afficheSystRefroidissement(sdl2::window& fenetre, Centrale
 }
 
 
-void SalleDeControle::afficheEtatBarreGraphite(sdl2::window& fenetre) const
+void SalleDeControle::afficheEtatBarreGraphite(sdl2::window& fenetre, Centrale& centrale) const
 {
+  double barresGr = centrale.etatBarresGr();
 
+  string sbarresGr(to_string(barresGr));
+
+  auto [wph, hph] = fenetre.dimensions();
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::texte texteBarresGr("Etat barres de graphite : " + sbarresGr, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  texteBarresGr.at(3*wph/4-40,180);
+
+  fenetre << texteBarresGr;
 }
 
 
@@ -395,6 +411,47 @@ void SalleDeControle::majBarreControle(sdl2::window& fenetre, Centrale& centrale
 
 void SalleDeControle::majTauxAcideBorique(sdl2::window& fenetre, Centrale& centrale)
 {
+  double acideBorique;
+
+  bool quitter = false;
+  bool iskey_down = false;
+  sdl2::event_queue queue;
+
+  while (not quitter)
+  {
+    auto events = queue.pull_events();
+    for (const auto& e : events)
+    {
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
+      {
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+        if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+        {
+          switch (key_ev.code())
+          {
+            case 13 :
+              quitter = true;
+              break;
+
+            case sdl2::event_keyboard::up :
+              acideBorique = centrale.tauxBoreActuel();
+              centrale.majTauxBoreDemande(acideBorique + 0.05);
+              break;
+
+            case sdl2::event_keyboard::down :
+              acideBorique = centrale.tauxBoreActuel();
+              centrale.majTauxBoreDemande(acideBorique - 0.05);
+              break;
+          }
+          majAffichage(fenetre, centrale);
+          iskey_down = true;
+        }
+        if (key_ev.type_of_event() == sdl2::event::key_up)
+            iskey_down = false;
+      }
+    }
+  }
 
 }
 
@@ -482,7 +539,7 @@ bool SalleDeControle::finSession()
   end = chrono::system_clock::now();
   chrono::duration<double> secondesEcoulees = end - start;
 
-  if (secondesEcoulees.count() >= 2)
+  if (secondesEcoulees.count() >= 1.25)
     return true;
 
   return false;

@@ -18,6 +18,7 @@ public:
   double pressionEnceinte() const;
   double radioactiviteEnceinte() const;
 
+  void majEtatEnceinte(double valeur);
   void majPressionEnceinte(); // met à jour la Pression subit par l'enceinte de Confinement
   void majRadioactiviteEnceinte(); // met à jour la radioactivité de l'enceinte de confinement
 
