@@ -3,10 +3,11 @@
 
 class Reacteur
 {
-  public:
+public:
 
   Reacteur();
   ~Reacteur();
+
   double getPropGrAct() const;
   double getPropGrDemandee() const;
   double getTauxBoreDemande() const;
@@ -17,6 +18,7 @@ class Reacteur
   double getEtatBarresGr() const;
   double getEtatCanaux() const;
   double getEtatInjBore() const;
+
   void majPropGrDemandee(double valeur_demandee);
   void majPropGrAct();
   void majTauxBoreDemande(double valeur_demandee);
@@ -28,8 +30,7 @@ class Reacteur
   void majEtatCanaux(double valeur_demandee);
   void majEtatInjBore(double valeur_demandee);
 
-  private:
-
+private:
   double m_propGrAct;
   double m_propGrDemandee;
   double m_tauxBoreDemande;
@@ -41,4 +42,5 @@ class Reacteur
   double m_etatCanaux;
   double m_etatInjBore;
 };
+
 #endif

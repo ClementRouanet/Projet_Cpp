@@ -4,8 +4,8 @@
 
 #include "sdl2.hpp"
 #include "centrale.hpp"
-#include "circuit_primaire.hpp"
-#include "circuit_secondaire.hpp"
+//#include "circuit_primaire.hpp"
+//#include "circuit_secondaire.hpp"
 #include "salle_de_controle.hpp"
 
 
@@ -25,7 +25,7 @@ void debut()
   bool quitting = false;
   sdl2::event_queue queue;
 
-  while (not quitting && finSession == false)
+  while (not quitting && finSession == 0)
   {
     sdc.majAffichage(fenetre, cent);
 

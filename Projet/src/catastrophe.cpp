@@ -1,12 +1,8 @@
 #include <iostream>
-#include <algorithm>
-#include <chrono>
 #include <random>
-#include <functional>
 
 #include "catastrophe.hpp"
 #include "centrale.hpp"
-#include "reacteur.hpp"
 
 using namespace std;
 
@@ -25,15 +21,15 @@ void catastrophe1(Centrale& centrale)
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.15;
   centrale.majEtatEchangeurChaleur(centrale.etatEchangeurChaleur() - (0.1 + RND));
 
-  //centrale.majEtatPiscine(centrale.etatPiscine() - 18);
+  centrale.majEtatPiscine(centrale.etatPiscine() - 18);
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.1;
-  //centrale.majEtatCuve(centrale.etatCuve() - (0.03 + RND));
+  centrale.majEtatCuve(centrale.etatCuve() - (0.03 + RND));
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.25;
-  //centrale.majEtatBore(centrale.etatBore() - (0.5 + RND));
+  centrale.majEtatInjBore(centrale.etatInjBore() - (0.5 + RND));
 
-  //centrale.majEtatBarre(centrale.etatBarre()/1.5);
+  centrale.majEtatBarresGr(centrale.etatBarresGr()/1.5);
 
   centrale.majEtatResistancePressuriseur(centrale.etatPressuriseur());
 }
@@ -41,15 +37,15 @@ void catastrophe1(Centrale& centrale)
 void catastrophe2(Centrale& centrale)
 {
   auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.15;
-  //centrale.majEtatPiscine(0.5 - RND));
+  centrale.majEtatPiscine(0.5 - RND);
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.07;
-  //centrale.majEtatCuve(0.55 - RND));
+  centrale.majEtatCuve(0.55 - RND);
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.02;
-  //centrale.majEtatBarre(centrale.etatBarre() - (0.2 + RND));
+  centrale.majEtatBarresGr(centrale.etatBarresGr() - (0.2 + RND));
 
-  //centrale.majEtatCanaux(centrale.etatCanaux()/1.5);
+  centrale.majEtatCanaux(centrale.etatCanaux()/1.5);
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.13;
   centrale.majEtatCircuitPrim(centrale.etatCircuitPrim() - (0.1 + RND));
@@ -62,7 +58,7 @@ void catastrophe2(Centrale& centrale)
   centrale.majEtatGenerateurVapeur(centrale.etatGenerateurVapeur() - (0.03 + RND));
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.1;
-  //centrale.majEtatBore(centrale.etatBore() - (0.08 + RND));
+  centrale.majEtatInjBore(centrale.etatInjBore() - (0.08 + RND));
 }
 
 void catastrophe3(Centrale& centrale)
@@ -74,7 +70,7 @@ void catastrophe3(Centrale& centrale)
   centrale.majEtatEchangeurChaleur(0.5 + RND);
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.03;
-  //centrale.majEtatEnceinte(centrale.etatEnceinte() - RND)
+  centrale.majEtatEnceinte(centrale.etatEnceinte() - RND);
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.03;
   centrale.majEtatCircuitSec(centrale.etatCircuitSec() - (0.25 + RND));
@@ -85,19 +81,19 @@ void catastrophe3(Centrale& centrale)
   centrale.majEtatPompePrim(centrale.etatPompePrim() - (0.04 + RND));
 
   RND = ((float)(rand()))/((float)(RAND_MAX));
-  //centrale.majEtatBore(centrale.etatBore()*RND);
+  centrale.majEtatInjBore(centrale.etatInjBore()*RND);
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.1;
-  //centrale.majEtatBarre(centrale.etatBarre() - (0.2 + RND);
+  centrale.majEtatBarresGr(centrale.etatBarresGr() - (0.2 + RND));
 }
 
 void catastrophe4(Centrale& centrale)
 {
-  //centrale.majEtatEnceinte(centrale.etatEnceinte()/2.5);
+  centrale.majEtatEnceinte(centrale.etatEnceinte()/2.5);
 
-  //centrale.majEtatPiscine(centrale.etatPiscine()/1.5);
+  centrale.majEtatPiscine(centrale.etatPiscine()/1.5);
 
-  //centrale.majEtatCuve(centrale.etatCuve() - 0.2);
+  centrale.majEtatCuve(centrale.etatCuve() - 0.2);
 
   auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.03;
   centrale.majEtatGenerateurVapeur(centrale.etatGenerateurVapeur() - (0.14 + RND));
@@ -108,7 +104,7 @@ void catastrophe4(Centrale& centrale)
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.15;
   centrale.majEtatCircuitPrim(centrale.etatCircuitPrim() - (0.2 + RND));
 
-  //centrale.majEtatBarre(centrale.etatBarre()/1.2);
+  centrale.majEtatBarresGr(centrale.etatBarresGr()/1.2);
 
   RND = ((float)(rand()))/((float)(RAND_MAX));
   centrale.majEtatPompePrim(centrale.etatPompePrim()*RND);
@@ -122,20 +118,20 @@ void catastrophe4(Centrale& centrale)
   centrale.majEtatCondenseur(centrale.etatCondenseur()/2 - RND);
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.1;
-  //centrale.majEtatBore(centrale.etatBore()/1.4 - RND);
+  centrale.majEtatInjBore(centrale.etatInjBore()/1.4 - RND);
 }
 
 void catastrophe5(Centrale& centrale)
 {
-  //centrale.majEtatEnceinte(centrale.etatEnceinte()/2.6);
+  centrale.majEtatEnceinte(centrale.etatEnceinte()/2.6);
 
   centrale.majEtatCondenseur(centrale.etatCondenseur()/2.6);
 
   auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.3;
-  //centrale.majEtatPiscine(centrale.etatPiscine() - (0.3 + RND));
+  centrale.majEtatPiscine(centrale.etatPiscine() - (0.3 + RND));
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.3;
-  //centrale.majEtatCuve(0.2 + RND);
+  centrale.majEtatCuve(0.2 + RND);
 
   RND = ((float)(rand()))/((float)(RAND_MAX))*0.1;
   centrale.majEtatEchangeurChaleur(10 + RND);
@@ -158,13 +154,13 @@ void catastrophe5(Centrale& centrale)
 
   RND = ((float)(rand()))/((float)(RAND_MAX));
   if (RND<=0.4){
-    //centrale.majEtatBore(centrale.etatBore()/3.2);
+    centrale.majEtatInjBore(centrale.etatInjBore()/3.2);
   }
 
   RND = ((float)(rand()))/((float)(RAND_MAX));
   if (RND<=0.5){
-    //centrale.majEtatCanaux(centrale.etatCanaux()/1.5);
-    //centrale.majEtatBarre(centrale.etatBarre()/1.5);
+    centrale.majEtatCanaux(centrale.etatCanaux()/1.5);
+    centrale.majEtatBarresGr(centrale.etatBarresGr()/1.5);
   }
 }
 
@@ -172,23 +168,22 @@ void catastrophe(Centrale& centrale)
 {
   if (centrale.productionCentrale()<900){
     auto RND = ((float)(rand()))/((float)(RAND_MAX));
-    if (RND<0.2){
+    if (RND<=0.2){
       RND = ((float)(rand()))/((float)(RAND_MAX));
-      if (RND<=0.2){
+      if (RND<=0.2)
         catastrophe1(centrale);
-      }
-      if (0.2<RND<=0.4){
+
+      if (0.2<RND && RND<=0.4)
         catastrophe2(centrale);
-      }
-      if (0.4<RND<=0.6){
+
+      if (0.4<RND && RND<=0.6)
         catastrophe3(centrale);
-      }
-      if (0.6<RND<=0.8){
+
+      if (0.6<RND && RND<=0.8)
         catastrophe4(centrale);
-      }
-      if (0.8<RND<=1){
+
+      if (0.8<RND && RND<=1)
         catastrophe5(centrale);
-      }
     }
   }
 }

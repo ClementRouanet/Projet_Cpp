@@ -1,11 +1,10 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <thread>
 
 #include "salle_de_controle.hpp"
 #include "centrale.hpp"
-#include "circuit_primaire.hpp"
-#include "circuit_secondaire.hpp"
 #include "sdl2.hpp"
 
 using namespace std;
@@ -20,13 +19,13 @@ void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale)
   cadre(fenetre);
   affichageDispatching(fenetre);
   affichageProdElec(fenetre, centrale);
-  afficheTauxBorePiscine(fenetre);
+  afficheTauxBorePiscine(fenetre, centrale);
   afficheCircuitPrim(fenetre, centrale);
   afficheCircuitSec(fenetre, centrale);
   afficheSystSecurite(fenetre);
   affichePressionEnceinte(fenetre, centrale);
   afficheSystRefroidissement(fenetre, centrale);
-  afficheEtatBarreGraphite(fenetre);
+  afficheEtatBarreGraphite(fenetre, centrale);
   afficheCommandes(fenetre);
 
   fenetre << sdl2::flush;
@@ -34,21 +33,22 @@ void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale)
 
 void SalleDeControle::cadre(sdl2::window& fenetre) const
 {
-  sdl2::image cadre("image/Cadre_SalleDeControle.jpg", fenetre);
+  sdl2::image cadre("image/Cadre.png", fenetre);
+
   auto [wph, hph] = fenetre.dimensions();
   cadre.stretch({wph,hph});
 
-  sdl2::font fonte_titre("./data/Lato-Bold.ttf",50);
+  /*sdl2::font fonte_titre("./data/Lato-Bold.ttf",50);
   sdl2::texte titre ("Salle de contrôle", fonte_titre, fenetre, {0xFF,0x00,0x00,0x00});
-  titre.at(2*wph/5-20,0);
+  titre.at(2*wph/5-20,0);*/
 
-  fenetre << cadre << titre;
+  fenetre << cadre; //<< titre;
 }
 
 
 void SalleDeControle::affichageDispatching(sdl2::window& fenetre) const
 {
-
+  
 }
 
 
@@ -57,18 +57,30 @@ void SalleDeControle::affichageProdElec(sdl2::window& fenetre, Centrale& central
   double production = centrale.productionCentrale();
 
   string sProduction(to_string(production));
+  sProduction.erase(5,4);
 
   auto [wph, hph] = fenetre.dimensions();
   sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
   sdl2::texte texteProduction("Production électrique : " + sProduction + " MW", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  texteProduction.at(0*wph+40,140);
+  //texteProduction.at(0*wph+40,140);
+  texteProduction.at(0.37*wph,0.14*hph);
 
   fenetre << texteProduction;
 }
 
-void SalleDeControle::afficheTauxBorePiscine(sdl2::window& fenetre) const
+void SalleDeControle::afficheTauxBorePiscine(sdl2::window& fenetre, Centrale& centrale) const
 {
+  double bore = centrale.tauxBoreActuel();
 
+  string sBore(to_string(bore));
+  sBore.erase(4,5);
+
+  auto [wph, hph] = fenetre.dimensions();
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::texte texteBore("Taux de bore dans la piscine : " + sBore, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  texteBore.at(0.35*wph,0.77*hph);
+
+  fenetre << texteBore;
 }
 
 
@@ -86,27 +98,41 @@ void SalleDeControle::afficheCircuitPrim(sdl2::window& fenetre, Centrale& centra
   string sPression(to_string(pression));
   string sRadioactivite(to_string(radioactivite));
 
+  sRendement.erase(2,7);
+  sTemperature.erase(5,4);
+  sDebit.erase(5,4);
+  sPression.erase(4,5);
+  sRadioactivite.erase(4,5);
+
   auto [wph, hph] = fenetre.dimensions();
 
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
-  sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
+  //sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
 
-  sdl2::texte texte("Circuit Primaire", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
+  //sdl2::texte texte("Circuit Primaire", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
   sdl2::texte texteRendement("Rendement de la pompe : " + sRendement + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteTemperature("Température dans le circuit : " + sTemperature + " °C", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteDebit("Débit de l'eau : " + sDebit + " m^3.s^(-1)", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteDebit("Débit de l'eau : " + sDebit + " m^3/s", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte textePression("Pression : " + sPression + " bar", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteRadioactivite("Radioactivité : " + sRadioactivite + " becquerel", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texte.at(2*wph/5+60, 80);
+  /*texte.at(2*wph/5+60, 80);
   texteRendement.at(2*wph/5-20,140);
   texteTemperature.at(2*wph/5-20,180);
   texteDebit.at(2*wph/5-20,220);
   textePression.at(2*wph/5-20,260);
-  texteRadioactivite.at(2*wph/5-20,300);
+  texteRadioactivite.at(2*wph/5-20,300);*/
 
-  fenetre << texte << texteRendement << texteTemperature << texteDebit << textePression << texteRadioactivite;
+  //texte.at(0.1*wph,0.2*hph);
+  texteRendement.at(0.02*wph,0.25*hph);
+  texteTemperature.at(0.02*wph,0.3*hph);
+  texteDebit.at(0.02*wph,0.35*hph);
+  textePression.at(0.02*wph,0.4*hph);
+  texteRadioactivite.at(0.02*wph,0.45*hph);
+
+  fenetre << texteRendement << texteTemperature << texteDebit << textePression << texteRadioactivite;
 }
+
 
 
 void SalleDeControle::afficheCircuitSec(sdl2::window& fenetre, Centrale& centrale) const
@@ -123,36 +149,44 @@ void SalleDeControle::afficheCircuitSec(sdl2::window& fenetre, Centrale& central
   string sPression(to_string(pression));
   string sRadioactivite(to_string(radioactivite));
 
+  sRendement.erase(2,7);
+  sTemperature.erase(5,4);
+  sDebit.erase(5,4);
+  sPression.erase(4,5);
+  sRadioactivite.erase(4,5);
+
   if(temperature < 120)
   {
-      sDebit = "0";
-      sPression = "1";
+    sDebit = "0.000";
+    sPression = "1.00";
+    sTemperature = "rien";
   }
 
   auto [wph, hph] = fenetre.dimensions();
 
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
-  sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
+  //sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
 
-  sdl2::texte texte("Circuit Secondaire", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
+  //sdl2::texte texte("Circuit Secondaire", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
   sdl2::texte texteRendement("Rendement de la pompe : " + sRendement + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteTemperature("Température dans le circuit : " + sTemperature + " °C", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteDebit("Débit de l'eau : " + sDebit + " m^3.s^(-1)", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteTemperature1("Température dans le circuit : " + sTemperature, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteTemperature2("Température dans le circuit : " + sTemperature + " °C", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteDebit("Débit de l'eau : " + sDebit + " m^3/s", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte textePression("Pression : " + sPression + " bar", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteRadioactivite("Radioactivité : " + sRadioactivite + " becquerel", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texte.at(2*wph/5+60, 390);
-  texteRendement.at(2*wph/5-20,450);
-  texteDebit.at(2*wph/5-20,490);
-  textePression.at(2*wph/5-20,530);
-  texteRadioactivite.at(2*wph/5-20,570);
-  texteTemperature.at(2*wph/5-20,610);
-
+  //texte.at(2*wph/5+60, 390);
+  texteRendement.at(0.73*wph,0.25*hph);
+  texteDebit.at(0.73*wph,0.3*hph);
+  textePression.at(0.73*wph,0.35*hph);
+  texteRadioactivite.at(0.73*wph,0.4*hph);
+  texteTemperature1.at(0.73*wph,0.45*hph);
+  texteTemperature2.at(0.73*wph,0.45*hph);
 
   if(temperature < 120)
-    fenetre << texte << texteRendement << texteDebit << textePression << texteRadioactivite;
+    fenetre << texteRendement << texteTemperature1 << texteDebit << textePression << texteRadioactivite;
   else
-    fenetre << texte << texteRendement << texteTemperature << texteDebit << textePression << texteRadioactivite;
+    fenetre << texteRendement << texteTemperature2 << texteDebit << textePression << texteRadioactivite;
 }
 
 
@@ -167,11 +201,12 @@ void SalleDeControle::affichePressionEnceinte(sdl2::window& fenetre, Centrale& c
   double pression = centrale.pressionEnceinte();
 
   string sPression(to_string(pression));
+  sPression.erase(4,5);
 
   auto [wph, hph] = fenetre.dimensions();
   sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
-  sdl2::texte textePression("Pression sur enceinte de confinement : " + sPression, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  textePression.at(0*wph+40,540);
+  sdl2::texte textePression("Pression sur l'enceinte de confinement : " + sPression, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  textePression.at(0.33*wph,0.26*hph);
 
   fenetre << textePression;
 }
@@ -187,28 +222,42 @@ void SalleDeControle::afficheSystRefroidissement(sdl2::window& fenetre, Centrale
   string sDebit(to_string(debit));
   string sDifference(to_string(difference));
 
+  sRendement.erase(2,7);
+  sDebit.erase(5,4);
+  sDifference.erase(5,4);
+
   auto [wph, hph] = fenetre.dimensions();
 
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
-  sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
+  //sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
 
-  sdl2::texte texte("Système de refroidissement", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
+  //sdl2::texte texte("Système de refroidissement", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
   sdl2::texte texteRendement("Rendement pompe condenseur : " + sRendement + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteDebit("Débit eau condenseur: " + sDebit + " m^3.s^(-1)", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteDebit("Débit eau condenseur: " + sDebit + " m^3/s", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteDifference("Différence température E-S : " + sDifference + " °C", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texte.at(0*wph+40,250);
-  texteRendement.at(0*wph+40,310);
-  texteDebit.at(0*wph+40,350);
-  texteDifference.at(0*wph+40,390);
+  //texte.at(0*wph+40,250);
+  texteRendement.at(0.02*wph,0.84*hph);
+  texteDebit.at(0.02*wph,0.89*hph);
+  texteDifference.at(0.02*wph,0.94*hph);
 
-  fenetre << texte << texteRendement << texteDebit << texteDifference;
+  fenetre << texteRendement << texteDebit << texteDifference;
 }
 
 
-void SalleDeControle::afficheEtatBarreGraphite(sdl2::window& fenetre) const
+void SalleDeControle::afficheEtatBarreGraphite(sdl2::window& fenetre, Centrale& centrale) const
 {
+  double barresGr = centrale.etatBarresGr();
 
+  string sbarresGr(to_string(barresGr*100));
+  sbarresGr.erase(2,7);
+
+  auto [wph, hph] = fenetre.dimensions();
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::texte texteBarresGr("Etat des barres de graphite : " + sbarresGr + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  texteBarresGr.at(0.35*wph,0.9*hph);
+
+  fenetre << texteBarresGr;
 }
 
 
@@ -216,82 +265,82 @@ void SalleDeControle::afficheCommandes(sdl2::window& fenetre) const
 {
   auto [wph, hph] = fenetre.dimensions();
 
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
-  sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
+  //sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
 
-  sdl2::texte texte("Commandes", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
+  //sdl2::texte texte("Commandes", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
   sdl2::texte texte1("1 : rendement pompe circuit primaire", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texte2("2 : rendement pompe circuit secondaire", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteB("B : action sur barres de contrôle", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteT("T : action sur taux acide borique", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteP("P : rendement pressuriseur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteP("P : température pressuriseur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteR("R : rendement pompe condenseur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteU("U : arrêt d'urgence", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteS("S (maintenir) : fin session", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteTab("Tab : affiche schéma centrale", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteEspace("Espace : passer poste sécurité", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texte.at(3*wph/4,330);
-  texte1.at(3*wph/4-40,390);
-  texte2.at(3*wph/4-40,430);
-  texteB.at(3*wph/4-40,470);
-  texteT.at(3*wph/4-40,510);
-  texteP.at(3*wph/4-40,550);
-  texteR.at(3*wph/4-40,590);
-  texteU.at(3*wph/4-40,630);
-  texteS.at(3*wph/4-40,670);
-  texteTab.at(3*wph/4-40,710);
-  texteEspace.at(3*wph/4-40,750);
+  //texte.at(3*wph/4,300);
+  texte1.at(0.73*wph,0.65*hph);
+  texte2.at(0.73*wph,0.68*hph);
+  texteB.at(0.73*wph,0.71*hph);
+  texteT.at(0.73*wph,0.74*hph);
+  texteP.at(0.73*wph,0.77*hph);
+  texteR.at(0.73*wph,0.8*hph);
+  texteU.at(0.73*wph,0.83*hph);
+  texteS.at(0.73*wph,0.86*hph);
+  texteTab.at(0.73*wph,0.89*hph);
+  texteEspace.at(0.73*wph,0.92*hph);
 
-  fenetre << texte << texte1 << texte2 << texteB << texteT << texteP << texteR << texteU << texteS << texteTab << texteEspace;
+  fenetre << texte1 << texte2 << texteB << texteT << texteP << texteR << texteU << texteS << texteTab << texteEspace;
 }
 
 
 bool SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale)
 {
-    switch (touche)
-    {
-      case 49 :  // 1
-        majRendementPompeCircuitPrim(fenetre, centrale);
-        break;
+  switch (touche)
+  {
+    case 49 :  // 1
+    majRendementPompeCircuitPrim(fenetre, centrale);
+    break;
 
-      case 50 :  // 2
-        majRendementPompeCircuitSec(fenetre, centrale);
-        break;
+    case 50 :  // 2
+    majRendementPompeCircuitSec(fenetre, centrale);
+    break;
 
-      case 98 :  // b
-        majBarreControle(fenetre, centrale);
-        break;
+    case 98 :  // b
+    majBarreControle(fenetre, centrale);
+    break;
 
-      case 116 :  // t
-        majTauxAcideBorique(fenetre, centrale);
-        break;
+    case 116 :  // t
+    majTauxAcideBorique(fenetre, centrale);
+    break;
 
-      case 112 :  // p
-        majRendementPressuriseur(fenetre, centrale);
-        break;
+    case 112 :  // p
+    majRendementPressuriseur(fenetre, centrale);
+    break;
 
-      case 114 :  // r
-        majRendementPompeCondenseur(fenetre, centrale);
-        break;
+    case 114 :  // r
+    majRendementPompeCondenseur(fenetre, centrale);
+    break;
 
-      case 117 :  // u
-        arretUrgence(fenetre, centrale);
-        break;
+    case 117 :  // u
+    arretUrgence(fenetre, centrale);
+    break;
 
-      case 115 :  // s
-        return finSession();
-        break;
+    case 115 :  // s
+    return finSession();
+    break;
 
-      case 9 :  // tab
-        affichageSchemaCentrale(fenetre, centrale);
-        break;
+    case 9 :  // tab
+    affichageSchemaCentrale(fenetre, centrale);
+    break;
 
-      case 32 : // Espace
-        passagePosteSecurite(fenetre, centrale);
-        break;
-    }
-    return false;
+    case 32 : // Espace
+    passagePosteSecurite(fenetre, centrale);
+    break;
+  }
+  return false;
 }
 
 
@@ -317,24 +366,24 @@ void SalleDeControle::majRendementPompeCircuitPrim(sdl2::window& fenetre, Centra
           switch (key_ev.code())
           {
             case 13 :
-              quitter = true;
-              break;
+            quitter = true;
+            break;
 
             case sdl2::event_keyboard::up :
-              rendement = centrale.rendementPompePrim();
-              centrale.majRendementPompePrim(rendement + 0.05);
-              break;
+            rendement = centrale.rendementPompePrim();
+            centrale.majRendementPompePrim(rendement + 0.05);
+            break;
 
             case sdl2::event_keyboard::down :
-              rendement = centrale.rendementPompePrim();
-              centrale.majRendementPompePrim(rendement - 0.05);
-              break;
+            rendement = centrale.rendementPompePrim();
+            centrale.majRendementPompePrim(rendement - 0.05);
+            break;
           }
           majAffichage(fenetre, centrale);
           iskey_down = true;
         }
-      if (key_ev.type_of_event() == sdl2::event::key_up)
-          iskey_down = false;
+        if (key_ev.type_of_event() == sdl2::event::key_up)
+        iskey_down = false;
       }
     }
   }
@@ -363,24 +412,24 @@ void SalleDeControle::majRendementPompeCircuitSec(sdl2::window& fenetre, Central
           switch (key_ev.code())
           {
             case 13 :
-              quitter = true;
-              break;
+            quitter = true;
+            break;
 
             case sdl2::event_keyboard::up :
-              rendement = centrale.rendementPompeSec();
-              centrale.majRendementPompeSec(rendement + 0.05);
-              break;
+            rendement = centrale.rendementPompeSec();
+            centrale.majRendementPompeSec(rendement + 0.05);
+            break;
 
             case sdl2::event_keyboard::down :
-              rendement = centrale.rendementPompeSec();
-              centrale.majRendementPompeSec(rendement - 0.05);
-              break;
+            rendement = centrale.rendementPompeSec();
+            centrale.majRendementPompeSec(rendement - 0.05);
+            break;
           }
           majAffichage(fenetre, centrale);
           iskey_down = true;
         }
         if (key_ev.type_of_event() == sdl2::event::key_up)
-            iskey_down = false;
+        iskey_down = false;
       }
     }
   }
@@ -389,19 +438,139 @@ void SalleDeControle::majRendementPompeCircuitSec(sdl2::window& fenetre, Central
 
 void SalleDeControle::majBarreControle(sdl2::window& fenetre, Centrale& centrale)
 {
+  double barre;
 
+  bool quitter = false;
+  bool iskey_down = false;
+  sdl2::event_queue queue;
+
+  while (not quitter)
+  {
+    auto events = queue.pull_events();
+    for (const auto& e : events)
+    {
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
+      {
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+        if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+        {
+          switch (key_ev.code())
+          {
+            case 13 :
+            quitter = true;
+            break;
+
+            case sdl2::event_keyboard::up :
+            barre = centrale.propGrDemande();
+            centrale.majPropGrDemandee(barre + 0.05);
+            break;
+
+            case sdl2::event_keyboard::down :
+            barre = centrale.propGrDemande();
+            centrale.majPropGrDemandee(barre - 0.05);
+            break;
+          }
+          majAffichage(fenetre, centrale);
+          iskey_down = true;
+        }
+        if (key_ev.type_of_event() == sdl2::event::key_up)
+        iskey_down = false;
+      }
+    }
+  }
 }
 
 
 void SalleDeControle::majTauxAcideBorique(sdl2::window& fenetre, Centrale& centrale)
 {
+  double acideBorique;
 
+  bool quitter = false;
+  bool iskey_down = false;
+  sdl2::event_queue queue;
+
+  while (not quitter)
+  {
+    auto events = queue.pull_events();
+    for (const auto& e : events)
+    {
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
+      {
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+        if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+        {
+          switch (key_ev.code())
+          {
+            case 13 :
+            quitter = true;
+            break;
+
+            case sdl2::event_keyboard::up :
+            acideBorique = centrale.tauxBoreActuel();
+            centrale.majTauxBoreDemande(acideBorique + 0.05);
+            break;
+
+            case sdl2::event_keyboard::down :
+            acideBorique = centrale.tauxBoreActuel();
+            centrale.majTauxBoreDemande(acideBorique - 0.05);
+            break;
+          }
+          majAffichage(fenetre, centrale);
+          iskey_down = true;
+        }
+        if (key_ev.type_of_event() == sdl2::event::key_up)
+        iskey_down = false;
+      }
+    }
+  }
 }
 
 
 void SalleDeControle::majRendementPressuriseur(sdl2::window& fenetre, Centrale& centrale)
 {
-  /// PB pas de rendement pressuriseur
+  double rendement;
+
+  bool quitter = false;
+  bool iskey_down = false;
+  sdl2::event_queue queue;
+
+  while (not quitter)
+  {
+    auto events = queue.pull_events();
+    for (const auto& e : events)
+    {
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
+      {
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+        if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+        {
+          switch (key_ev.code())
+          {
+            case 13 :
+            quitter = true;
+            break;
+
+            case sdl2::event_keyboard::up :
+            rendement = centrale.tempPressuriseurDemande();
+            centrale.majTempPressuriseurDemande(rendement + 5);
+            break;
+
+            case sdl2::event_keyboard::down :
+            rendement = centrale.tempPressuriseurDemande();
+            centrale.majTempPressuriseurDemande(rendement - 5);
+            break;
+          }
+          majAffichage(fenetre, centrale);
+          iskey_down = true;
+        }
+        if (key_ev.type_of_event() == sdl2::event::key_up)
+        iskey_down = false;
+      }
+    }
+  }
 }
 
 
@@ -427,24 +596,24 @@ void SalleDeControle::majRendementPompeCondenseur(sdl2::window& fenetre, Central
           switch (key_ev.code())
           {
             case 13 :
-              quitter = true;
-              break;
+            quitter = true;
+            break;
 
             case sdl2::event_keyboard::up :
-              rendement = centrale.rendementPompeCondenseur();
-              centrale.majRendementPompeCondenseur(rendement + 0.05);
-              break;
+            rendement = centrale.rendementPompeCondenseur();
+            centrale.majRendementPompeCondenseur(rendement + 0.05);
+            break;
 
             case sdl2::event_keyboard::down :
-              rendement = centrale.rendementPompeCondenseur();
-              centrale.majRendementPompeCondenseur(rendement - 0.05);
-              break;
+            rendement = centrale.rendementPompeCondenseur();
+            centrale.majRendementPompeCondenseur(rendement - 0.05);
+            break;
           }
           majAffichage(fenetre, centrale);
           iskey_down = true;
         }
         if (key_ev.type_of_event() == sdl2::event::key_up)
-            iskey_down = false;
+        iskey_down = false;
       }
     }
   }
@@ -475,15 +644,15 @@ bool SalleDeControle::finSession()
         auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
 
         if (key_ev.type_of_event() == sdl2::event::key_up)
-            iskey_down = false;
+        iskey_down = false;
       }
     }
   }
   end = chrono::system_clock::now();
   chrono::duration<double> secondesEcoulees = end - start;
 
-  if (secondesEcoulees.count() >= 2)
-    return true;
+  if (secondesEcoulees.count() >= 0.75)
+  return true;
 
   return false;
 }
@@ -491,7 +660,97 @@ bool SalleDeControle::finSession()
 
 void SalleDeControle::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& centrale)
 {
+  bool quitter = false;
+  bool iskey_down = false;
+  sdl2::event_queue queue;
 
+  while (not quitter)
+  {
+    schemaCentrale(fenetre, centrale);
+    auto events = queue.pull_events();
+    for (const auto& e : events)
+    {
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
+      {
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+        if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+        {
+          if (key_ev.code() == 13)
+          quitter = true;
+
+        iskey_down = true;
+        }
+      if (key_ev.type_of_event() == sdl2::event::key_up)
+      iskey_down = false;
+      }
+    }
+  }
+  majAffichage(fenetre, centrale);
+}
+
+
+void SalleDeControle::schemaCentrale(sdl2::window& fenetre, Centrale& centrale)
+{
+  double etatCentrale = centrale.etatCentrale();
+  double etatReacteur = centrale.tauxBoreActuel(); //etatCuve();
+  double etatCircuitPrim = centrale.rendementPompePrim(); //etatCircuitPrim();
+  double etatCircuitSec = centrale.rendementPompeSec(); //etatCircuitSec();
+  double etatCondenseur = centrale.rendementPompeCondenseur(); //etatCondenseur();
+
+  auto [wph, hph] = fenetre.dimensions();
+
+  sdl2::image schema("image/Centrale nucleaire.jpg", fenetre);
+  schema.stretch({4*wph/6,4*hph/6});
+  schema.at(wph/6,hph/6);
+
+  sdl2::image centraleNucl("image/Centrale.png", fenetre);
+  centraleNucl.stretch({4*wph/6,4*hph/6});
+  centraleNucl.at(wph/6,hph/6);
+  centraleNucl.color_filter({0xFF,0x00,0x00,0xFF});
+
+  sdl2::image reacteur("image/Reacteur.png", fenetre);
+  reacteur.stretch({4*wph/6,4*hph/6});
+  reacteur.at(wph/6,hph/6);
+  reacteur.color_filter({0xFF,0x00,0x00,0xFF});
+
+  sdl2::image circuitPrim("image/Circuit_primaire.png", fenetre);
+  circuitPrim.stretch({4*wph/6,4*hph/6});
+  circuitPrim.at(wph/6,hph/6);
+  //circuitPrim.color_filter({0xFF,0x00,0x00,0xFF});
+
+  sdl2::image circuitSec("image/Circuit_secondaire.png", fenetre);
+  circuitSec.stretch({4*wph/6,4*hph/6});
+  circuitSec.at(wph/6,hph/6);
+  circuitSec.color_filter({0xFF,0x00,0x00,0xFF});
+
+  sdl2::image condenseur("image/Circuit_refroidissement.png", fenetre);
+  condenseur.stretch({4*wph/6,4*hph/6});
+  condenseur.at(wph/6,hph/6);
+  condenseur.color_filter({0xFF,0x00,0x00,0xFF});
+
+  fenetre << schema << sdl2::flush;
+
+  this_thread::sleep_for(chrono::milliseconds(500));
+
+  if(etatCentrale < 0.5)
+  fenetre << centraleNucl;
+
+  if(etatReacteur < 0.3)
+  fenetre << reacteur;
+
+  if(etatCircuitPrim < 0.3)
+  fenetre << circuitPrim;
+
+  if(etatCircuitSec < 0.3)
+  fenetre << circuitSec;
+
+  if(etatCondenseur < 0.3)
+  fenetre << condenseur;
+
+  fenetre << sdl2::flush;
+
+  this_thread::sleep_for(chrono::milliseconds(500));
 }
 
 
