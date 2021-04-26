@@ -15,7 +15,6 @@ public:
   // Affichage fenêtre graphique
   void majAffichage(sdl2::window& fenetre, Centrale& centrale); // Met à jour l'affichage de la fenêtre graphique
   void cadre(sdl2::window& fenetre) const; // Affiche les cadres
-  void affichageDispatching(sdl2::window& fenetre) const;  // Affiche les ordres provenant du dispatching national
   void affichageProdElec(sdl2::window& fenetre, Centrale& centrale) const; // Affiche la production d'électricité (en MW)
   void afficheTauxBorePiscine(sdl2::window& fenetre, Centrale& centrale) const;  // Affiche le taux de bore dans la piscine
   void afficheCircuitPrim(sdl2::window& fenetre, Centrale& centrale) const;  // Affiche le circuit primaire (rendement, température, débit, pression, radioactivité)
@@ -43,7 +42,7 @@ public:
   ~SalleDeControle(); // Destructeur
 
 private:
-
+  bool m_schemaCentrale;
 };
 
 #endif

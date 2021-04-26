@@ -9,6 +9,7 @@
 #include "circuit_primaire.hpp"
 #include "circuit_secondaire.hpp"
 #include "reacteur.hpp"
+#include "sdl2.hpp"
 
 using namespace std;
 
@@ -528,6 +529,27 @@ void Centrale::majEtatCanaux(double valeur_demandee)
 void Centrale::majEtatInjBore(double valeur_demandee)
 {
   reacteur.majEtatInjBore(valeur_demandee);
+}
+
+
+//--------------------------------------DISPATCHING------------------------------------///
+
+int Centrale::scoreDispatching()
+{
+  return dispatching.scoreDispatching();
+}
+
+
+void Centrale::affichageDispatching(sdl2::window& fenetre)
+{
+  double temperatureVap = temperatureVapeur();
+  dispatching.affichageDispatching(fenetre, temperatureVap);
+}
+
+void Centrale::majdispatching(sdl2::window& fenetre, int tour)
+{
+  double temperatureVap = temperatureVapeur();
+  dispatching.majdispatching(fenetre, temperatureVap, tour);
 }
 
 

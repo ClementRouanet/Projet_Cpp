@@ -4,9 +4,8 @@
 
 #include "sdl2.hpp"
 #include "centrale.hpp"
-//#include "circuit_primaire.hpp"
-//#include "circuit_secondaire.hpp"
 #include "salle_de_controle.hpp"
+#include "dispatching.hpp"
 
 
 using namespace std;
@@ -56,6 +55,7 @@ int main(int argc, char* args[])
   srand(time(nullptr));
 
   debut();
+
   sdl2::finalize();
   return 0;
 }
