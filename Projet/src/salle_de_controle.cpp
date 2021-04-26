@@ -10,23 +10,31 @@
 using namespace std;
 
 
-SalleDeControle::SalleDeControle()
+SalleDeControle::SalleDeControle(): m_schemaCentrale(false)
 {
 }
 
 void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale)
 {
-  cadre(fenetre);
-  affichageDispatching(fenetre);
-  affichageProdElec(fenetre, centrale);
-  afficheTauxBorePiscine(fenetre, centrale);
-  afficheCircuitPrim(fenetre, centrale);
-  afficheCircuitSec(fenetre, centrale);
-  afficheSystSecurite(fenetre);
-  affichePressionEnceinte(fenetre, centrale);
-  afficheSystRefroidissement(fenetre, centrale);
-  afficheEtatBarreGraphite(fenetre, centrale);
-  afficheCommandes(fenetre);
+  if(m_schemaCentrale == false)
+  {
+    cadre(fenetre);
+    affichageDispatching(fenetre);
+    affichageProdElec(fenetre, centrale);
+    afficheTauxBorePiscine(fenetre, centrale);
+    afficheCircuitPrim(fenetre, centrale);
+    afficheCircuitSec(fenetre, centrale);
+    afficheSystSecurite(fenetre);
+    affichePressionEnceinte(fenetre, centrale);
+    afficheSystRefroidissement(fenetre, centrale);
+    afficheEtatBarreGraphite(fenetre, centrale);
+    afficheCommandes(fenetre);
+  }
+  else
+  {
+    affichageSchemaCentrale(fenetre, centrale);
+  }
+
 
   fenetre << sdl2::flush;
 }
@@ -48,7 +56,7 @@ void SalleDeControle::cadre(sdl2::window& fenetre) const
 
 void SalleDeControle::affichageDispatching(sdl2::window& fenetre) const
 {
-  
+
 }
 
 
@@ -333,7 +341,8 @@ bool SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Centrale& 
     break;
 
     case 9 :  // tab
-    affichageSchemaCentrale(fenetre, centrale);
+    m_schemaCentrale = true;
+    //affichageSchemaCentrale(fenetre, centrale);
     break;
 
     case 32 : // Espace
@@ -664,7 +673,7 @@ void SalleDeControle::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& c
   bool iskey_down = false;
   sdl2::event_queue queue;
 
-  while (not quitter)
+  if (not quitter)
   {
     schemaCentrale(fenetre, centrale);
     auto events = queue.pull_events();
@@ -677,8 +686,11 @@ void SalleDeControle::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& c
         if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
         {
           if (key_ev.code() == 13)
-          quitter = true;
-
+          {
+            quitter = true;
+            m_schemaCentrale = false;
+          }
+          
         iskey_down = true;
         }
       if (key_ev.type_of_event() == sdl2::event::key_up)
@@ -686,7 +698,7 @@ void SalleDeControle::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& c
       }
     }
   }
-  majAffichage(fenetre, centrale);
+  //majAffichage(fenetre, centrale);
 }
 
 

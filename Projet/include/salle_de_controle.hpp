@@ -43,6 +43,7 @@ public:
   ~SalleDeControle(); // Destructeur
 
 private:
+  bool m_schemaCentrale;
 
 };
 
