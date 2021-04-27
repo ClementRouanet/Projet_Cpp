@@ -29,9 +29,40 @@ void PosteDeSecurite::cadre(sdl2::window& fenetre) const // Affiche un cadre
 
   fenetre << cadre << titre;
 }
+
+//----------------------------------------------CADRAN REACTEUR --------------------------------------------------------------//
 void PosteDeSecurite::affichageReacteur(sdl2::window& fenetre) const // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
 {
+  double EtatCanaux = centrale.etatCanaux();
+  double EtatBarresGr = centrale.etatBarresGr();
+  double EtatPiscine = centrale.etatPiscine();
+  double EtatCuve = centrale.etatCuve();
 
+  string sEtatCanaux(to_string(EtatCanaux));
+  string sEtatBarresGr(to_string(EtatBarresGr));
+  string sEtatPiscine(to_string(EtatPiscine));
+  string sEtatCuve(to_string(EtatCuve));
+
+
+  auto [x, y] = fenetre.dimensions();
+  //Ajouter la fonte du titre et des textes
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
+
+  sdl2::texte titre("Circuit Secondaire", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
+  sdl2::texte texteCanaux("Etat des canaux guidant les barres : " + sEtatCanaux, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteBarresGr("Etat des Barres de Graphite : " + sEtatBarresGr, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte textePiscine("Etat de la Piscine : " + sEtatPiscine, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteCuve("Etat de la Cuve : " + sEtatCuve, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  //Placement dans le cadran : On change après encore
+  titre.at(2*x/5+60, 80);
+  texteCanaux.at(2*x/5-20,140);
+  texteBarresGr.at(2*x/5-20,180);
+  textePiscine.at(2*x/5-20,220);
+  texteCuve.at(2*x/5-20,260);
+
+  fenetre<<titre<<texteCanaux<<texteBarresGr<<textePiscine<<texteCuve;
 }
 
 
@@ -157,6 +188,9 @@ void PosteDeSecurite::affichageCondenseur(sdl2::window& fenetre,Centrale& centra
   fenetre<<titre<<texteCondenseur;
 }
 
+
+//--------------------------------------------CADRAN OUVRIER------------------------------------------------------//
+
 void PosteDeSecurite::affichageOuvriers() const // Affiche les effectifs humains à notre disposition
 {
 
@@ -187,6 +221,8 @@ void PosteDeSecurite::affichageOrdinateur() const // Affiche l'état courant de 
   fenetre<<titre<<texteCentrale;
 }
 
+
+//--------------------------------------------------AFFICHAGE COMMANDE ------------------------------------//
 void PosteDeSecurite::affichageCommandes() const  // Affiche les commandes disponibles pour effectuer des actions
 {
   auto [wph, hph] = fenetre.dimensions();
@@ -229,34 +265,6 @@ texteC.at(3*wph/4,330);
 
   fenetre << texte << texteTab << texteEspace << texteB1 << texteP1 << texteO << texte1 << texte2 << texteB2 << texteP2 << texteI << texteR << texteG << texteC;
 
-}
-
-bool PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale)
-{
-      switch (touche)
-      {
-        case 9 :  // tab
-          affichageSchemaCentrale(fenetre, centrale);
-          break;
-
-        case 32 : // Espace
-          passagePosteSecurite(fenetre, centrale);
-          break;
-
-        case 112 :  // p
-          evacuationPopulation(fenetre, centrale);
-          break;
-
-        case 98 :  // b
-          bilanOuvriers(fenetre, centrale); //Cette commande affiche les différents organes où sont potentiellement réalisable des interventions humaines
-          break;
-
-        case 111 :  // o comme olivier
-          interventionOuvriers(fenetre, centrale);
-          break;
-
-      }
-      return false;
 }
 
 void PosteDeSecurite::evacuationPopulation(sdl2::window& fenetre, Centrale& centrale)
@@ -335,6 +343,36 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
     }
   }
 }
+
+
+bool PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale)
+{
+      switch (touche)
+      {
+        case 9 :  // tab
+          affichageSchemaCentrale(fenetre, centrale);
+          break;
+
+        case 32 : // Espace
+          passagePosteSecurite(fenetre, centrale);
+          break;
+
+        case 112 :  // p
+          evacuationPopulation(fenetre, centrale);
+          break;
+
+        case 98 :  // b
+          bilanOuvriers(fenetre, centrale); //Cette commande affiche les différents organes où sont potentiellement réalisable des interventions humaines
+          break;
+
+        case 111 :  // o comme olivier
+          interventionOuvriers(fenetre, centrale);
+          break;
+
+      }
+      return false;
+}
+
 
 
 PosteDeSecurite::~PosteDeSecurite()
