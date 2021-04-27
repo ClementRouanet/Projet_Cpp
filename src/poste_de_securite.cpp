@@ -204,7 +204,14 @@ void PosteDeSecurite::affichageActivite() const // Affiche le signalement de div
 void PosteDeSecurite::affichageOrdinateur() const // Affiche l'état courant de la centrale et des alentours
 {
   double EtatCentrale = centrale.EtatCentrale();
+  int Contamination = centrale.contamination();
+  //affichage du niveau d'alerte
+  //affichage des ouvriers actifs ou non
   string sEtatCentrale(to_string(EtatCentrale));
+  string sContamination(to_string(Contamination));
+  //string niveau d'alerte
+  //string ouvriers
+
 
   auto [x, y] = fenetre.dimensions();
   //Ajouter la fonte du titre et des textes
