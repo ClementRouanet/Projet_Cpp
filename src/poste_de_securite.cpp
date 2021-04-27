@@ -74,7 +74,7 @@ void PosteDeSecurite::affichageCircuitPrim(sdl2::window& fenetre,Centrale& centr
 
 
 
-//----------------------------------------------------------CADRAN CIRCUIT SECONDAIRE----------------------------------- ------------------------//
+//-----------------------------------------------------CADRAN CIRCUIT SECONDAIRE----------------------------------- ------------------------//
 //Affiche le circuit secondaire (état, pompe, générateur de vapeur, échangeur de chaleur)
 void PosteDeSecurite::affichageCircuitSec(sdl2::window& fenetre,Centrale& centrale) const
 {
@@ -114,14 +114,47 @@ void PosteDeSecurite::affichageCircuitSec(sdl2::window& fenetre,Centrale& centra
 
 
 //----------------------------CADRAN ENCEINTE --------------------------------------//
-void PosteDeSecurite::affichageEnceinteConfinement() const  // Affiche l'état de l'enceinte de confinement
+ // Affiche l'état de l'enceinte de confinement
+void PosteDeSecurite::affichageEnceinteConfinement(sdl2::window& fenetre,Centrale& centrale) const
 {
+ double EtatEnceinte = centrale.etatEnceinte();
+ string sEtatEnceinte(to_string(EtatEnceinte));
 
+ auto [x, y] = fenetre.dimensions();
+ //Ajouter la fonte du titre et des textes
+ sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+ sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
+
+ sdl2::texte titre("Enceinte", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
+ sdl2::texte texteEnceinte("Etat de l'Enceinte : " + sEtatEnceinte, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+ //Placement dans le cadran : On change après encore
+ titre.at(2*x/5+60, 80);
+ texteEnceinte.at(2*x/5-20,140);
+
+ fenetre<<titre<<texteEnceinte;
 }
 
-void PosteDeSecurite::affichageCondenseur() const // Affiche l'état du condenseur
+//-----------------------------------CADRAN CONDENSEUR--------------------------------------------//
+// Affiche l'état du condenseur
+void PosteDeSecurite::affichageCondenseur(sdl2::window& fenetre,Centrale& centrale) const
 {
+  double EtatCondenseur = centrale.etatCondenseur();
+  string sEtatCondenseur(to_string(EtatCondenseur));
 
+  auto [x, y] = fenetre.dimensions();
+  //Ajouter la fonte du titre et des textes
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
+
+  sdl2::texte titre("Condenseur", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
+  sdl2::texte texteCondenseur("Etat du Condenseur : " + sEtatEnceinte, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  //Placement dans le cadran : On change après encore
+  titre.at(2*x/5+60, 80);
+  texteCondenseur.at(2*x/5-20,140);
+
+  fenetre<<titre<<texteCondenseur;
 }
 
 void PosteDeSecurite::affichageOuvriers() const // Affiche les effectifs humains à notre disposition
@@ -136,12 +169,173 @@ void PosteDeSecurite::affichageActivite() const // Affiche le signalement de div
 
 void PosteDeSecurite::affichageOrdinateur() const // Affiche l'état courant de la centrale et des alentours
 {
+  double EtatCentrale = centrale.EtatCentrale();
+  string sEtatCentrale(to_string(EtatCentrale));
+
+  auto [x, y] = fenetre.dimensions();
+  //Ajouter la fonte du titre et des textes
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
+
+  sdl2::texte titre("Centrale", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
+  sdl2::texte texteCentrale("Etat de la Centrale : " + sEtatCentrale, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  //Placement dans le cadran : On change après encore
+  titre.at(2*x/5+60, 80);
+  texteCentrale.at(2*x/5-20,140);
+
+  fenetre<<titre<<texteCentrale;
+}
+
+void PosteDeSecurite::affichageCommandes() const  // Affiche les commandes disponibles pour effectuer des actions
+{
+  auto [wph, hph] = fenetre.dimensions();
+
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
+
+  sdl2::texte texte("Commandes", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
+  sdl2::texte texteTab("Tab : affiche schéma centrale", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteEspace("Espace : passer salle de contrôle", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteB1("B :  Bilan actiivité ouvrière", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteP1("P :  Demande évacuation population", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteO("O : Interventions ouvrier", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  sdl2::texte texte1("1 :  pompe circuit primaire", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texte2("2 :  pompe circuit secondaire", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteB2("B :  injecteur d'acide borique", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteP2("P :  pressuriseur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteI("I : circuit primaire", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteR("R : circuit secondaire", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteG("G  : générateur de vapeur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteC("C  : Condenseur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+
+texteTab.at(3*wph/4,330);
+texteEspace.at(3*wph/4,330);
+texteB1.at(3*wph/4,330);
+texteP1.at(3*wph/4,330);
+texteO.at(3*wph/4,330);
+texte1.at(3*wph/4,330);
+texte2.at(3*wph/4,330);
+texteB2.at(3*wph/4,330);
+texteP2.at(3*wph/4,330);
+texteI.at(3*wph/4,330);
+texteR.at(3*wph/4,330);
+texteG.at(3*wph/4,330);
+texteC.at(3*wph/4,330);
+
+
+
+  fenetre << texte << texteTab << texteEspace << texteB1 << texteP1 << texteO << texte1 << texte2 << texteB2 << texteP2 << texteI << texteR << texteG << texteC;
 
 }
-void PosteDeSecurite::affichageCommandes() const  // Affiche les commandes disponibles pour effectuer des actions
+
+bool PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale)
+{
+      switch (touche)
+      {
+        case 9 :  // tab
+          affichageSchemaCentrale(fenetre, centrale);
+          break;
+
+        case 32 : // Espace
+          passagePosteSecurite(fenetre, centrale);
+          break;
+
+        case 112 :  // p
+          evacuationPopulation(fenetre, centrale);
+          break;
+
+        case 98 :  // b
+          bilanOuvriers(fenetre, centrale); //Cette commande affiche les différents organes où sont potentiellement réalisable des interventions humaines
+          break;
+
+        case 111 :  // o comme olivier
+          interventionOuvriers(fenetre, centrale);
+          break;
+
+      }
+      return false;
+}
+
+void PosteDeSecurite::evacuationPopulation(sdl2::window& fenetre, Centrale& centrale)
 {
 
 }
+
+void PosteDeSecurite::bilanOuvrier(sdl2::window& fenetre, Centrale& centrale)
+{
+
+}
+
+void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& centrale)
+{
+  bool quitter = false;
+  bool iskey_down = false;
+  sdl2::event_queue queue;
+
+  while (not quitter)
+  {
+    auto events = queue.pull_events();
+    for (const auto& e : events)
+    {
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
+      {
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+        if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+        {
+          switch (key_ev.code())
+          {
+              case 13 ://entrer
+              quitter = true;
+              break;
+
+
+             //J'attends les autres fonctions les kheys
+              case 49 : //1
+              quitter = true;
+              break;
+
+              case 50 :  //2
+              quitter = true;
+              break;
+
+              case 99 : //c
+              quitter = true;
+              break;
+
+              case 103 : //g
+              quitter = true;
+              break;
+
+              case 98 : //b
+              quitter = true;
+              break;
+
+              case 105 : //i
+              quitter = true;
+              break;
+
+              case 114 : //r
+              quitter = true;
+              break;
+
+              case 112 : //p
+              quitter = true;
+              break;
+           }
+              majAffichage(fenetre, centrale);
+              iskey_down = true;
+        }
+          if (key_ev.type_of_event() == sdl2::event::key_up)
+          iskey_down = false;
+      }
+    }
+  }
+}
+
 
 PosteDeSecurite::~PosteDeSecurite()
 {

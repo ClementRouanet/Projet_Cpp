@@ -9,6 +9,7 @@
 #include "circuit_primaire.hpp"
 #include "circuit_secondaire.hpp"
 #include "reacteur.hpp"
+#include "sdl2.hpp"
 
 using namespace std;
 
@@ -31,6 +32,16 @@ double Centrale::pressionEnceinte() const
 double Centrale::radioactiviteEnceinte() const
 {
   return enceinte.radioactivite();
+}
+
+void Centrale::majEtatEnceinte(double valeur)
+{
+  if (valeur>=0 && valeur<=1)
+  m_etat = valeur;
+  else if (valeur<0)
+  m_etat = 0;
+  else
+  m_etat = 1;
 }
 
 //Pression subit par l’enceinte de confinement
@@ -56,13 +67,13 @@ void Centrale::majPressionEnceinte()
   }
   random_device hgenerateur;
   default_random_engine generateur(hgenerateur());
-   uniform_real_distribution<double> genrand(0,1./55);
-   auto rnd = bind(genrand, generateur);
-   double RND = rnd();
-   //À chaque tour, 30% de chance que  la pression de l'enceinte baisse de 0.13 bar
+  uniform_real_distribution<double> genrand(0,1./55);
+  auto rnd = bind(genrand, generateur);
+  double RND = rnd();
+  //À chaque tour, 30% de chance que  la pression de l'enceinte baisse de 0.13 bar
   if(RND<0.3)
   {
-   enceinte.majPression(pressionEnceinte()-0.13);
+    enceinte.majPression(pressionEnceinte()-0.13);
   }
 }
 
@@ -73,22 +84,22 @@ void Centrale::majRadioactiviteEnceinte()
 {
   random_device hgenerateur;
   default_random_engine generateur(hgenerateur());
-   uniform_real_distribution<double> genrand(0,1./55);
-   auto rnd = bind(genrand, generateur);
-   double RND = rnd();
+  uniform_real_distribution<double> genrand(0,1./55);
+  auto rnd = bind(genrand, generateur);
+  double RND = rnd();
   enceinte.majRadioactivite(RND+0.00002+(1-etatCircuitPrim())*radioactivitePrim()/98.98+(1-etatPressuriseur())*10);
-if((etatPiscine() < 0.55) && (radPiscine() > 3000))
-{
-  enceinte.majRadioactivite(radioactiviteEnceinte()*1.25);
-}
-if (etatEnceinte() < 0.9)
-{
- enceinte.majRadioactivite(radioactiviteEnceinte()/1.3);
-}
-if (etatEnceinte() < 0.1)
-{
-   enceinte.majRadioactivite(radioactiviteEnceinte()/1.5);
-}
+  if((etatPiscine() < 0.55) && (radPiscine() > 3000))
+  {
+    enceinte.majRadioactivite(radioactiviteEnceinte()*1.25);
+  }
+  if (etatEnceinte() < 0.9)
+  {
+    enceinte.majRadioactivite(radioactiviteEnceinte()/1.3);
+  }
+  if (etatEnceinte() < 0.1)
+  {
+    enceinte.majRadioactivite(radioactiviteEnceinte()/1.5);
+  }
 }
 
 
@@ -104,13 +115,6 @@ double Centrale::productionCentrale() const
   return m_production;
 }
 
-
-
-
-
-
-
-
 void Centrale::majEtatCentrale()
 {
   m_etat = (etatCanaux()+2*etatBarresGr()+8*etatCuve()+3*etatPiscine()+etatPompePrim()+etatPompeSec()+5*etatEchangeurChaleur()+4*etatGenerateurVapeur()+etatPressuriseur()+etatResistancePressuriseur()+4*m_etat+8*etatCircuitPrim()+3*etatCircuitSec()+etatInjBore()+etatCondenseur())/44;
@@ -124,7 +128,7 @@ void Centrale::majProductionCentrale()
   }
   if(temperatureVapeur() < 3000)
   {
-   m_production = max(5.787*(temperatureVapeur()-120)+28.118*(pressionVapeur()-1)+pressionPrim(),0.);
+    m_production = max(5.787*(temperatureVapeur()-120)+28.118*(pressionVapeur()-1)+pressionPrim(),0.);
   }
   else
   {
@@ -132,11 +136,11 @@ void Centrale::majProductionCentrale()
   }
   if(etatCircuitSec() < 0.6)
   {
-  m_production  *= etatCircuitSec();
-}
+    m_production  *= etatCircuitSec();
+  }
   if ((m_production > 1400) && (m_production < 1412))
   {
-   m_production = 1400;
+    m_production = 1400;
   }
 }
 
@@ -254,23 +258,34 @@ void Centrale::majPressionEau()
   primaire.majPression();
 }
 
-void Centrale::majDebitEauPrim(double Ecuve)
+void Centrale::majDebitEauPrim()
 {
+  double Ecuve = etatCuve();
   primaire.majDebitEau(Ecuve);
 }
 
-void Centrale::majInertietemperaturePrim(double Tvap, double TBeff, double TGreff)
+void Centrale::majInertietemperaturePrim()
 {
+  double Tvap = temperatureVapeur();
+  double TBeff = tauxBoreActuel();
+  double TGreff = propGrActuel();
+
   primaire.majInertietemperature(Tvap, TBeff, TGreff);
 }
 
-void Centrale::majTemperatureEau(double TBeff, double TGreff)
+void Centrale::majTemperatureEau()
 {
+  double TBeff = tauxBoreActuel();
+  double TGreff = propGrActuel();
+
   primaire.majTemperatureEau(TBeff, TGreff);
 }
 
-void Centrale::majRadioactivitePrim(double TBeff, double MW)
+void Centrale::majRadioactivitePrim()
 {
+  double TBeff = tauxBoreActuel();
+  double MW = productionCentrale();
+
   primaire.majRadioactivite(TBeff, MW);
 }
 
@@ -420,10 +435,9 @@ double Centrale::propGrActuel() const
   return reacteur.getPropGrAct();
 }
 
-
 double Centrale::propGrDemande() const
 {
-  return reacteur.propGrDemandee();
+  return reacteur.getPropGrDemandee();
 }
 
 double Centrale::tauxBoreDemande() const
@@ -446,7 +460,7 @@ double Centrale::radPiscine() const
   return reacteur.getRadPiscine();
 }
 
-double Centrale::etatPiscine()) const
+double Centrale::etatPiscine() const
 {
   return reacteur.getEtatPiscine();
 }
@@ -491,8 +505,9 @@ void Centrale::majEtatCuve(double valeur_demandee)
   reacteur.majEtatCuve(valeur_demandee);
 }
 
-void Centrale::majRadPiscine(double R1)
+void Centrale::majRadPiscine()
 {
+  double R1 = radioactivitePrim();
   reacteur.majRadPiscine(R1);
 }
 
@@ -517,13 +532,25 @@ void Centrale::majEtatInjBore(double valeur_demandee)
 }
 
 
+//--------------------------------------DISPATCHING------------------------------------///
+
+int Centrale::scoreDispatching()
+{
+  return dispatching.scoreDispatching();
+}
 
 
+void Centrale::affichageDispatching(sdl2::window& fenetre)
+{
+  double temperatureVap = temperatureVapeur();
+  dispatching.affichageDispatching(fenetre, temperatureVap);
+}
 
-
-
-
-
+void Centrale::majdispatching(sdl2::window& fenetre, int tour)
+{
+  double temperatureVap = temperatureVapeur();
+  dispatching.majdispatching(fenetre, temperatureVap, tour);
+}
 
 
 Centrale::~Centrale()
