@@ -5,6 +5,8 @@
 
 #include "salle_de_controle.hpp"
 #include "centrale.hpp"
+#include "securite.hpp"
+#include "dispatching.hpp"
 #include "sdl2.hpp"
 
 using namespace std;
@@ -16,10 +18,13 @@ SalleDeControle::SalleDeControle(): m_schemaCentrale(false)
 
 void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale)
 {
+  Securite s;
+  Dispatching d;
   if(m_schemaCentrale == false)
   {
     cadre(fenetre);
-    affichageDispatching(fenetre);
+    s.affichageSecurite(fenetre, centrale);
+    d.affichageDispatching(fenetre, centrale);
     affichageProdElec(fenetre, centrale);
     afficheTauxBorePiscine(fenetre, centrale);
     afficheCircuitPrim(fenetre, centrale);
@@ -29,6 +34,7 @@ void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale)
     afficheSystRefroidissement(fenetre, centrale);
     afficheEtatBarreGraphite(fenetre, centrale);
     afficheCommandes(fenetre);
+
   }
   else
   {
@@ -306,6 +312,9 @@ void SalleDeControle::afficheCommandes(sdl2::window& fenetre) const
 
 bool SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale)
 {
+  Securite s;
+  Dispatching d;
+
   switch (touche)
   {
     case 49 :  // 1
@@ -348,6 +357,9 @@ bool SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Centrale& 
     case 32 : // Espace
     passagePosteSecurite(fenetre, centrale);
     break;
+
+    s.majSecurite(fenetre,centrale);
+    d.majDispatching(fenetre, centrale, 1);
   }
   return false;
 }
@@ -690,7 +702,7 @@ void SalleDeControle::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& c
             quitter = true;
             m_schemaCentrale = false;
           }
-          
+
         iskey_down = true;
         }
       if (key_ev.type_of_event() == sdl2::event::key_up)

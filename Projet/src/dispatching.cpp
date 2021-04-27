@@ -22,16 +22,28 @@ int Dispatching::scoreDispatching()
 }
 
 
-void Dispatching::ordreInitial(sdl2::window& fenetre) const
+void Dispatching::ordreInitial(sdl2::window& fenetre)
 {
   auto [wph, hph] = fenetre.dimensions();
 
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
-  sdl2::texte texte("Mettre la centrale en divergence : démarrer la réaction en chaîne (lever des barres, baisse du taux d'acide borique, fonctionnement des pompes, pressurisation, etc.) et la production de vapeur dans le générateur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
+  sdl2::texte texte1("Mettre la centrale en divergence :", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texte2("- démarrer la réaction en chaîne.", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texte3("   (- levée des barres,", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texte4("    - baisse le taux d'acide borique,", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texte5("    - fonctionnement des pompes,", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texte6("    - pressurisation.)", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texte7("- produire de la vapeur dans le générateur.", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texte.at(0.02*wph,0.7*hph);
+  texte1.at(0.02*wph,0.6*hph);
+  texte2.at(0.02*wph,0.63*hph);
+  texte3.at(0.02*wph,0.66*hph);
+  texte4.at(0.02*wph,0.69*hph);
+  texte5.at(0.02*wph,0.72*hph);
+  texte6.at(0.02*wph,0.75*hph);
+  texte7.at(0.02*wph,0.78*hph);
 
-  fenetre << texte;
+  fenetre << texte1 << texte2 << texte3 << texte4 << texte5 << texte6 << texte7;
   m_nbOrdre += 1;
 }
 
@@ -57,7 +69,7 @@ void Dispatching::ordre()
 }
 
 
-void Dispatching::affichageDispatching(sdl2::window& fenetre, Centrale& centrale) const
+void Dispatching::affichageDispatching(sdl2::window& fenetre, Centrale& centrale)
 {
   double temperatureVap = centrale.temperatureVapeur();
 
@@ -105,10 +117,8 @@ void Dispatching::affichageDispatching(sdl2::window& fenetre, Centrale& centrale
 }
 
 
-void Dispatching::majdispatching(sdl2::window& fenetre, Centrale& centrale, int tour)
+void Dispatching::majDispatching(sdl2::window& fenetre, Centrale& centrale, int tour)
 {
-  double temperatureVap = centrale.temperatureVapeur();
-
   if(m_ordre==false && m_nbOrdre>0)
   {
     ordre();

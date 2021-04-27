@@ -12,11 +12,11 @@ public:
 
   int scoreDispatching(); // Renvoie le score du dispatching
 
-  void ordreInitial(sdl2::window& fenetre) const; // Affiche l'ordre initial (divergence)
+  void ordreInitial(sdl2::window& fenetre); // Affiche l'ordre initial (divergence)
   void ordre(); // Simule les ordres qui arrivent après la divergence
-  void affichageDispatching(sdl2::window& fenetre, Centrale& centrale) const;  // Affiche les ordres provenant du dispatching national
+  void affichageDispatching(sdl2::window& fenetre, Centrale& centrale);  // Affiche les ordres provenant du dispatching national
 
-  void majdispatching(sdl2::window& fenetre, Centrale& centrale, int tour); // Met à jour le dispatching
+  void majDispatching(sdl2::window& fenetre, Centrale& centrale, int tour); // Met à jour le dispatching
 
   ~Dispatching(); // Destructeur
 
