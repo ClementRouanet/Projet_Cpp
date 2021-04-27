@@ -151,6 +151,17 @@ void Reacteur::majEtatInjBore(double valeur_demandee)
     m_etatInjBore = 1.;
 }
 
+void Reacteur::reparationInjecteurBore()
+{
+  if(m_etatInjBore > 0.96)
+    m_etatInjBore = 1;
+  else
+  {
+    auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.04;
+    m_etatInjBore += RND;
+  }
+}
+
 Reacteur::~Reacteur()
 {
 }

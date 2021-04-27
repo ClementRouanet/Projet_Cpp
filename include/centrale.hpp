@@ -122,6 +122,17 @@ public:
   void majdispatching(sdl2::window& fenetre, int tour); // Met à jour le dispatching
 
 
+  // FONCTIONS DE REPARATION
+  void reparationPompePrim();
+  void reparationPompeSec();
+  void reparationCondenseur();
+  void reparationGenerateurVapeur();
+  void reparationInjecteurBore();
+  void reparationCircuitPrim();
+  void reparationCircuitSec();
+  void reparationPressuriseur();
+
+
   //fini
   ~Centrale(); //Destructeur
 

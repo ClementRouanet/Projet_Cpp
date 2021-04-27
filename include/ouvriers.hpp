@@ -1,8 +1,8 @@
-#ifndef OUVRIER_HPP_
-#define OUVRIER_HPP_
+#ifndef OUVRIERS_HPP_
+#define OUVRIERS_HPP_
 
 
-class Ouvrier
+class Ouvriers
 {
 public:
   Ouvriers(); // Constructeur
@@ -13,8 +13,9 @@ public:
   ~Ouvriers();  // Destructeur
 
 private:
-  bool m_malade;
-  bool m_chantier;
+  int m_nbOuvriers;
+  std::vector<bool,m_nbOuvriers> m_malade;
+  std::vector<bool,m_nbOuvriers> m_chantier;
 };
 
 #endif

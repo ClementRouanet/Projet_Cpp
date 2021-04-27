@@ -59,6 +59,11 @@ void Circuit::majRendementPompe(double valeur)
   m_pompe.majRendement(valeur, m_etatCircuit);
 }
 
+void Circuit::reparationPompe()
+{
+  m_pompe.reparation();
+}
+
 Circuit::~Circuit()
 {
 }

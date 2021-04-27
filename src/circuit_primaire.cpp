@@ -114,6 +114,22 @@ void CircuitPrim::majRadioactivite(double TBeff, double MW)
   m_radioactivite = 98*(m_debit+1) + RND + (0.5-TBeff)*(MW+0.1)*6.54;
 }
 
+void CircuitPrim::reparationEtat()
+{
+  if(m_etatCircuit >= 0.8)
+    m_etatCircuit = 1;
+  else
+  {
+    auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.02;
+    m_etatCircuit += RND;
+  }
+}
+
+void CircuitPrim::reparationPressuriseur()
+{
+  m_pressuriseur.reparation();
+}
+
 
 CircuitPrim::~CircuitPrim()
 {

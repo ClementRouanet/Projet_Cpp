@@ -1,3 +1,5 @@
+#include <random>
+
 #include "pompe.hpp"
 
 using namespace std;
@@ -34,6 +36,17 @@ void Pompe::majEtat(double valeur)
     m_etat = 0;
   else
     m_etat = 1;
+}
+
+void Pompe::reparation()
+{
+  if(m_etat > 0.97)
+    m_etat = 1;
+  else
+  {
+    auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.03;
+    m_etat += RND;
+  }
 }
 
 Pompe::~Pompe()

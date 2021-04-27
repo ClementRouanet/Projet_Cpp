@@ -108,7 +108,7 @@ void Dispatching::affichageDispatching(sdl2::window& fenetre, double temperature
 void Dispatching::majdispatching(sdl2::window& fenetre, double temperatureVap, int tour)
 {
   if(temperatureVap>140 && m_nbOrdre==0)
-    m_nbOrdre == 1;
+    m_nbOrdre = 1;
 
   if(m_ordre==false && m_nbOrdre>0)
   {

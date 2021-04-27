@@ -553,6 +553,49 @@ void Centrale::majdispatching(sdl2::window& fenetre, int tour)
 }
 
 
+//--------------------------------------REPARATION------------------------------------///
+
+void Centrale::reparationPompePrim()
+{
+  primaire.reparationPompe();
+}
+
+void Centrale::reparationPompeSec()
+{
+  secondaire.reparationPompe();
+}
+
+void Centrale::reparationCondenseur()
+{
+  secondaire.reparationCondenseur();
+}
+
+void Centrale::reparationGenerateurVapeur()
+{
+  secondaire.reparationGenerateurVapeur();
+}
+
+void Centrale::reparationInjecteurBore()
+{
+  reacteur.reparationInjecteurBore();
+}
+
+void Centrale::reparationCircuitPrim()
+{
+  primaire.reparationEtat();
+}
+
+void Centrale::reparationCircuitSec()
+{
+  secondaire.reparationEtat();
+}
+
+void Centrale::reparationPressuriseur()
+{
+  primaire.reparationPressuriseur();
+}
+
+
 Centrale::~Centrale()
 {
 }

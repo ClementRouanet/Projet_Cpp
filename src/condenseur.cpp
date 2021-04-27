@@ -1,3 +1,5 @@
+#include <random>
+
 #include "condenseur.hpp"
 #include "pompe.hpp"
 
@@ -51,6 +53,17 @@ void Condenseur::majDebit(double valeur)
 void Condenseur::majDifferenceChaleur(double valeur)
 {
   m_diffChaleur = valeur;
+}
+
+void Condenseur::reparation()
+{
+  if(m_etat > 0.98)
+    m_etat = 1;
+  else
+  {
+    auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.02;
+    m_etat += RND;
+  }
 }
 
 Condenseur::~Condenseur()
