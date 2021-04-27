@@ -2,8 +2,8 @@
 
 Enceinte::Enceinte()
 {
-m_etat = 1;
-m_pression = 1;
+m_etat = 1.;
+m_pression = 1.;
 m_radioactivite = 0.00002;
 }
 
@@ -37,5 +37,5 @@ void Enceinte::majRadioactivite(double valeur)
 
 Enceinte::~Enceinte()
 {
-  
+
 }

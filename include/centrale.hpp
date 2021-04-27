@@ -6,6 +6,7 @@
 #include "circuit_secondaire.hpp"
 #include "reacteur.hpp"
 #include "dispatching.hpp"
+#include "population.hpp"
 #include "sdl2.hpp"
 
 
@@ -122,6 +123,29 @@ public:
   void majdispatching(sdl2::window& fenetre, int tour); // Met à jour le dispatching
 
 
+  // FONCTIONS DE REPARATION
+  void reparationPompePrim();
+  void reparationPompeSec();
+  void reparationCondenseur();
+  void reparationGenerateurVapeur();
+  void reparationInjecteurBore();
+  void reparationCircuitPrim();
+  void reparationCircuitSec();
+  void reparationPressuriseur();
+
+
+  // FONCTION DE LA Population
+  double evacuation() const;
+  double radioactiviteEau() const;
+  int contamination() const;
+  double radioactiviteAir() const;
+  
+  void majEvacuation(double valeur);
+  void majRadioactiviteEau(double valeur);
+  void majRadioactiviteAir(double valeur);
+  void majContamination(int valeur);
+
+
   //fini
   ~Centrale(); //Destructeur
 
@@ -131,6 +155,7 @@ private:
   Reacteur reacteur;
   Enceinte enceinte;
   Dispatching dispatching;
+  Population population;
   double m_etat;
   double m_production;
 };

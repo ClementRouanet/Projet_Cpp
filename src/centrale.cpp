@@ -9,6 +9,7 @@
 #include "circuit_primaire.hpp"
 #include "circuit_secondaire.hpp"
 #include "reacteur.hpp"
+#include "population.hpp"
 #include "sdl2.hpp"
 
 using namespace std;
@@ -65,11 +66,7 @@ void Centrale::majPressionEnceinte()
   {
     enceinte.majPression((1-etatEnceinte())/2*pressionEnceinte()-pressionEnceinte());
   }
-  random_device hgenerateur;
-  default_random_engine generateur(hgenerateur());
-  uniform_real_distribution<double> genrand(0,1./55);
-  auto rnd = bind(genrand, generateur);
-  double RND = rnd();
+  auto RND = ((float)(rand()))/((float)(RAND_MAX));
   //À chaque tour, 30% de chance que  la pression de l'enceinte baisse de 0.13 bar
   if(RND<0.3)
   {
@@ -82,11 +79,7 @@ void Centrale::majPressionEnceinte()
 //Radioactivité de l’enceinte de confinement à l’intérieur.
 void Centrale::majRadioactiviteEnceinte()
 {
-  random_device hgenerateur;
-  default_random_engine generateur(hgenerateur());
-  uniform_real_distribution<double> genrand(0,1./55);
-  auto rnd = bind(genrand, generateur);
-  double RND = rnd();
+  auto RND = ((float)(rand()))/((float)(RAND_MAX))*1/55;
   enceinte.majRadioactivite(RND+0.00002+(1-etatCircuitPrim())*radioactivitePrim()/98.98+(1-etatPressuriseur())*10);
   if((etatPiscine() < 0.55) && (radPiscine() > 3000))
   {
@@ -550,6 +543,131 @@ void Centrale::majdispatching(sdl2::window& fenetre, int tour)
 {
   double temperatureVap = temperatureVapeur();
   dispatching.majdispatching(fenetre, temperatureVap, tour);
+}
+
+
+//--------------------------------------REPARATION------------------------------------///
+
+void Centrale::reparationPompePrim()
+{
+  primaire.reparationPompe();
+}
+
+void Centrale::reparationPompeSec()
+{
+  secondaire.reparationPompe();
+}
+
+void Centrale::reparationCondenseur()
+{
+  secondaire.reparationCondenseur();
+}
+
+void Centrale::reparationGenerateurVapeur()
+{
+  secondaire.reparationGenerateurVapeur();
+}
+
+void Centrale::reparationInjecteurBore()
+{
+  reacteur.reparationInjecteurBore();
+}
+
+void Centrale::reparationCircuitPrim()
+{
+  primaire.reparationEtat();
+}
+
+void Centrale::reparationCircuitSec()
+{
+  secondaire.reparationEtat();
+}
+
+void Centrale::reparationPressuriseur()
+{
+  primaire.reparationPressuriseur();
+}
+
+
+
+//------------------------------------------POPULATION---------------------------------------//
+double Centrale::evacuation() const
+{
+  return population.evacuation();
+}
+
+int Centrale::contamination() const
+{
+ return population.contamination();
+}
+
+double Centrale::radioactiviteEau() const
+{
+ return population.radioactiviteEau();
+}
+
+double Centrale::radioactiviteAir() const
+{
+ return population.radioactiviteAir();
+}
+
+
+
+
+void Centrale::majEvacuation()
+{
+ auto RND = (rand())/(RAND_MAX)*100;
+ if(RND<40)
+ {
+ population.majEvacuation(evacuation()+0.1);
+ }
+}
+
+void Centrale::majContamination()
+{
+ if(radioactiviteEnceinte()<0.1);
+ {
+   majContamination(contamination()-(5*(radioactiviteAir()>6))-5*(radioactiviteEau()>1)-8*(radioactiviteEau>12)-10*(radioactiviteAir>12));
+ }
+ if(radioactiviteAir>12)
+ {
+   auto RND = (rand())/(RAND_MAX)*15;
+   majContamination(contamination()+4+RND);
+ }
+ if(radioactiviteEau>12)
+ {
+   auto RND = (rand())/(RAND_MAX)*20;
+   majContamination(contamination()+5+RND);
+ }
+ if(radioactiviteAir>20)
+ {
+   auto RND = (rand())/(RAND_MAX)*20;
+   majContamination(contamination()+12+RND);
+ }
+}
+
+void Centrale::majRadioactiviteEau()
+{
+ if((radioactiviteSec()<2)||(etatCondenseur()>0.9))
+ {
+   majRadioactiviteEau(0.);
+ }
+ else
+ {
+   majRadioactiviteEau((1-etatCondenseur())*radioactiviteSec()/100);
+ }
+}
+
+void Centrale::majRadioactiviteAir()
+{
+ if(etatEnceinte()>0.97)
+ {
+   majRadioactiviteAir(0.);
+ }
+ else
+ {
+   majRadioactiviteAir((1.-etatEnceinte()*radioactiviteEnceinte()+(1-etatCircuitSec()*10)));
+ }
 }
 
 

@@ -222,6 +222,9 @@ void PosteDeSecurite::affichageOrdinateur() const // Affiche l'état courant de 
 }
 
 
+
+
+
 //--------------------------------------------------AFFICHAGE COMMANDE ------------------------------------//
 void PosteDeSecurite::affichageCommandes() const  // Affiche les commandes disponibles pour effectuer des actions
 {
