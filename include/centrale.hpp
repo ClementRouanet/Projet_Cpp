@@ -24,6 +24,7 @@ public:
   void majPressionEnceinte(); // met à jour la Pression subit par l'enceinte de Confinement
   void majRadioactiviteEnceinte(); // met à jour la radioactivité de l'enceinte de confinement
 
+
   // FONCTION DE LA CENTRALE
   double etatCentrale() const;
   double productionCentrale() const;

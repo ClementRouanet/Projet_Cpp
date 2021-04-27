@@ -2,6 +2,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <random>
 
 #include "salle_de_controle.hpp"
 #include "centrale.hpp"
@@ -624,7 +625,36 @@ void SalleDeControle::majRendementPompeCondenseur(sdl2::window& fenetre, Central
 
 void SalleDeControle::arretUrgence(sdl2::window& fenetre, Centrale& centrale)
 {
+  double Ecuve = centrale.etatCuve();
+  double Ecanaux = centrale.etatCanaux();
+  double Ebarre = centrale.etatBarresGr();
 
+  double probaReussite = 0.7*Ecuve*Ecanaux*Ebarre + 0.15;
+  auto RND = ((float)(rand()))/((float)(RAND_MAX));
+
+  if(RND <= probaReussite)
+  {
+    centrale.majPropGrDemandee(0);
+  }
+  else
+  {
+    auto chance1 = ((float)(rand()))/((float)(RAND_MAX));
+    auto chance2 = ((float)(rand()))/((float)(RAND_MAX));
+    auto chance3 = ((float)(rand()))/((float)(RAND_MAX));
+
+    auto RND1 = ((float)(rand()))/((float)(RAND_MAX))*0.1;
+    auto RND2 = ((float)(rand()))/((float)(RAND_MAX))*0.08;
+    auto RND3 = ((float)(rand()))/((float)(RAND_MAX))*0.08;
+
+    if(chance1 <= 0.8)
+      centrale.majEtatCanaux(Ecanaux - (0.05 + RND1));
+
+    if(chance2 <= 0.3)
+      centrale.majEtatBarresGr(Ebarre - (0.02 + RND2));
+
+    if(chance3 <= 0.4)
+      centrale.majEtatCuve(Ecuve - RND3);
+  }
 }
 
 

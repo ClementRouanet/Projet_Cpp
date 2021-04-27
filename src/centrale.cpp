@@ -103,7 +103,6 @@ void Centrale::majRadioactiviteEnceinte()
 }
 
 
-
 //-------------------------------CENTRALE------------------------------------//
 double Centrale::etatCentrale() const
 {
