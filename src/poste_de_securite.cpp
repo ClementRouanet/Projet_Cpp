@@ -211,14 +211,43 @@ void PosteDeSecurite::affichageOuvriers() const // Affiche les effectifs humains
 
 
 //---------------------------------------------CADRAN ACTIVITE ALERTE ---------------------------------------------//
-void PosteDeSecurite::affichageActivite() const // Affiche le signalement de divers niveaux de contaminations
+void PosteDeSecurite::affichageActivite(sdl2::window& fenetre,Centrale& centrale) const // Affiche le signalement de divers niveaux de contaminations
 {
+  double radioactivitePiscine = centrale.radPiscine();
+  double radioactiviteEnceinte = centrale.radioactiviteEnceinte();
+  double radioactiviteAir = centrale.radioactiviteAir();
+  double radioactiviteEau = centrale.radioactiviteEau();
 
+  string sRadioactivitePiscine(to_string(radioactivitePiscine));
+  string sRadioactiviteEnceinte(to_string(radioactiviteEnceinte));
+  string sRadioactiviteAir(to_string(radioactiviteAir));
+  string sRadioactiviteEau(to_string(radioactiviteEau));
+
+
+  auto [x, y] = fenetre.dimensions();
+  //Ajouter la fonte du titre et des textes
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
+
+  sdl2::texte titre("Activité", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
+  sdl2::texte texteRadioactivitePiscine("RadioactivitePiscine : " + sRadioactivitePiscine, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteRadioactiviteEnceinte("RadioactiviteEnceinte : " + sRadioactiviteEnceinte, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteRadioactiviteAir("RadioactiviteAir : " + sRadioactiviteAir, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteRadioactiviteEau("RadioactiviteEau : " + sRadioactiviteEau, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  //Placement dans le cadran : On change après encore
+  titre.at(2*x/5+60, 80);
+  texteCircuit.at(2*x/5-20,140);
+  textePompe.at(2*x/5-20,180);
+  texteGenerateurVapeur.at(2*x/5-20,220);
+  texteEchangeurChaleur.at(2*x/5-20,260);
+
+  fenetre<<titre<<texteRadioactivitePiscine<<texteRadioactiviteEnceinte<<texteRadioactiviteAir<<texteRadioactiviteEau;
 }
 
 
 //------------------------------------------CADRAN ORDINATEUR --------------------------------------------------//
-void PosteDeSecurite::affichageOrdinateur() const // Affiche l'état courant de la centrale et des alentours
+void PosteDeSecurite::affichageOrdinateur(sdl2::window& fenetre,Centrale& centrale) const // Affiche l'état courant de la centrale et des alentours
 {
   double EtatCentrale = centrale.EtatCentrale();
   int Contamination = centrale.contamination();

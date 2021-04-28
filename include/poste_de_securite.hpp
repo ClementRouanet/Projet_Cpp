@@ -20,8 +20,8 @@ public:
   void affichageEnceinteConfinement(sdl2::window& fenetre,Centrale& centrale) const;  // Affiche l'état de l'enceinte de confinement
   void affichageCondenseur(sdl2::window& fenetre,Centrale& centrale) const; // Affiche l'état du condenseur
   void affichageOuvriers() const; // Affiche les effectifs humains à notre disposition
-  void affichageActivite() const; // Affiche le signalement de divers niveaux de contaminations
-  void affichageOrdinateur() const; // Affiche l'état courant de la centrale et des alentours
+  void affichageActivite(sdl2::window& fenetre,Centrale& centrale) const; // Affiche le signalement de divers niveaux de contaminations
+  void affichageOrdinateur(sdl2::window& fenetre,Centrale& centrale) const; // Affiche l'état courant de la centrale et des alentours
   void affichageCommandes() const;  // Affiche les commandes disponibles pour effectuer des actions
   bool majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale);
   void evacuationPopulation(sdl2::window& fenetre, Centrale& centrale);
