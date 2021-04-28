@@ -139,11 +139,11 @@ public:
   double radioactiviteEau() const;
   int contamination() const;
   double radioactiviteAir() const;
-  
-  void majEvacuation(double valeur);
-  void majRadioactiviteEau(double valeur);
-  void majRadioactiviteAir(double valeur);
-  void majContamination(int valeur);
+
+  void majEvacuation();
+  void majRadioactiviteEau();
+  void majRadioactiviteAir();
+  void majContamination();
 
 
   //fini

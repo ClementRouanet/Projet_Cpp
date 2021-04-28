@@ -1,3 +1,5 @@
+#include <random>
+
 #include "pressuriseur.hpp"
 
 using namespace std;
@@ -17,12 +19,12 @@ double Pressuriseur::etatResistance() const
   return m_etatResistance;
 }
 
-int Pressuriseur::temperatureDemandee() const
+double Pressuriseur::temperatureDemandee() const
 {
   return m_tempDemandee;
 }
 
-int Pressuriseur::temperatureActuel() const
+double Pressuriseur::temperatureActuel() const
 {
   return m_tempActuel;
 }
@@ -39,12 +41,17 @@ void Pressuriseur::majEtat(double valeur)
 
 void Pressuriseur::majEtatResistance(double valeur)
 {
-  if(valeur>=0 && valeur<=1)
-    m_etatResistance = valeur;
-  else if(valeur<0)
-    m_etatResistance = 0;
+  if(m_etatResistance+valeur > m_etat)
+    m_etatResistance = m_etat;
   else
-    m_etatResistance = 1;
+  {
+    if(valeur>=0 && valeur<=1)
+      m_etatResistance = valeur;
+    else if(valeur<0)
+      m_etatResistance = 0;
+    else
+      m_etatResistance = 1;
+  }
 }
 
 void Pressuriseur::majTemperatureDemandee(double valeur)
@@ -64,6 +71,23 @@ void Pressuriseur::majTemperatureActuel()
 
   if(m_tempActuel > m_tempDemandee)
     m_tempActuel -= 1;
+}
+
+void Pressuriseur::reparation()
+{
+  if(m_etat > 0.97)
+  {
+    m_etat = 1;
+    majEtatResistance(1);
+  }
+  else
+  {
+    auto RND1 = ((float)(rand()))/((float)(RAND_MAX))*0.03;
+    auto RND2 = ((float)(rand()))/((float)(RAND_MAX))*0.04;
+
+    m_etat += RND1;
+    majEtatResistance(m_etatResistance + RND2);
+  }
 }
 
 Pressuriseur::~Pressuriseur()

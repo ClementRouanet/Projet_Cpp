@@ -36,7 +36,7 @@ public:
   void arretUrgence(sdl2::window& fenetre, Centrale& centrale); // Simule l'arrêt d'urgence avec l'enfoncement rapide des barres dans le réacteur
   bool finSession(); // Arrête la partie en cours
   void affichageSchemaCentrale(sdl2::window& fenetre, Centrale& centrale);  // Affiche le schéma de la centrale
-  void schemaCentrale(sdl2::window& fenetre, Centrale& centrale);
+  void schemaCentrale(sdl2::window& fenetre, Centrale& centrale); // Charge le schéma de la centrale et la fait clignoter
   void passagePosteSecurite(sdl2::window& fenetre, Centrale& centrale); // Passe au poste de sécurité radioprotection
 
   ~SalleDeControle(); // Destructeur

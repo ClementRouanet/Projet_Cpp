@@ -30,6 +30,8 @@ public:
   void majEtatCanaux(double valeur_demandee);
   void majEtatInjBore(double valeur_demandee);
 
+  void reparationInjecteurBore();  // Réparation de l'état de l'injecteur de bore par les ouvriers
+
 private:
   double m_propGrAct;
   double m_propGrDemandee;

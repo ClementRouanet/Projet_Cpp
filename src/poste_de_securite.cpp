@@ -14,17 +14,17 @@ PosteDeSecurite::PosteDeSecurite()
 
 }
 
-void majAffichage(sdl2::window& fenetre, Centrale& centrale) // Met à jour l'affichage de la fenêtre graphique
+void PosteDeSecurite::majAffichage(sdl2::window& fenetre, Centrale& centrale) // Met à jour l'affichage de la fenêtre graphique
 {
-  void affichageReacteur(sdl2::window& fenetre) const; // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
-  void affichageCircuitPrim(sdl2::window& fenetre,Centrale& centrale) const;  // Affiche le circuit primaire (état, pompe, pressuriseur, résistances électriques et l'injecteur)
-  void affichageCircuitSec(sdl2::window& fenetre,Centrale& centrale) const; //Affiche le circuit secondaire (état, pompe, générateur de vapeur, échangeur de chaleur)
-  void affichageEnceinteConfinement(sdl2::window& fenetre,Centrale& centrale) const;  // Affiche l'état de l'enceinte de confinement
-  void affichageCondenseur(sdl2::window& fenetre,Centrale& centrale) const; // Affiche l'état du condenseur
-  void affichageOuvriers() const; // Affiche les effectifs humains à notre disposition
-  void affichageActivite() const; // Affiche le signalement de divers niveaux de contaminations
-  void affichageOrdinateur() const; // Affiche l'état courant de la centrale et des alentours
-  void affichageCommandes() const;  // Affiche les commandes disponibles pour effectuer des actions
+  affichageReacteur(fenetre,centrale); // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
+  affichageCircuitPrim(fenetre,centrale);  // Affiche le circuit primaire (état, pompe, pressuriseur, résistances électriques et l'injecteur)
+  affichageCircuitSec(fenetre,centrale); //Affiche le circuit secondaire (état, pompe, générateur de vapeur, échangeur de chaleur)
+  affichageEnceinteConfinement( fenetre,centrale);  // Affiche l'état de l'enceinte de confinement
+  affichageCondenseur(fenetre,centrale); // Affiche l'état du condenseur
+  affichageOuvriers(); // Affiche les effectifs humains à notre disposition
+  affichageActivite(fenetre,centrale); // Affiche le signalement de divers niveaux de contaminations
+  affichageOrdinateur(fenetre,centrale); // Affiche l'état courant de la centrale et des alentours
+  affichageCommandes(fenetre,centrale);  // Affiche les commandes disponibles pour effectuer des actions
 }
 
 
@@ -32,8 +32,8 @@ void majAffichage(sdl2::window& fenetre, Centrale& centrale) // Met à jour l'af
 void PosteDeSecurite::cadre(sdl2::window& fenetre) const // Affiche un cadre
 {
   sdl2::image cadre("image/Cadre_SalleDeControle.jpg", fenetre);
-  auto [x, y] = fenetre.dimensions();
-  cadre.stretch({x,y});
+  auto [wph, hph] = fenetre.dimensions();
+  cadre.stretch({wph,hph});
 
   sdl2::font fonte_titre("./data/Lato-Bold.ttf",50);
   sdl2::texte titre ("Poste de Securité", fonte_titre, fenetre, {0xFF,0x00,0x00,0x00});
@@ -43,7 +43,7 @@ void PosteDeSecurite::cadre(sdl2::window& fenetre) const // Affiche un cadre
 }
 
 //----------------------------------------------CADRAN REACTEUR --------------------------------------------------------------//
-void PosteDeSecurite::affichageReacteur(sdl2::window& fenetre) const // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
+void PosteDeSecurite::affichageReacteur(sdl2::window& fenetre, Centrale& centrale) const // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
 {
   double EtatCanaux = centrale.etatCanaux();
   double EtatBarresGr = centrale.etatBarresGr();
@@ -191,7 +191,7 @@ void PosteDeSecurite::affichageCondenseur(sdl2::window& fenetre,Centrale& centra
   sdl2::font fonte_titre("./data/Lato-Bold.ttf",30);
 
   sdl2::texte titre("Condenseur", fonte_titre, fenetre, {0x00,0x00,0xFF,0x00});
-  sdl2::texte texteCondenseur("Etat du Condenseur : " + sEtatEnceinte, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteCondenseur("Etat du Condenseur : " + sEtatCondenseur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
   //Placement dans le cadran : On change après encore
   titre.at(2*x/5+60, 80);
@@ -237,10 +237,10 @@ void PosteDeSecurite::affichageActivite(sdl2::window& fenetre,Centrale& centrale
 
   //Placement dans le cadran : On change après encore
   titre.at(2*x/5+60, 80);
-  texteCircuit.at(2*x/5-20,140);
-  textePompe.at(2*x/5-20,180);
-  texteGenerateurVapeur.at(2*x/5-20,220);
-  texteEchangeurChaleur.at(2*x/5-20,260);
+  texteRadioactivitePiscine.at(2*x/5-20,140);
+  texteRadioactiviteEnceinte.at(2*x/5-20,180);
+  texteRadioactiviteAir.at(2*x/5-20,220);
+  texteRadioactiviteEau.at(2*x/5-20,260);
 
   fenetre<<titre<<texteRadioactivitePiscine<<texteRadioactiviteEnceinte<<texteRadioactiviteAir<<texteRadioactiviteEau;
 }
@@ -249,7 +249,7 @@ void PosteDeSecurite::affichageActivite(sdl2::window& fenetre,Centrale& centrale
 //------------------------------------------CADRAN ORDINATEUR --------------------------------------------------//
 void PosteDeSecurite::affichageOrdinateur(sdl2::window& fenetre,Centrale& centrale) const // Affiche l'état courant de la centrale et des alentours
 {
-  double EtatCentrale = centrale.EtatCentrale();
+  double EtatCentrale = centrale.etatCentrale();
   int Contamination = centrale.contamination();
   //affichage du niveau d'alerte
   //affichage des ouvriers actifs ou non
@@ -279,7 +279,7 @@ void PosteDeSecurite::affichageOrdinateur(sdl2::window& fenetre,Centrale& centra
 
 
 //--------------------------------------------------AFFICHAGE COMMANDE ------------------------------------//
-void PosteDeSecurite::affichageCommandes() const  // Affiche les commandes disponibles pour effectuer des actions
+void PosteDeSecurite::affichageCommandes(sdl2::window& fenetre,Centrale& centrale) const  // Affiche les commandes disponibles pour effectuer des actions
 {
   auto [wph, hph] = fenetre.dimensions();
 
@@ -329,11 +329,11 @@ bool PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& 
       switch (touche)
       {
         case 9 :  // tab
-          affichageSchemaCentrale(fenetre, centrale);
+          //affichageSchemaCentrale(fenetre, centrale);
           break;
 
         case 32 : // Espace
-          passagePosteSecurite(fenetre, centrale);
+          //passagePosteSecurite(fenetre, centrale);
           break;
 
         case 112 :  // p
@@ -387,7 +387,7 @@ void PosteDeSecurite::evacuationPopulation(sdl2::window& fenetre, Centrale& cent
   }
 }
 
-void PosteDeSecurite::bilanOuvrier(sdl2::window& fenetre, Centrale& centrale)
+void PosteDeSecurite::bilanOuvriers(sdl2::window& fenetre, Centrale& centrale)
 {
 
 }

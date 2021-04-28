@@ -6,9 +6,9 @@
 #include <functional>
 
 #include "centrale.hpp"
-#include "circuit_primaire.hpp"
-#include "circuit_secondaire.hpp"
-#include "reacteur.hpp"
+//#include "circuit_primaire.hpp"
+//#include "circuit_secondaire.hpp"
+//#include "reacteur.hpp"
 #include "population.hpp"
 #include "sdl2.hpp"
 
@@ -625,24 +625,24 @@ void Centrale::majEvacuation()
 
 void Centrale::majContamination()
 {
- if(radioactiviteEnceinte()<0.1);
+ if(radioactiviteEnceinte()<0.1)
  {
-   majContamination(contamination()-(5*(radioactiviteAir()>6))-5*(radioactiviteEau()>1)-8*(radioactiviteEau>12)-10*(radioactiviteAir>12));
+   population.majContamination(contamination()-(5*(radioactiviteAir()>6))-5*(radioactiviteEau()>1)-8*(radioactiviteEau()>12)-10*(radioactiviteAir()>12));
  }
- if(radioactiviteAir>12)
+ if(radioactiviteAir()>12)
  {
    auto RND = (rand())/(RAND_MAX)*15;
-   majContamination(contamination()+4+RND);
+   population.majContamination(contamination()+4+RND);
  }
- if(radioactiviteEau>12)
+ if(radioactiviteEau()>12)
  {
    auto RND = (rand())/(RAND_MAX)*20;
-   majContamination(contamination()+5+RND);
+   population.majContamination(contamination()+5+RND);
  }
- if(radioactiviteAir>20)
+ if(radioactiviteAir()>20)
  {
    auto RND = (rand())/(RAND_MAX)*20;
-   majContamination(contamination()+12+RND);
+   population.majContamination(contamination()+12+RND);
  }
 }
 
@@ -650,11 +650,11 @@ void Centrale::majRadioactiviteEau()
 {
  if((radioactiviteSec()<2)||(etatCondenseur()>0.9))
  {
-   majRadioactiviteEau(0.);
+   population.majRadioactiviteEau(0.);
  }
  else
  {
-   majRadioactiviteEau((1-etatCondenseur())*radioactiviteSec()/100);
+   population.majRadioactiviteEau((1-etatCondenseur())*radioactiviteSec()/100);
  }
 }
 
@@ -662,11 +662,11 @@ void Centrale::majRadioactiviteAir()
 {
  if(etatEnceinte()>0.97)
  {
-   majRadioactiviteAir(0.);
+   population.majRadioactiviteAir(0.);
  }
  else
  {
-   majRadioactiviteAir((1.-etatEnceinte()*radioactiviteEnceinte()+(1-etatCircuitSec()*10)));
+   population.majRadioactiviteAir((1.-etatEnceinte()*radioactiviteEnceinte()+(1-etatCircuitSec()*10)));
  }
 }
 

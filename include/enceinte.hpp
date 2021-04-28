@@ -4,7 +4,7 @@
 
 class Enceinte
 {
-  public :
+public :
   Enceinte(); //constructeur
 
   double etat() const;
@@ -16,7 +16,7 @@ class Enceinte
 
   ~Enceinte(); //destructeur
 
-  private:
+private:
   double m_etat;
   double m_pression;
   double m_radioactivite;

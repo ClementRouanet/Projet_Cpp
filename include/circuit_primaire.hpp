@@ -8,13 +8,13 @@
 class CircuitPrim: public Circuit
 {
 public:
-  CircuitPrim();  // onstructeur
+  CircuitPrim();  // Constructeur
 
   double etatPressuriseur() const;  // Renvoie l'état du pressuriseur
   double etatResistancePressuriseur() const;  // Renvoie l'état de la résistance du pressuriseur
   double etatEchangeurChaleur() const;  // Renvoie l'état de l'échangeur de chaleur
-  int tempPressuriseurDemande() const; // Renvoie la température du pressuriseur demandée
-  int tempPressuriseurActuel() const;  // Renvoie la température du pressuriseur actuel
+  double tempPressuriseurDemande() const; // Renvoie la température du pressuriseur demandée
+  double tempPressuriseurActuel() const;  // Renvoie la température du pressuriseur actuel
   double pression() const;  // Renvoie la pression
   double temperatureEau() const;  // renvoie la température de l'eau dans le circuit
 
@@ -24,18 +24,21 @@ public:
   void majTempPressuriseurDemande(double valeur); // Modifie la température du pressuriseur demandée
   void majTempPressuriseurActuel();  // Modifie la température du pressuriseur actuel
   void majPression(); // Modifie la pression
-  void majDebitEau(); // Modifie le débit de l'eau
-  void majInertietemperature(double Tvap); // Modifie l'inertie température eau circuit
-  void majTemperatureEau(); // Modifie la température de l'eau dans le circuit
-  void majRadioactivite();  // Modifie la radioactivité du circuit
-  
+  void majDebitEau(double Ecuve); // Modifie le débit de l'eau
+  void majInertietemperature(double Tvap, double TBeff, double TGreff); // Modifie l'inertie température eau circuit
+  void majTemperatureEau(double TBeff, double TGreff); // Modifie la température de l'eau dans le circuit
+  void majRadioactivite(double TBeff, double MW);  // Modifie la radioactivité du circuit
+
+  void reparationEtat();  // Réparation de l'état du circuit primaire par les ouvriers
+  void reparationPressuriseur();  // Réparation de l'état du pressuriseur par les ouvriers
+
   ~CircuitPrim(); // Destructeur
 
 private:
   Pressuriseur m_pressuriseur;  //Epress & Eres & Tpress & TPeff
   double m_echangChal;  //Eec
   double m_pression;  //P
-  int m_temperatureEau; //T
+  double m_temperatureEau; //T
 };
 
 #endif
