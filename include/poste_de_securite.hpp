@@ -12,6 +12,7 @@ public:
   PosteDeSecurite();  // Constructeur
 
   // Affichage fenêtre graphique
+  void majAffichage(sdl2::window& fenetre, Centrale& centrale); //met à jour lz fenetre
   void cadre(sdl2::window& fenetre) const; // Affiche un cadre
   void affichageReacteur(sdl2::window& fenetre) const; // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
   void affichageCircuitPrim(sdl2::window& fenetre,Centrale& centrale) const;  // Affiche le circuit primaire (état, pompe, pressuriseur, résistances électriques et l'injecteur)
@@ -35,7 +36,7 @@ public:
   ~PosteDeSecurite(); // Destructeur
 
 private:
-
+ bool m_schemaCentrale;
 };
 
 #endif

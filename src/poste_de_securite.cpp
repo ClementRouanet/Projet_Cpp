@@ -14,6 +14,18 @@ PosteDeSecurite::PosteDeSecurite()
 
 }
 
+void majAffichage(sdl2::window& fenetre, Centrale& centrale) // Met à jour l'affichage de la fenêtre graphique
+{
+  void affichageReacteur(sdl2::window& fenetre) const; // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
+  void affichageCircuitPrim(sdl2::window& fenetre,Centrale& centrale) const;  // Affiche le circuit primaire (état, pompe, pressuriseur, résistances électriques et l'injecteur)
+  void affichageCircuitSec(sdl2::window& fenetre,Centrale& centrale) const; //Affiche le circuit secondaire (état, pompe, générateur de vapeur, échangeur de chaleur)
+  void affichageEnceinteConfinement(sdl2::window& fenetre,Centrale& centrale) const;  // Affiche l'état de l'enceinte de confinement
+  void affichageCondenseur(sdl2::window& fenetre,Centrale& centrale) const; // Affiche l'état du condenseur
+  void affichageOuvriers() const; // Affiche les effectifs humains à notre disposition
+  void affichageActivite() const; // Affiche le signalement de divers niveaux de contaminations
+  void affichageOrdinateur() const; // Affiche l'état courant de la centrale et des alentours
+  void affichageCommandes() const;  // Affiche les commandes disponibles pour effectuer des actions
+}
 
 
 
@@ -196,11 +208,16 @@ void PosteDeSecurite::affichageOuvriers() const // Affiche les effectifs humains
 
 }
 
+
+
+//---------------------------------------------CADRAN ACTIVITE ALERTE ---------------------------------------------//
 void PosteDeSecurite::affichageActivite() const // Affiche le signalement de divers niveaux de contaminations
 {
 
 }
 
+
+//------------------------------------------CADRAN ORDINATEUR --------------------------------------------------//
 void PosteDeSecurite::affichageOrdinateur() const // Affiche l'état courant de la centrale et des alentours
 {
   double EtatCentrale = centrale.EtatCentrale();
@@ -210,7 +227,7 @@ void PosteDeSecurite::affichageOrdinateur() const // Affiche l'état courant de 
   string sEtatCentrale(to_string(EtatCentrale));
   string sContamination(to_string(Contamination));
   //string niveau d'alerte
-  //string ouvriers
+  //string ouvriers (et pas string des ouvriers lol)
 
 
   auto [x, y] = fenetre.dimensions();
@@ -277,9 +294,68 @@ texteC.at(3*wph/4,330);
 
 }
 
+
+bool PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale)
+{
+      switch (touche)
+      {
+        case 9 :  // tab
+          affichageSchemaCentrale(fenetre, centrale);
+          break;
+
+        case 32 : // Espace
+          passagePosteSecurite(fenetre, centrale);
+          break;
+
+        case 112 :  // p
+          evacuationPopulation(fenetre, centrale);
+          break;
+
+        case 98 :  // b
+          bilanOuvriers(fenetre, centrale); //Cette commande affiche les différents organes où sont potentiellement réalisable des interventions humaines
+          break;
+
+        case 111 :  // o comme olivier
+          interventionOuvriers(fenetre, centrale);
+          break;
+
+      }
+      return false;
+}
+
+
 void PosteDeSecurite::evacuationPopulation(sdl2::window& fenetre, Centrale& centrale)
 {
 
+  bool quitter = false;
+  bool iskey_down = false;
+  sdl2::event_queue queue;
+
+  while (not quitter)
+  {
+    auto events = queue.pull_events();
+    for (const auto& e : events)
+    {
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
+      {
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+        if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+        {
+          switch (key_ev.code())
+          {
+              case 13 ://entrer
+              quitter = true;
+              break;
+           }
+              majAffichage(fenetre, centrale);
+              iskey_down = true;
+        }
+          if (key_ev.type_of_event() == sdl2::event::key_up)
+          iskey_down = false;
+      }
+    }
+  }
 }
 
 void PosteDeSecurite::bilanOuvrier(sdl2::window& fenetre, Centrale& centrale)
@@ -354,34 +430,6 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
   }
 }
 
-
-bool PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale)
-{
-      switch (touche)
-      {
-        case 9 :  // tab
-          affichageSchemaCentrale(fenetre, centrale);
-          break;
-
-        case 32 : // Espace
-          passagePosteSecurite(fenetre, centrale);
-          break;
-
-        case 112 :  // p
-          evacuationPopulation(fenetre, centrale);
-          break;
-
-        case 98 :  // b
-          bilanOuvriers(fenetre, centrale); //Cette commande affiche les différents organes où sont potentiellement réalisable des interventions humaines
-          break;
-
-        case 111 :  // o comme olivier
-          interventionOuvriers(fenetre, centrale);
-          break;
-
-      }
-      return false;
-}
 
 
 
