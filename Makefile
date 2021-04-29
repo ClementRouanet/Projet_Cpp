@@ -7,7 +7,7 @@ LIBS = $(LIBSSDL2) -I include
 
 all : $(EXEC)
 
-OBJS = obj/niveaux.o obj/centrale.o obj/reacteur.o obj/circuit.o obj/circuit_primaire.o obj/circuit_secondaire.o obj/pompe.o obj/pressuriseur.o obj/condenseur.o obj/enceinte.o obj/dispatching.o obj/securite.o obj/salle_de_controle.o
+OBJS = obj/niveaux.o obj/centrale.o obj/reacteur.o obj/circuit.o obj/circuit_primaire.o obj/circuit_secondaire.o obj/pompe.o obj/pressuriseur.o obj/condenseur.o obj/enceinte.o obj/dispatching.o obj/securite.o obj/catastrophe.o obj/salle_de_controle.o
 SDL2 = SDL2/sdl2.o SDL2/geometry.o SDL2/window.o SDL2/font.o SDL2/event.o SDL2/texte.o SDL2/image.o SDL2/formated_text.o
 
 SDL2/sdl2.o:	SDL2/sdl2.hpp SDL2/sdl2.cpp
@@ -67,6 +67,9 @@ obj/dispatching.o : include/dispatching.hpp src/dispatching.cpp
 
 obj/securite.o : include/securite.hpp src/securite.cpp
 	$(CXX) $(CXXFLAGS) -c src/securite.cpp -o obj/securite.o $(LIBS)
+
+obj/catastrophe.o : include/catastrophe.hpp src/catastrophe.cpp
+	$(CXX) $(CXXFLAGS) -c src/catastrophe.cpp -o obj/catastrophe.o $(LIBS)
 
 obj/salle_de_controle.o : include/salle_de_controle.hpp src/salle_de_controle.cpp
 	$(CXX) $(CXXFLAGS) -c src/salle_de_controle.cpp -o obj/salle_de_controle.o $(LIBS)

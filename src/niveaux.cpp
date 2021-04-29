@@ -40,16 +40,15 @@ void miseAJour(Centrale& centrale, SalleDeControle& salleDeControle)
 void niveau1(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle)
 {
   salleDeControle.niveau(1);
-  
+
   vector<int> sortie = {0, 0}; // Premier : changement, second : fin session
 
   bool iskey_down = false;
-  bool quitter = false;
   sdl2::event_queue queue;
 
-  while (not quitter && sortie[1] == 0)
+  while (sortie[1] == 0)
   {
-    while (not quitter && sortie[0] == 0 && sortie[1] == 0) // Boucle salle de commande
+    while (sortie[0] == 0 && sortie[1] == 0) // Boucle salle de commande
     {
       auto start = chrono::system_clock::now();
 
@@ -59,7 +58,7 @@ void niveau1(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeC
       for ( const auto& e : events)
       {
         if (e->kind_of_event() == sdl2::event::quit)
-          quitter = true;
+          sortie[1] = true;
 
         if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
         {
@@ -76,11 +75,57 @@ void niveau1(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeC
       }
       miseAJour(centrale, salleDeControle);
 
-    /*  cout << "TBeff : " << centrale.tauxBoreActuel() << endl;
-      cout << "TGreff : " << centrale.propGrActuel() << endl;
-      cout << "D1 : " << centrale.debitEauPrim() << endl;
-      cout << "IT1 : " << centrale.inertieTemperaturePrim() << endl;
-      cout << "P1 : " << centrale.pressionPrim() << endl << endl;*/
+      auto end = chrono::system_clock::now();
+      chrono::duration<double> secondesEcoulees = end - start;
+      int tps = 1000 - floor(secondesEcoulees.count()*1000);
+
+      if (secondesEcoulees.count() < 1)
+        this_thread::sleep_for(chrono::milliseconds(tps));
+    }
+    sortie[0] = 0;
+  }
+}
+
+
+
+void niveau2(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle)
+{
+  salleDeControle.niveau(2);
+
+  vector<int> sortie = {0, 0}; // Premier : changement, second : fin session
+
+  bool iskey_down = false;
+  sdl2::event_queue queue;
+
+  while (sortie[1] == 0)
+  {
+    while (sortie[0] == 0 && sortie[1] == 0) // Boucle salle de commande
+    {
+      auto start = chrono::system_clock::now();
+
+      salleDeControle.majAffichage(fenetre, centrale);
+
+      auto events = queue.pull_events();
+      for ( const auto& e : events)
+      {
+        if (e->kind_of_event() == sdl2::event::quit)
+          sortie[1] = true;
+
+        if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
+        {
+          auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+          if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+          {
+            sortie = salleDeControle.majCommandes(fenetre, key_ev.code(), centrale);
+            iskey_down = true;
+          }
+          if (key_ev.type_of_event() == sdl2::event::key_up)
+            iskey_down = false;
+        }
+      }
+      miseAJour(centrale, salleDeControle);
+      sortie[1] = salleDeControle.finDispatching();
 
       auto end = chrono::system_clock::now();
       chrono::duration<double> secondesEcoulees = end - start;
@@ -95,12 +140,87 @@ void niveau1(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeC
 
 
 
+int menu()
+{
+  int niveau = 0;
+  bool touche = false;
+
+  bool quitter = false;
+  bool iskey_down = false;
+  sdl2::event_queue queue;
+
+  while(not quitter && touche == false)
+  {
+    auto events = queue.pull_events();
+    for ( const auto& e : events)
+    {
+      if (e->kind_of_event() == sdl2::event::quit)
+      quitter = true;
+
+      if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
+      {
+        auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+
+        if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
+        {
+          if(key_ev.code()==49 ||key_ev.code()==50 || key_ev.code()==51)
+          {
+            niveau = key_ev.code();
+            touche = true;
+          }
+          iskey_down = true;
+        }
+        if (key_ev.type_of_event() == sdl2::event::key_up)
+        iskey_down = false;
+      }
+    }
+  }
+
+  return niveau;
+}
 
 
+void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle)
+{
+  double etatCentrale = centrale.etatCentrale();
+
+}
 
 
+void jeu()
+{
+  sdl2::window fenetre("Nuclear Alert", {1400,750});
 
+  sdl2::image image("image/Menu.jpg", fenetre);
 
+  auto [wph, hph] = fenetre.dimensions();
+  image.stretch({wph,hph});
+
+  fenetre << image << sdl2::flush;
+
+  Centrale centrale;
+  SalleDeControle salleDeControle;
+
+  int niveau = menu();
+
+  if(niveau == 49)
+  {
+    niveau1(fenetre,centrale,salleDeControle);
+    //bilan(fenetre,centrale,salleDeControle);
+  }
+
+  if(niveau == 50)
+  {
+    niveau1(fenetre,centrale,salleDeControle);
+    //bilan(fenetre,centrale,salleDeControle);
+  }
+
+  /*if(niveau == 51)
+  {
+    niveau1(fenetre,centrale,salleDeControle);
+    bilan(fenetre,centrale,salleDeControle);
+  }*/
+}
 
 
 

@@ -776,6 +776,12 @@ void SalleDeControle::majdispatching( Centrale& centrale)
 }
 
 
+bool SalleDeControle::finDispatching()
+{
+  return dispatching.finDispatching();
+}
+
+
 SalleDeControle::~SalleDeControle()
 {
 }

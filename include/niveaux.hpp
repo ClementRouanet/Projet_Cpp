@@ -12,4 +12,9 @@ void niveau1(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeC
 void niveau2(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle);
 void niveau3(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle);
 
+int menu();
+void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle);
+
+void jeu();
+
 #endif

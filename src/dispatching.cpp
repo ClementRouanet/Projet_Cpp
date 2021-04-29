@@ -10,7 +10,9 @@
 using namespace std;
 
 
-Dispatching::Dispatching(): m_tourActuel(0), m_score(100), m_nbOrdre(0), m_produire(0), m_ordre(false), m_contreOrdre(false), m_objectif(false), m_tourObjectif(0)
+Dispatching::Dispatching()
+    : m_tourActuel(0), m_score(100), m_nbOrdre(0), m_produire(0), m_ordre(false), m_contreOrdre(false), m_objectif(false), m_tourObjectif(0),
+      m_finPosible(false), m_productionNulle(0)
 {
 }
 
@@ -122,6 +124,7 @@ void Dispatching::affichageDispatching(sdl2::window& fenetre, Centrale& centrale
 void Dispatching::majdispatching(Centrale& centrale)
 {
   double temperatureVap = centrale.temperatureVapeur();
+  double production = centrale.productionCentrale();
 
   if(temperatureVap>140 && m_nbOrdre==0)
     m_nbOrdre = 1;
@@ -172,8 +175,39 @@ void Dispatching::majdispatching(Centrale& centrale)
       m_score -= 3;
       m_ordre = false;
     }
+
+    if(production==0 || m_productionNulle!=0)
+    {
+      if(production == 0)
+        m_productionNulle += 1;
+
+      if(production != 0)
+        m_productionNulle = 0;
+
+      if(production==0 && m_productionNulle==6)
+        m_finPosible = true;
+    }
   }
   m_tourActuel += 1;
+}
+
+
+bool Dispatching::finDispatching()
+{
+  bool fin = false;
+
+  if(m_score == 0)
+    fin = true;
+
+  if(m_finPosible == true)
+  {
+    auto RND = ((float)(rand()))/((float)(RAND_MAX));
+
+    if(RND <= 0.5)
+      fin = true;
+  }
+
+  return fin;
 }
 
 

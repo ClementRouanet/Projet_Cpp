@@ -18,6 +18,8 @@ public:
 
   void majdispatching(Centrale& centrale); // Met à jour le dispatching
 
+  bool finDispatching();  // Fin dispatching après score ou production nulle
+
   ~Dispatching(); // Destructeur
 
 private:
@@ -29,6 +31,8 @@ private:
   bool m_contreOrdre;  // true = on a un contre-ordre, false = sinon
   bool m_objectif;  // true = on est dans la fourchette demandée à 10MW près
   int m_tourObjectif; // Nombre de tour consécutif après première fois dans la fourchette
+  bool m_finPosible;  // true = ça fais 6 tours consécutifs que la production est nulle
+  int m_productionNulle; // Nombre de tour consécutif où la production est nulle
 };
 
 #endif
