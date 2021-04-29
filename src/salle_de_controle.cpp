@@ -14,10 +14,16 @@ SalleDeControle::SalleDeControle() : m_schemaCentrale(false)
 {
 }
 
+void SalleDeControle::niveau(int niveau)
+{
+  m_niveau = niveau;
+}
+
+
 void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale)
 {
   cadre(fenetre);
-  dispatching.affichageDispatching(fenetre, centrale);
+  dispatching.affichageDispatching(fenetre, centrale, m_niveau);
   securite.affichageSecurite(fenetre, centrale);
   affichageProdElec(fenetre, centrale);
   afficheTauxBorePiscine(fenetre, centrale);

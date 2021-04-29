@@ -14,7 +14,7 @@ public:
 
   void ordreInitial(sdl2::window& fenetre); // Affiche l'ordre initial (divergence)
   void ordre(); // Simule les ordres qui arrivent après la divergence
-  void affichageDispatching(sdl2::window& fenetre, Centrale& centrale);  // Affiche les ordres provenant du dispatching national
+  void affichageDispatching(sdl2::window& fenetre, Centrale& centrale, int niveau);  // Affiche les ordres provenant du dispatching national
 
   void majdispatching(Centrale& centrale); // Met à jour le dispatching
 

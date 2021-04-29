@@ -39,6 +39,8 @@ void miseAJour(Centrale& centrale, SalleDeControle& salleDeControle)
 
 void niveau1(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle)
 {
+  salleDeControle.niveau(1);
+  
   vector<int> sortie = {0, 0}; // Premier : changement, second : fin session
 
   bool iskey_down = false;

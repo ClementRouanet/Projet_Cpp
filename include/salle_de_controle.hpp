@@ -14,6 +14,8 @@ class SalleDeControle
 public:
   SalleDeControle();  // Constructeur
 
+  void niveau(int niveau);
+
   // Affichage fenêtre graphique
   void majAffichage(sdl2::window& fenetre, Centrale& centrale); // Met à jour l'affichage de la fenêtre graphique
   void cadre(sdl2::window& fenetre) const; // Affiche les cadres
@@ -47,6 +49,7 @@ public:
 
 private:
   bool m_schemaCentrale;
+  int m_niveau;
   Securite securite;
   Dispatching dispatching;
 };
