@@ -5,14 +5,13 @@
 #include "circuit_primaire.hpp"
 #include "circuit_secondaire.hpp"
 #include "reacteur.hpp"
-#include "dispatching.hpp"
 #include "sdl2.hpp"
 
 
 class Centrale
 {
 public:
-  Centrale(); //Constrcteur
+  Centrale(); //Constructeur
 
 
   // FONCTIONS DE L'ENCEINTE
@@ -117,12 +116,6 @@ public:
   void majEtatInjBore(double valeur_demandee);
 
 
-  // FONCTIONS DU DISPATCHING
-  int scoreDispatching(); // Renvoie le score du dispatching
-  void affichageDispatching(sdl2::window& fenetre);  // Affiche les ordres provenant du dispatching national
-  void majdispatching(sdl2::window& fenetre, int tour); // Met à jour le dispatching
-
-
   // FONCTIONS DE REPARATION
   void reparationPompePrim();
   void reparationPompeSec();
@@ -142,7 +135,6 @@ private:
   CircuitSec secondaire;
   Reacteur reacteur;
   Enceinte enceinte;
-  Dispatching dispatching;
   double m_etat;
   double m_production;
 };

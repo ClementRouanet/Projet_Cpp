@@ -10,7 +10,7 @@
 using namespace std;
 
 
-Dispatching::Dispatching():m_tourDebut(0), m_tourActuel(0), m_score(100), m_nbOrdre(0), m_produire(0), m_ordre(false), m_contreOrdre(false), m_objectif(false), m_tourObjectif(0)
+Dispatching::Dispatching(): m_tourActuel(0), m_score(100), m_nbOrdre(0), m_produire(0), m_ordre(false), m_contreOrdre(false), m_objectif(false), m_tourObjectif(0)
 {
 }
 
@@ -56,11 +56,14 @@ void Dispatching::ordre()
   m_ordre = true;
   m_contreOrdre = false;
   m_nbOrdre += 1;
+  m_tourActuel = 0;
 }
 
 
-void Dispatching::affichageDispatching(sdl2::window& fenetre, double temperatureVap)
+void Dispatching::affichageDispatching(sdl2::window& fenetre, Centrale& centrale)
 {
+  double temperatureVap = centrale.temperatureVapeur();
+
   auto [wph, hph] = fenetre.dimensions();
   sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
 
@@ -105,15 +108,16 @@ void Dispatching::affichageDispatching(sdl2::window& fenetre, double temperature
 }
 
 
-void Dispatching::majdispatching(sdl2::window& fenetre, double temperatureVap, int tour)
+void Dispatching::majdispatching(Centrale& centrale)
 {
+  double temperatureVap = centrale.temperatureVapeur();
+
   if(temperatureVap>140 && m_nbOrdre==0)
     m_nbOrdre = 1;
 
   if(m_ordre==false && m_nbOrdre>0)
   {
     ordre();
-    m_tourDebut = tour;
   }
   else if(m_ordre==true && m_nbOrdre>0)
   {
@@ -127,32 +131,30 @@ void Dispatching::majdispatching(sdl2::window& fenetre, double temperatureVap, i
         m_objectif = false;
         m_tourObjectif = 0;
       }
+
       if(m_tourObjectif == 15)
       {
         m_ordre = false;
-        m_tourDebut = 0;
-        m_tourActuel = 0;
         m_tourObjectif = 0;
         m_score += 10;
       }
     }
 
-    if(m_tourActuel>=8 && m_tourActuel<16 && m_ordre==true)
+    if(m_tourActuel>=8 && m_tourActuel<16)
       m_score -= 1;
 
-    if(m_tourActuel>=16 && m_tourActuel<50 && m_ordre==true)
+    if(m_tourActuel>=16 && m_tourActuel<50)
     {
       auto RND = ((float)(rand()))/((float)(RAND_MAX));
       if(RND <= 0.2)
       {
         m_contreOrdre = true;
         ordre();
-        m_tourDebut = tour;
       }
     }
 
-    if(m_tourActuel>=50 && m_tourActuel<65 && m_ordre==true)
-    m_score -= 6;
+    if(m_tourActuel>=50 && m_tourActuel<65)
+      m_score -= 6;
 
     if(m_tourActuel==65 && m_score!=0)
     {

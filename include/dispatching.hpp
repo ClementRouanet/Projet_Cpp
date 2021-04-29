@@ -2,6 +2,7 @@
 #define DISPATCHING_HPP_
 
 #include "sdl2.hpp"
+#include "centrale.hpp"
 
 
 class Dispatching
@@ -13,14 +14,13 @@ public:
 
   void ordreInitial(sdl2::window& fenetre); // Affiche l'ordre initial (divergence)
   void ordre(); // Simule les ordres qui arrivent après la divergence
-  void affichageDispatching(sdl2::window& fenetre, double temperatureVap);  // Affiche les ordres provenant du dispatching national
+  void affichageDispatching(sdl2::window& fenetre, Centrale& centrale);  // Affiche les ordres provenant du dispatching national
 
-  void majdispatching(sdl2::window& fenetre, double temperatureVap, int tour); // Met à jour le dispatching
+  void majdispatching(Centrale& centrale); // Met à jour le dispatching
 
   ~Dispatching(); // Destructeur
 
 private:
-  int m_tourDebut;  // Tour du début de l'ordre
   int m_tourActuel; // Nombre de tours depuis le début de l'ordre
   int m_score;  // Score du joueur
   int m_nbOrdre;  // Nombre d'ordre reçu depuis le début de la partie
