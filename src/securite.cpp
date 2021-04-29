@@ -21,15 +21,6 @@ vector<string> Securite::messages(Centrale& centrale)
   m_nbMessages = 0;
   vector<string> messages;
 
-  messages.push_back("Température trop élevée dans le circuit primaire");
-  m_nbMessages += 1;
-
-  messages.push_back("Risque important de dégradation du circuit primaire dû à la température dans le circuit primaire");
-  m_nbMessages += 1;
-
-  messages.push_back("Risque de dégradation du pressuriseur dû à la température dans le circuit primaire");
-  m_nbMessages += 1;
-
   if(400 < centrale.temperatureEau() && centrale.temperatureEau() < 420){
     messages.push_back("Température trop élevée dans le circuit primaire");
     m_nbMessages += 1;

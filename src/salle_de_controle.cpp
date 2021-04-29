@@ -47,10 +47,9 @@ void SalleDeControle::cadre(sdl2::window& fenetre) const
 
 void SalleDeControle::affichageProdElec(sdl2::window& fenetre, Centrale& centrale) const
 {
-  double production = centrale.productionCentrale();
+  int production = centrale.productionCentrale();
 
   string sProduction(to_string(production));
-  sProduction.erase(5,4);
 
   auto [wph, hph] = fenetre.dimensions();
   sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
@@ -82,7 +81,8 @@ void SalleDeControle::afficheCircuitPrim(sdl2::window& fenetre, Centrale& centra
   double temperature = centrale.temperatureEau();
   double debit = centrale.debitEauPrim();
   double pression = centrale.pressionPrim();
-  double radioactivite = centrale.radioactivitePrim();
+  int radioactivite = centrale.radioactivitePrim();
+
 
   string sRendement(to_string(rendement*100));
   string sTemperature(to_string(temperature));
@@ -94,7 +94,6 @@ void SalleDeControle::afficheCircuitPrim(sdl2::window& fenetre, Centrale& centra
   sTemperature.erase(5,4);
   sDebit.erase(5,4);
   sPression.erase(4,5);
-  sRadioactivite.erase(4,5);
 
   auto [wph, hph] = fenetre.dimensions();
 
@@ -123,7 +122,7 @@ void SalleDeControle::afficheCircuitSec(sdl2::window& fenetre, Centrale& central
   double temperature = centrale.temperatureVapeur();
   double debit = centrale.debitEauSec();
   double pression = centrale.pressionVapeur();
-  double radioactivite = centrale.radioactiviteSec();
+  int radioactivite = centrale.radioactiviteSec();
 
   string sRendement(to_string(rendement*100));
   string sTemperature(to_string(temperature));
@@ -135,7 +134,6 @@ void SalleDeControle::afficheCircuitSec(sdl2::window& fenetre, Centrale& central
   sTemperature.erase(5,4);
   sDebit.erase(5,4);
   sPression.erase(4,5);
-  sRadioactivite.erase(4,5);
 
   if(temperature < 120)
   {
@@ -218,16 +216,29 @@ void SalleDeControle::afficheSystRefroidissement(sdl2::window& fenetre, Centrale
 void SalleDeControle::afficheEtatBarreGraphite(sdl2::window& fenetre, Centrale& centrale) const
 {
   double barresGr = centrale.etatBarresGr();
+  double proportionD = centrale.propGrDemande();
+  double proportionA = centrale.propGrActuel();
 
   string sbarresGr(to_string(barresGr*100));
+  string sProportionD(to_string(proportionD*100));
+  string sProportionA(to_string(proportionA*100));
+
   sbarresGr.erase(2,7);
+  sProportionD.erase(4,5);
+  sProportionA.erase(4,5);
 
   auto [wph, hph] = fenetre.dimensions();
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
-  sdl2::texte texteBarresGr("Etat des barres de graphite : " + sbarresGr + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  texteBarresGr.at(0.35*wph,0.9*hph);
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
 
-  fenetre << texteBarresGr;
+  sdl2::texte texteBarresGr("Etat des barres de graphite : " + sbarresGr + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteProportionD("Proportion demandée de graphite hors de l'eau : " + sProportionD + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteProportionA("Proportion actuelle de graphite hors de l'eau : " + sProportionA + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  texteBarresGr.at(0.3*wph,0.85*hph);
+  texteProportionA.at(0.3*wph,0.89*hph);
+  texteProportionD.at(0.3*wph,0.93*hph);
+
+  fenetre << texteBarresGr << texteProportionD << texteProportionA;
 }
 
 
@@ -697,10 +708,10 @@ void SalleDeControle::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& c
 void SalleDeControle::schemaCentrale(sdl2::window& fenetre, Centrale& centrale)
 {
   double etatCentrale = centrale.etatCentrale();
-  double etatReacteur = centrale.tauxBoreActuel(); //etatCuve();
-  double etatCircuitPrim = centrale.rendementPompePrim(); //etatCircuitPrim();
-  double etatCircuitSec = centrale.rendementPompeSec(); //etatCircuitSec();
-  double etatCondenseur = centrale.rendementPompeCondenseur(); //etatCondenseur();
+  double etatReacteur = centrale.etatCuve();
+  double etatCircuitPrim = centrale.etatCircuitPrim();
+  double etatCircuitSec = centrale.etatCircuitSec();
+  double etatCondenseur = centrale.etatCondenseur();
 
   auto [wph, hph] = fenetre.dimensions();
 

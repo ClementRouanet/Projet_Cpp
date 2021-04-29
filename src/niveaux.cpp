@@ -74,6 +74,12 @@ void niveau1(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeC
       }
       miseAJour(centrale, salleDeControle);
 
+    /*  cout << "TBeff : " << centrale.tauxBoreActuel() << endl;
+      cout << "TGreff : " << centrale.propGrActuel() << endl;
+      cout << "D1 : " << centrale.debitEauPrim() << endl;
+      cout << "IT1 : " << centrale.inertieTemperaturePrim() << endl;
+      cout << "P1 : " << centrale.pressionPrim() << endl << endl;*/
+
       auto end = chrono::system_clock::now();
       chrono::duration<double> secondesEcoulees = end - start;
       int tps = 1000 - floor(secondesEcoulees.count()*1000);

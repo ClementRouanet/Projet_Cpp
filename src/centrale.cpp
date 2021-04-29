@@ -69,7 +69,7 @@ void Centrale::majPressionEnceinte()
   //À chaque tour, 30% de chance que  la pression de l'enceinte baisse de 0.13 bar
   if(RND<0.3)
   {
-    enceinte.majPression(pressionEnceinte()-0.13);
+    //enceinte.majPression(pressionEnceinte()-0.13);
   }
 }
 

@@ -93,7 +93,7 @@ void CircuitPrim::majInertietemperature(double Tvap, double TBeff, double TGreff
   auto RND1 = ((float)(rand()))/((float)(RAND_MAX))*26;
   auto RND2 = ((float)(rand()))/((float)(RAND_MAX))*16;
 
-  if(m_echangChal<50 && TBeff<25 && TGreff<50)
+  if(m_echangChal<0.5 && TBeff<0.25 && TGreff<0.5)
     m_inertieTemp += RND1;
 
   if(Tvap<m_temperatureEau)
@@ -104,7 +104,7 @@ void CircuitPrim::majInertietemperature(double Tvap, double TBeff, double TGreff
 
 void CircuitPrim::majTemperatureEau(double TBeff, double TGreff)
 {
-  m_temperatureEau = max(25., (0.5-TBeff)/0.5*(645*TGreff-140*m_debit/90+2*m_pression)+26+m_inertieTemp);
+  m_temperatureEau = max(25., ((0.5-TBeff)/0.5)*(645*TGreff-140*(m_debit/90)+2*m_pression)+26+m_inertieTemp);
 }
 
 void CircuitPrim::majRadioactivite(double TBeff, double MW)
