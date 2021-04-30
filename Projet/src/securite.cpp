@@ -6,31 +6,34 @@
 #include <vector>
 
 #include "securite.hpp"
-#include "centrale.hpp"
-#include "sdl2.hpp"
+
 
 using namespace std;
 
 
-Securite::Securite():m_nbMessages(0), m_messageActuel(0)
+Securite::Securite():m_nbMessages(0), m_fenetreActuelle(0)
 {
 }
 
 
 vector<string> Securite::messages(Centrale& centrale)
 {
+  m_nbMessages = 10;
   vector<string> messages;
 
-  messages.push_back("Température trop élevée dans le circuit primaire");
-  m_nbMessages += 1;
+  messages.push_back("Température trop élevée dans le circuit primaire\n");
+  messages.push_back("Température trop élevée dans le circuit\n");
+  messages.push_back("Température trop élevée dans le\n");
+  messages.push_back("Température trop élevée dans ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  messages.push_back("Température trop élevée ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  messages.push_back("Température trop ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
+  messages.push_back("Températ\n");
+  messages.push_back("Temp\n");
+  messages.push_back("Temp\n");
+  messages.push_back("Temp\n");
 
-  messages.push_back("Risque important de dégradation du circuit primaire dû à la température dans le circuit primaire");
-  m_nbMessages += 1;
 
-  messages.push_back("Risque de dégradation du pressuriseur dû à la température dans le circuit primaire");
-  m_nbMessages += 1;
-
-  if(400 < centrale.temperatureEau() && centrale.temperatureEau() < 420){
+  /*if(400 < centrale.temperatureEau() && centrale.temperatureEau() < 420){
     messages.push_back("Température trop élevée dans le circuit primaire");
     m_nbMessages += 1;
   }
@@ -392,7 +395,7 @@ vector<string> Securite::messages(Centrale& centrale)
       RND = ((float)(rand()))/((float)(RAND_MAX))*0.1;
       centrale.majEtatCuve(centrale.etatCuve() - (0.5 + RND));
     }
-  }
+  }*/
   return messages;
 }
 
@@ -409,67 +412,163 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
     texteInitial.at(0.25*wph,0.5*hph);
 
     fenetre << texteInitial;
+    affichagePoints(fenetre);
   }
   else
   {
-    sdl2::font fonte_texte2("./data/Lato-Bold.ttf", 20);
-    sdl2::texte texteAlerte(alertes[m_messageActuel], fonte_texte2, fenetre, {0x00,0x00,0x00,0x00});
-    texteAlerte.at(0.3*wph,0.5*hph);
+    int nbMessages_fin = m_nbMessages % 3;
+    m_nbFenetres = m_nbMessages/3 + 1;
 
-    fenetre << texteAlerte;
+    sdl2::font fonte_texte2("./data/Lato-Bold.ttf", 18);
+
+    if(m_fenetreActuelle != 0 && m_fenetreActuelle != m_nbFenetres - 1)
+    {
+      sdl2::texte texte1(alertes[m_fenetreActuelle*3], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+      sdl2::texte texte2(alertes[m_fenetreActuelle*3 + 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+      sdl2::texte texte3(alertes[m_fenetreActuelle*3 + 2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+
+      texte1.at(0.25*wph,0.43*hph);
+      texte2.at(0.25*wph,0.51*hph);
+      texte3.at(0.25*wph,0.59*hph);
+
+      fenetre << texte1 << texte2 << texte3;
+      affichagePoints(fenetre);
+    }
+
+    if(m_fenetreActuelle == 0)
+    {
+      if(m_nbMessages < 3)
+      {
+        if(nbMessages_fin == 1)
+        {
+          sdl2::texte texte1(alertes[0], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+
+          texte1.at(0.25*wph,0.43*hph);
+
+          fenetre << texte1;
+          affichagePoints(fenetre);
+        }
+        if(nbMessages_fin == 2)
+        {
+          sdl2::texte texte1(alertes[0], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+          sdl2::texte texte2(alertes[1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+
+          texte1.at(0.25*wph,0.43*hph);
+          texte2.at(0.25*wph,0.51*hph);
+
+          fenetre << texte1 << texte2;
+          affichagePoints(fenetre);
+        }
+      }
+      else
+      {
+        sdl2::texte texte1(alertes[0], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+        sdl2::texte texte2(alertes[1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+        sdl2::texte texte3(alertes[2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+
+        texte1.at(0.25*wph,0.43*hph);
+        texte2.at(0.25*wph,0.51*hph);
+        texte3.at(0.25*wph,0.59*hph);
+
+        fenetre << texte1 << texte2 << texte3;
+        affichagePoints(fenetre);
+      }
+    }
+
+    if(m_fenetreActuelle == m_nbFenetres - 1)
+    {
+      if(nbMessages_fin == 1)
+      {
+        sdl2::texte texte1(alertes[m_nbMessages - 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+
+        texte1.at(0.25*wph,0.43*hph);
+
+        fenetre << texte1;
+        affichagePoints(fenetre);
+      }
+      if(nbMessages_fin == 2)
+      {
+        sdl2::texte texte1(alertes[m_nbMessages - 2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+        sdl2::texte texte2(alertes[m_nbMessages - 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+
+        texte1.at(0.25*wph,0.43*hph);
+        texte2.at(0.25*wph,0.51*hph);
+
+        fenetre << texte1 << texte2;
+        affichagePoints(fenetre);
+      }
+      if(nbMessages_fin == 0)
+      {
+        sdl2::texte texte1(alertes[m_nbMessages - 3], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+        sdl2::texte texte2(alertes[m_nbMessages - 2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+        sdl2::texte texte3(alertes[m_nbMessages - 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+
+        texte1.at(0.25*wph,0.43*hph);
+        texte2.at(0.25*wph,0.51*hph);
+        texte3.at(0.25*wph,0.59*hph);
+
+        fenetre << texte1 << texte2 << texte3;
+        affichagePoints(fenetre);
+      }
+    }
   }
 }
 
-void Securite::majSecurite(sdl2::window& fenetre, Centrale& centrale)
+
+void Securite::majSecuriteDroite()
 {
-  bool iskey_down = false;
-  sdl2::event_queue queue;
+  if(m_fenetreActuelle == m_nbFenetres - 1)
+    m_fenetreActuelle = 0;
+  else
+    m_fenetreActuelle += 1;
+}
 
-  auto events = queue.pull_events();
-  for (const auto& e : events)
+void Securite::majSecuriteGauche()
+{
+  if(m_fenetreActuelle == 0)
+    m_fenetreActuelle = m_nbFenetres - 1;
+  else
+    m_fenetreActuelle -= 1;
+}
+
+void Securite::affichagePoints(sdl2::window& fenetre)
+{
+  if(m_nbMessages > 3)
   {
-    if ((e->kind_of_event() == sdl2::event::key_down) || (e->kind_of_event() == sdl2::event::key_up))
-    {
-      auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
+    auto [wph, hph] = fenetre.dimensions();
 
-      if ((e->kind_of_event() == sdl2::event::key_down) &&  (iskey_down == false))
-      {
-        if (key_ev.code() == sdl2::event_keyboard::right)
-        {
-          if(m_messageActuel == m_nbMessages-1)
-            m_messageActuel = 0;
-          else
-            m_messageActuel += 1;
-        }
-        if (key_ev.code() == sdl2::event_keyboard::left)
-        {
-          if(m_messageActuel == 0)
-            m_messageActuel = m_nbMessages-1;
-          else
-            m_messageActuel -= 1;
-        }
-        /*switch (key_ev.code())
-        {
-          case sdl2::event_keyboard::right :
-          if(m_messageActuel == m_nbMessages-1)
-            m_messageActuel = 0;
-          else
-            m_messageActuel += 1;
-          break;
+    sdl2::font fonte_texte("./data/Lato-Bold.ttf", 50);
 
-          case sdl2::event_keyboard::left :
-          if(m_messageActuel == 0)
-            m_messageActuel = m_nbMessages-1;
-          else
-            m_messageActuel -= 1;
-          break;
-        }*/
+    /*SDL_Point points[m_nbFenetres];
+
+    // Création des SDL_Point
+    for(int i=0; i < m_nbFenetres; i++){
+        points[i] = { (0.4)*wph + i*(0.05)*wph , 0.65*hph };
+        cout << points[i].x << endl;
+        cout << points[i].y << endl;
       }
-      if (key_ev.type_of_event() == sdl2::event::key_up)
-      iskey_down = false;
+
+    SDL_SetRenderDrawColor(fenetre.get_native_renderer(), 0, 0, 0, 0); // Choisir la couleur blanche
+    SDL_RenderDrawPoints(fenetre.get_native_renderer(), &points[0]); // Dessiner mon tableau de SDL_Point en tous en couleur blanche.*/
+
+    for(int i=0; i < m_nbFenetres; i++)
+    {
+      if(i == m_fenetreActuelle)
+      {
+        sdl2::texte point(".", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
+        point.at(((0.48 - (m_nbFenetres*0.03)/2) + i*(0.03))*wph, 0.63*hph);
+
+        fenetre << point;
+      }
+      else
+      {
+        sdl2::texte point(".", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+        point.at(((0.48 - (m_nbFenetres*0.03)/2) + i*(0.03))*wph, 0.63*hph);
+
+        fenetre << point;
+      }
     }
   }
-
 }
 
 

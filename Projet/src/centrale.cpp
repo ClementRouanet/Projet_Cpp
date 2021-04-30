@@ -6,9 +6,6 @@
 #include <functional>
 
 #include "centrale.hpp"
-#include "circuit_primaire.hpp"
-#include "circuit_secondaire.hpp"
-#include "reacteur.hpp"
 
 using namespace std;
 
@@ -72,7 +69,7 @@ void Centrale::majPressionEnceinte()
   //À chaque tour, 30% de chance que  la pression de l'enceinte baisse de 0.13 bar
   if(RND<0.3)
   {
-    enceinte.majPression(pressionEnceinte()-0.13);
+    //enceinte.majPression(pressionEnceinte()-0.13);
   }
 }
 
@@ -100,7 +97,6 @@ void Centrale::majRadioactiviteEnceinte()
     enceinte.majRadioactivite(radioactiviteEnceinte()/1.5);
   }
 }
-
 
 
 //-------------------------------CENTRALE------------------------------------//
@@ -528,6 +524,49 @@ void Centrale::majEtatCanaux(double valeur_demandee)
 void Centrale::majEtatInjBore(double valeur_demandee)
 {
   reacteur.majEtatInjBore(valeur_demandee);
+}
+
+
+//--------------------------------------REPARATION------------------------------------///
+
+void Centrale::reparationPompePrim()
+{
+  primaire.reparationPompe();
+}
+
+void Centrale::reparationPompeSec()
+{
+  secondaire.reparationPompe();
+}
+
+void Centrale::reparationCondenseur()
+{
+  secondaire.reparationCondenseur();
+}
+
+void Centrale::reparationGenerateurVapeur()
+{
+  secondaire.reparationGenerateurVapeur();
+}
+
+void Centrale::reparationInjecteurBore()
+{
+  reacteur.reparationInjecteurBore();
+}
+
+void Centrale::reparationCircuitPrim()
+{
+  primaire.reparationEtat();
+}
+
+void Centrale::reparationCircuitSec()
+{
+  secondaire.reparationEtat();
+}
+
+void Centrale::reparationPressuriseur()
+{
+  primaire.reparationPressuriseur();
 }
 
 

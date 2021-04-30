@@ -93,7 +93,7 @@ void CircuitPrim::majInertietemperature(double Tvap, double TBeff, double TGreff
   auto RND1 = ((float)(rand()))/((float)(RAND_MAX))*26;
   auto RND2 = ((float)(rand()))/((float)(RAND_MAX))*16;
 
-  if(m_echangChal<50 && TBeff<25 && TGreff<50)
+  if(m_echangChal<0.5 && TBeff<0.25 && TGreff<0.5)
     m_inertieTemp += RND1;
 
   if(Tvap<m_temperatureEau)
@@ -104,7 +104,7 @@ void CircuitPrim::majInertietemperature(double Tvap, double TBeff, double TGreff
 
 void CircuitPrim::majTemperatureEau(double TBeff, double TGreff)
 {
-  m_temperatureEau = max(25., (0.5-TBeff)/0.5*(645*TGreff-140*m_debit/90+2*m_pression)+26+m_inertieTemp);
+  m_temperatureEau = max(25., ((0.5-TBeff)/0.5)*(645*TGreff-140*(m_debit/90)+2*m_pression)+26+m_inertieTemp);
 }
 
 void CircuitPrim::majRadioactivite(double TBeff, double MW)
@@ -112,6 +112,22 @@ void CircuitPrim::majRadioactivite(double TBeff, double MW)
   auto RND = ((float)(rand()))/((float)(RAND_MAX))*90;
 
   m_radioactivite = 98*(m_debit+1) + RND + (0.5-TBeff)*(MW+0.1)*6.54;
+}
+
+void CircuitPrim::reparationEtat()
+{
+  if(m_etatCircuit >= 0.8)
+    m_etatCircuit = 1;
+  else
+  {
+    auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.02;
+    m_etatCircuit += RND;
+  }
+}
+
+void CircuitPrim::reparationPressuriseur()
+{
+  m_pressuriseur.reparation();
 }
 
 

@@ -20,6 +20,8 @@ public:
   void majEtatPompe(double valeur); // Modifie l'état de la pompe
   void majRendementPompe(double valeur); // Modifie le rendement de la pompe
 
+  void reparationPompe();  // Réparation de l'état de la pompe par les ouvriers
+
   ~Circuit(); // Destructeur
 
 protected:

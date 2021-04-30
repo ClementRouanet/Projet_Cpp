@@ -19,6 +19,8 @@ public:
   void majDebit(double valeur); // Modifie le débit au niveau du condenseur
   void majDifferenceChaleur(double valeur); // Modifie la différence de chaleur entre l'entrée et la sortie du condenseur
 
+  void reparation();  // Réparation de l'état du condenseur par les ouvriers
+
   ~Condenseur();  // Destructeur
 
 private:

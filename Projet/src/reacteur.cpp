@@ -57,7 +57,6 @@ double Reacteur::getEtatInjBore() const
 
 void Reacteur::majPropGrDemandee(double valeur_demandee)
 {
-  m_propGrAct = m_propGrDemandee;
   if((1-m_etatBarresGr)<=valeur_demandee && valeur_demandee<=1.)
     m_propGrDemandee = valeur_demandee;
   else if(valeur_demandee<1-m_etatBarresGr)
@@ -77,7 +76,6 @@ void Reacteur::majPropGrAct()
 
 void Reacteur::majTauxBoreDemande(double valeur_demandee)
 {
-  m_tauxBoreAct = m_tauxBoreDemande;
   if(0<=valeur_demandee && valeur_demandee<=0.5)
     m_tauxBoreDemande = valeur_demandee;
   else if(valeur_demandee<0)
@@ -149,6 +147,17 @@ void Reacteur::majEtatInjBore(double valeur_demandee)
     m_etatInjBore = 0.;
   else
     m_etatInjBore = 1.;
+}
+
+void Reacteur::reparationInjecteurBore()
+{
+  if(m_etatInjBore > 0.96)
+    m_etatInjBore = 1;
+  else
+  {
+    auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.04;
+    m_etatInjBore += RND;
+  }
 }
 
 Reacteur::~Reacteur()

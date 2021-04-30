@@ -17,6 +17,8 @@ public:
   void majTemperatureDemandee(double valeur); // Modifie la température du pressuriseur demandée
   void majTemperatureActuel(); // Modifie la température du pressuriseur actuel
 
+  void reparation();  // Réparation de l'état du pressuriseur par les ouvriers
+
   ~Pressuriseur();  // Destructeur
 
 private:

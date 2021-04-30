@@ -130,6 +130,34 @@ void CircuitSec::majRadioactivite(double etatEchangChaleur, double radioactivite
   m_radioactivite = max(m_radioactivite, (1.-etatEchangChaleur)*radioactivite1);
 }
 
+void CircuitSec::reparationGenerateurVapeur()
+{
+  if(m_etatGenerateurVapeur >= 0.89)
+    m_etatGenerateurVapeur = 1;
+  else
+  {
+    auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.05;
+    m_etatGenerateurVapeur += RND;
+  }
+}
+
+void CircuitSec::reparationEtat()
+{
+  if(m_etatCircuit >= 0.78)
+    m_etatCircuit = 1;
+  else
+  {
+    auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.02;
+    m_etatCircuit += RND;
+  }
+}
+
+void CircuitSec::reparationCondenseur()
+{
+  m_condenseur.reparation();
+}
+
+
 CircuitSec::~CircuitSec()
 {
 }

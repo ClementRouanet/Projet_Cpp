@@ -29,6 +29,9 @@ public:
   void majTemperatureEau(double TBeff, double TGreff); // Modifie la température de l'eau dans le circuit
   void majRadioactivite(double TBeff, double MW);  // Modifie la radioactivité du circuit
 
+  void reparationEtat();  // Réparation de l'état du circuit primaire par les ouvriers
+  void reparationPressuriseur();  // Réparation de l'état du pressuriseur par les ouvriers
+
   ~CircuitPrim(); // Destructeur
 
 private:

@@ -29,6 +29,10 @@ public:
   void majInertieTemperature(double temperatureEau); // Modifie l'inertie température eau circuit
   void majRadioactivite(double etatEchangChaleur, double radioactivite1);  // Modifie la radioactivité du circuit
 
+  void reparationGenerateurVapeur();  // Réparation de l'état du générateur de vapeur par les ouvriers
+  void reparationEtat();  // Réparation de l'état du circuit secondaire par les ouvriers
+  void reparationCondenseur();  // Réparation de l'état du condenseur par les ouvriers
+
   ~CircuitSec();  // Destructeur
 
 private:
