@@ -254,9 +254,18 @@ int Ouvriers::nombreEnIntervention()
   for(int i=0;i<145;i++)
   {
     if(m_etatMission[i]==1)
-    {
       n++;
-    }
+  }
+  return n;
+}
+
+int Ouvriers::nombreEnInterventionOrgane(string lieu)
+{
+  int n(0);
+  for(int i=0;i<145;i++)
+  {
+    if(m_lieuMission[i]==lieu && m_etatMission[i]==1)
+      n++;
   }
   return n;
 }
