@@ -17,6 +17,9 @@ PosteDeSecurite::PosteDeSecurite()
 
 void PosteDeSecurite::majAffichage(sdl2::window& fenetre, Centrale& centrale,Ouvriers& ouvriers) // Met à jour l'affichage de la fenêtre graphique
 {
+
+  if(m_schemaCentrale == false)
+  {
   cadre(fenetre);
   affichageReacteur(fenetre,centrale); // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
   affichageCircuitPrim(fenetre,centrale);  // Affiche le circuit primaire (état, pompe, pressuriseur, résistances électriques et l'injecteur)
@@ -27,8 +30,8 @@ void PosteDeSecurite::majAffichage(sdl2::window& fenetre, Centrale& centrale,Ouv
   affichageActivite(fenetre,centrale); // Affiche le signalement de divers niveaux de contaminations
   affichageOrdinateur(fenetre,centrale); // Affiche l'état courant de la centrale et des alentours
   affichageCommandes(fenetre,centrale);  // Affiche les commandes disponibles pour effectuer des actions
-
-  if(m_schemaCentrale == true)
+ }
+  else
   {
     affichageSchemaCentrale(fenetre, centrale);
   }
@@ -228,11 +231,11 @@ void PosteDeSecurite::affichageOuvriers(sdl2::window& fenetre,Ouvriers& ouvriers
 {
   int ouvriersDispo = ouvriers.getNombreOuvriersDispo();
   int ouvriersEnIntervention = ouvriers.nombreEnIntervention();
-  //int ouvriersBlesses = ouvriers.nombreBlesses();
+  int ouvriersBlesses = ouvriers.nombreOuvriersBlesses();
 
   string sOuvriersDispo(to_string(ouvriersDispo));
   string sOuvriersEnIntervention(to_string(ouvriersEnIntervention));
-  //string sOuvriersBlesses(to_string(ouvriersBlesses));
+  string sOuvriersBlesses(to_string(ouvriersBlesses));
 
 
   auto [x, y] = fenetre.dimensions();
@@ -241,13 +244,13 @@ void PosteDeSecurite::affichageOuvriers(sdl2::window& fenetre,Ouvriers& ouvriers
 
   sdl2::texte texteOuvriersDispo("OuvriersDispo : " + sOuvriersDispo, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteOuvriersEnIntervention("OuvriersEnIntervention : " + sOuvriersEnIntervention, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  //sdl2::texte texteOuvriersBlesses("OuvriersBlesses : " + sOuvriersBlesses, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteOuvriersBlesses("OuvriersBlesses : " + sOuvriersBlesses, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
 
   //Placement dans le cadran : On change après encore
   texteOuvriersDispo.at(2*x/5-20,140);
   texteOuvriersEnIntervention.at(2*x/5-20,180);
-  //texteOuvriersBlesses.at(2*x/5-20,220);
+  texteOuvriersBlesses.at(2*x/5-20,220);
 
 
   fenetre<<texteOuvriersDispo<<texteOuvriersEnIntervention;//<<texteOuvriersBlesses
@@ -453,35 +456,91 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
           {
              //J'attends les autres fonctions les kheys
               case 49 : //1
+              if(ouvriers.InterventionEnCours("pompe primaire") == false)
+              {
               ouvriers.envoyerOuvriers("pompe primaire",centrale);
+              }
+              else
+              {
+                annulerIntervention("pompe primaire");
+              }
               break;
 
               case 50 :  //2
+              if(ouvriers.InterventionEnCours("pompe secondaire") == false)
+              {
               ouvriers.envoyerOuvriers("pompe secondaire",centrale);
+              }
+              else
+              {
+                annulerIntervention("pompe secondaire");
+              }
               break;
 
               case 99 : //c
+              if(ouvriers.InterventionEnCours("condenseur") == false)
+              {
               ouvriers.envoyerOuvriers("condenseur",centrale);
+              }
+              else
+              {
+                annulerIntervention("condenseur");
+              }
               break;
 
               case 103 : //g
-              ouvriers.envoyerOuvriers("generateur de vapeur",centrale);;
+              if(ouvriers.InterventionEnCours("generateur de vapeur") == false)
+              {
+              ouvriers.envoyerOuvriers("generateur de vapeur",centrale);
+              }
+              else
+              {
+                annulerIntervention("generateur de vapeur");
+              }
               break;
 
               case 98 : //b
+              oif(ouvriers.InterventionEnCours("injecteur Bore") == false)
+              {
               ouvriers.envoyerOuvriers("injecteur Bore",centrale);
+              }
+              else
+              {
+                annulerIntervention("injecteur Bore");
+              }
               break;
 
               case 105 : //i
+              if(ouvriers.InterventionEnCours("circuit primaire") == false)
+              {
               ouvriers.envoyerOuvriers("circuit primaire",centrale);
+              }
+              else
+              {
+                annulerIntervention("circuit primaire");
+              }
               break;
 
               case 114 : //r
+              if(ouvriers.InterventionEnCours("circuit secondaire") == false)
+              {
               ouvriers.envoyerOuvriers("circuit secondaire",centrale);
+              }
+              else
+              {
+                annulerIntervention("circuit secondaire");
+              }
               break;
 
               case 112 : //p
+              if(ouvriers.InterventionEnCours("pressuriseur") == false)
+              {
               ouvriers.envoyerOuvriers("pressuriseur",centrale);
+              }
+              else
+              {
+                annulerIntervention("pressuriseur");
+              }
               break;
            }
               majAffichage(fenetre, centrale,ouvriers);

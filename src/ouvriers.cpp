@@ -283,6 +283,32 @@ void Ouvriers::annulerIntervention(string lieu)
   }
 }
 
+int Ouvriers::nombreOuvriersBlesses()
+{
+  int n(0);
+  for(int i=0;i<145;i++)
+  {
+    if(m_etatSante[i]==0)
+    {
+      n++;
+    }
+  }
+  return n;
+}
+
+bool Ouvriers::InterventionEnCours(string lieu)
+{
+  bool tmp;
+  for(int i=0;i<145;i++)
+  {
+    if(m_lieuMission[i]==lieu && m_etatMission[i]==1)
+      tmp = true;
+    else
+      tmp = false;
+  }
+  return tmp;
+}
+
 Ouvriers::~Ouvriers()
 {
 
