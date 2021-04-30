@@ -203,35 +203,35 @@ void Ouvriers::rappelerOuvriers(Centrale& centrale)
   {
     if(m_lieuMission[i]=="pompe primaire" && centrale.etatPompePrim()==1 && m_etatSante[i]==1)
     {
-      m_estDispo[i] = 1;
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
     }
     if(m_lieuMission[i]=="pompe secondaire" && centrale.etatPompeSec()==1 && m_etatSante[i]==1)
     {
-      m_estDispo[i] = 1;
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
     }
     if(m_lieuMission[i]=="condenseur" && centrale.etatCondenseur()==1 && m_etatSante[i]==1)
     {
-      m_estDispo[i] = 1;
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
     }
     if(m_lieuMission[i]=="generateur de vapeur" && centrale.etatGenerateurVapeur()==1 && m_etatSante[i]==1)
     {
-      m_estDispo[i] = 1;
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
     }
     if(m_lieuMission[i]=="injecteur Bore" && centrale.etatInjBore()==1 && m_etatSante[i]==1)
     {
-      m_estDispo[i] = 1;
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
     }
     if(m_lieuMission[i]=="circuit primaire" && centrale.etatCircuitPrim()==1 && m_etatSante[i]==1)
     {
-      m_estDispo[i] = 1;
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
     }
     if(m_lieuMission[i]=="circuit secondaire" && centrale.etatCircuitSec()==1 && m_etatSante[i]==1)
     {
-      m_estDispo[i] = 1;
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
     }
     if(m_lieuMission[i]=="pressuriseur" && centrale.etatPressuriseur()==1 && m_etatSante[i]==1)
     {
-      m_estDispo[i] = 1;
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
     }
   }
 }
@@ -294,6 +294,19 @@ int Ouvriers::nombreOuvriersBlesses()
     }
   }
   return n;
+}
+
+bool Ouvriers::InterventionEnCours(string lieu)
+{
+  bool tmp;
+  for(int i=0;i<145;i++)
+  {
+    if(m_lieuMission[i]==lieu && m_etatMission[i]==1)
+      tmp = true;
+    else
+      tmp = false;
+  }
+  return tmp;
 }
 
 Ouvriers::~Ouvriers()

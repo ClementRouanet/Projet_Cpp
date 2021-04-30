@@ -24,6 +24,7 @@ int nombreEnIntervention();
 int interventionPossible(Centrale& centrale);
 void annulerIntervention(std::string lieu);
 int nombreOuvriersBlesses();
+bool InterventionEnCours(std::string lieu);
 
 private:
 std::vector<int> m_etatSante;
