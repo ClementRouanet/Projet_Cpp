@@ -1,21 +1,34 @@
 #ifndef OUVRIERS_HPP_
 #define OUVRIERS_HPP_
-
+#include <string>
+#include <vector>
+#include <random>
+#include "centrale.hpp"
 
 class Ouvriers
 {
 public:
-  Ouvriers(); // Constructeur
 
-  void guerison();  // 40% de chance que l'ouvrier guérisse
-  void blessure();  // Simule la blessure d'un ouvrier
-
-  ~Ouvriers();  // Destructeur
+Ouvriers();
+~Ouvriers();
+std::vector<int> getEtatSante() const;
+std::vector<int> getEtatMission() const;
+std::vector<std::string> getLieuMission() const;
+int getNombreOuvriersDispo() const;
+void majEtatSante(Centrale& centrale);
+int majNombreOuvriersDispo();
+void envoyerOuvriers(std::string lieu, Centrale& centrale);
+void rappelerOuvriers(Centrale& centrale);
+void guerir();
+int nombreEnIntervention();
+int interventionPossible(Centrale& centrale);
+void annulerIntervention(std::string lieu);
 
 private:
-  int m_nbOuvriers;
-  std::vector<bool,m_nbOuvriers> m_malade;
-  std::vector<bool,m_nbOuvriers> m_chantier;
+std::vector<int> m_etatSante;
+std::vector<int> m_etatMission;
+std::vector<std::string> m_lieuMission;
+std::vector<int> m_estDispo;
+int m_nombreOuvriersDispo;
 };
-
 #endif
