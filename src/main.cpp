@@ -6,6 +6,7 @@
 #include "centrale.hpp"
 #include "salle_de_controle.hpp"
 #include "poste_de_securite.hpp"
+#include "ouvriers.hpp"
 #include "dispatching.hpp"
 
 
@@ -16,6 +17,7 @@ void debut()
 {
   PosteDeSecurite pds;
   SalleDeControle sdc;
+  Ouvriers ouvriers;
   CircuitPrim cp;
   CircuitSec cs;
   Centrale cent;
@@ -28,7 +30,7 @@ void debut()
 
   while (not quitting && finSession == 0)
   {
-    pds.majAffichage(fenetre, cent);
+    pds.majAffichage(fenetre, cent, ouvriers);
 
     auto events = queue.pull_events();
     for ( const auto& e : events)

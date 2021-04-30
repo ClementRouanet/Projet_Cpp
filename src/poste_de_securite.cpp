@@ -15,7 +15,7 @@ PosteDeSecurite::PosteDeSecurite()
 
 }
 
-void PosteDeSecurite::majAffichage(sdl2::window& fenetre, Centrale& centrale) // Met à jour l'affichage de la fenêtre graphique
+void PosteDeSecurite::majAffichage(sdl2::window& fenetre, Centrale& centrale,Ouvriers& ouvriers) // Met à jour l'affichage de la fenêtre graphique
 {
   cadre(fenetre);
   affichageReacteur(fenetre,centrale); // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
@@ -53,7 +53,7 @@ void PosteDeSecurite::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& c
   bool iskey_down = false;
   sdl2::event_queue queue;
 
-  schemaCentrale(fenetre, centrale);
+  //schemaCentrale(fenetre, centrale);
   auto events = queue.pull_events();
   for (const auto& e : events)
   {
@@ -227,7 +227,7 @@ void PosteDeSecurite::affichageCondenseur(sdl2::window& fenetre,Centrale& centra
 void PosteDeSecurite::affichageOuvriers(sdl2::window& fenetre,Ouvriers& ouvriers) const // Affiche les effectifs humains à notre disposition
 {
   int ouvriersDispo = ouvriers.getNombreOuvriersDispo();
-  int ouvriersEnIntervention = ouvriers.nombreEnIntervention()
+  int ouvriersEnIntervention = ouvriers.nombreEnIntervention();
   //int ouvriersBlesses = ouvriers.nombreBlesses();
 
   string sOuvriersDispo(to_string(ouvriersDispo));
@@ -241,13 +241,13 @@ void PosteDeSecurite::affichageOuvriers(sdl2::window& fenetre,Ouvriers& ouvriers
 
   sdl2::texte texteOuvriersDispo("OuvriersDispo : " + sOuvriersDispo, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteOuvriersEnIntervention("OuvriersEnIntervention : " + sOuvriersEnIntervention, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteOuvriersBlesses("OuvriersBlesses : " + sOuvriersBlesses, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  //sdl2::texte texteOuvriersBlesses("OuvriersBlesses : " + sOuvriersBlesses, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
 
   //Placement dans le cadran : On change après encore
   texteOuvriersDispo.at(2*x/5-20,140);
   texteOuvriersEnIntervention.at(2*x/5-20,180);
-  texteOuvriersBlesses.at(2*x/5-20,220);
+  //texteOuvriersBlesses.at(2*x/5-20,220);
 
 
   fenetre<<texteOuvriersDispo<<texteOuvriersEnIntervention;//<<texteOuvriersBlesses
@@ -357,13 +357,14 @@ texteC.at(3*wph/4,330);
 
 
 
-  fenetre << texte << texteTab << texteEspace << texteB1 << texteP1 << texteO << texte1 << texte2 << texteB2 << texteP2 << texteI << texteR << texteG << texteC;
+  fenetre << texteTab << texteEspace << texteB1 << texteP1 << texteO << texte1 << texte2 << texteB2 << texteP2 << texteI << texteR << texteG << texteC;
 
 }
 
 
 bool PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale, Ouvriers& ouvriers)
 {
+  bool sortie;
       switch (touche)
       {
         case 9 :  // tab
@@ -375,7 +376,7 @@ bool PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& 
           break;
 
         case 112 :  // p
-          evacuationPopulation(fenetre, centrale);
+          evacuationPopulation(fenetre, centrale,ouvriers);
           break;
 
         case 98 :  // b
@@ -391,7 +392,7 @@ bool PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& 
 }
 
 
-void PosteDeSecurite::evacuationPopulation(sdl2::window& fenetre, Centrale& centrale)
+void PosteDeSecurite::evacuationPopulation(sdl2::window& fenetre, Centrale& centrale,Ouvriers& ouvriers)
 {
 
   bool quitter = false;
@@ -412,11 +413,11 @@ void PosteDeSecurite::evacuationPopulation(sdl2::window& fenetre, Centrale& cent
           switch (key_ev.code())
           {
               case 13 ://entrer
-              majEvacuation();
+              centrale.majEvacuation();
               quitter = true;
               break;
            }
-              majAffichage(fenetre, centrale);
+              majAffichage(fenetre, centrale, ouvriers);
               iskey_down = true;
         }
           if (key_ev.type_of_event() == sdl2::event::key_up)
@@ -452,38 +453,38 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
           {
              //J'attends les autres fonctions les kheys
               case 49 : //1
-              ouvriers.envoyerOuvriers(pompe primaire,centrale);
+              ouvriers.envoyerOuvriers("pompe primaire",centrale);
               break;
 
               case 50 :  //2
-              ouvriers.envoyerOuvriers(pompe secondaire,centrale);
+              ouvriers.envoyerOuvriers("pompe secondaire",centrale);
               break;
 
               case 99 : //c
-              ouvriers.envoyerOuvriers(condenseur,centrale);
+              ouvriers.envoyerOuvriers("condenseur",centrale);
               break;
 
               case 103 : //g
-              ouvriers.envoyerOuvriers(generateur de vapeur,centrale);;
+              ouvriers.envoyerOuvriers("generateur de vapeur",centrale);;
               break;
 
               case 98 : //b
-              ouvriers.envoyerOuvriers(injecteur Bore,centrale);
+              ouvriers.envoyerOuvriers("injecteur Bore",centrale);
               break;
 
               case 105 : //i
-              ouvriers.envoyerOuvriers(circuit primaire,centrale);
+              ouvriers.envoyerOuvriers("circuit primaire",centrale);
               break;
 
               case 114 : //r
-              ouvriers.envoyerOuvriers(circuit secondaire,centrale);
+              ouvriers.envoyerOuvriers("circuit secondaire",centrale);
               break;
 
               case 112 : //p
-              ouvriers.envoyerOuvriers(pressuriseur,centrale);
+              ouvriers.envoyerOuvriers("pressuriseur",centrale);
               break;
            }
-              majAffichage(fenetre, centrale);
+              majAffichage(fenetre, centrale,ouvriers);
               iskey_down = true;
         }
           if (key_ev.type_of_event() == sdl2::event::key_up)
