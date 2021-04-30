@@ -121,10 +121,11 @@ void Dispatching::affichageDispatching(sdl2::window& fenetre, Centrale& centrale
 }
 
 
-void Dispatching::majdispatching(Centrale& centrale)
+bool Dispatching::majdispatching(Centrale& centrale)
 {
   double temperatureVap = centrale.temperatureVapeur();
   double production = centrale.productionCentrale();
+  bool fin = false;
 
   if(temperatureVap>140 && m_nbOrdre==0)
     m_nbOrdre = 1;
@@ -189,6 +190,9 @@ void Dispatching::majdispatching(Centrale& centrale)
     }
   }
   m_tourActuel += 1;
+  fin = finDispatching();
+
+  return fin;
 }
 
 

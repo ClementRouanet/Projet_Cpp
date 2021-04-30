@@ -10,7 +10,7 @@
 using namespace std;
 
 
-SalleDeControle::SalleDeControle() : m_schemaCentrale(false)
+SalleDeControle::SalleDeControle() : m_schemaCentrale(false), m_niveau(1)
 {
 }
 
@@ -770,15 +770,15 @@ void SalleDeControle::schemaCentrale(sdl2::window& fenetre, Centrale& centrale)
 }
 
 
-void SalleDeControle::majdispatching( Centrale& centrale)
+bool SalleDeControle::majdispatching( Centrale& centrale)
 {
-  dispatching.majdispatching(centrale);
+  return dispatching.majdispatching(centrale);
 }
 
 
-bool SalleDeControle::finDispatching()
+int SalleDeControle::scoreDispatching()
 {
-  return dispatching.finDispatching();
+  return dispatching.scoreDispatching();
 }
 
 

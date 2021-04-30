@@ -8,12 +8,12 @@
 
 void miseAJour(Centrale& centrale, SalleDeControle& salleDeControle);
 
-void niveau1(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle);
-void niveau2(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle);
-void niveau3(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle);
+int niveau1(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle);
+int niveau2(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle);
+int niveau3(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle);
 
-int menu();
-void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle);
+int menu(sdl2::window fenetreMenu);
+void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle, int niveau, int nbTour);
 
 void jeu();
 
