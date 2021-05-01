@@ -18,8 +18,7 @@ PosteDeSecurite::PosteDeSecurite()
 void PosteDeSecurite::majAffichage(sdl2::window& fenetre, Centrale& centrale,Ouvriers& ouvriers) // Met à jour l'affichage de la fenêtre graphique
 {
 
-  if(m_schemaCentrale == false)
-  {
+
   cadre(fenetre);
   affichageReacteur(fenetre,centrale); // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
   affichageCircuitPrim(fenetre,centrale);  // Affiche le circuit primaire (état, pompe, pressuriseur, résistances électriques et l'injecteur)
@@ -30,8 +29,7 @@ void PosteDeSecurite::majAffichage(sdl2::window& fenetre, Centrale& centrale,Ouv
   affichageActivite(fenetre,centrale); // Affiche le signalement de divers niveaux de contaminations
   affichageOrdinateur(fenetre,centrale); // Affiche l'état courant de la centrale et des alentours
   affichageCommandes(fenetre,centrale);  // Affiche les commandes disponibles pour effectuer des actions
- }
-  else
+  if(m_schemaCentrale == true)
   {
     affichageSchemaCentrale(fenetre, centrale);
   }
@@ -462,7 +460,7 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
               }
               else
               {
-                annulerIntervention("pompe primaire");
+                ouvriers.annulerIntervention("pompe primaire");
               }
               break;
 
@@ -473,7 +471,7 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
               }
               else
               {
-                annulerIntervention("pompe secondaire");
+                ouvriers.annulerIntervention("pompe secondaire");
               }
               break;
 
@@ -484,7 +482,7 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
               }
               else
               {
-                annulerIntervention("condenseur");
+                ouvriers.annulerIntervention("condenseur");
               }
               break;
 
@@ -495,18 +493,18 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
               }
               else
               {
-                annulerIntervention("generateur de vapeur");
+                ouvriers.annulerIntervention("generateur de vapeur");
               }
               break;
 
               case 98 : //b
-              oif(ouvriers.InterventionEnCours("injecteur Bore") == false)
+              if(ouvriers.InterventionEnCours("injecteur Bore") == false)
               {
               ouvriers.envoyerOuvriers("injecteur Bore",centrale);
               }
               else
               {
-                annulerIntervention("injecteur Bore");
+                ouvriers.annulerIntervention("injecteur Bore");
               }
               break;
 
@@ -517,7 +515,7 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
               }
               else
               {
-                annulerIntervention("circuit primaire");
+                ouvriers.annulerIntervention("circuit primaire");
               }
               break;
 
@@ -528,7 +526,7 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
               }
               else
               {
-                annulerIntervention("circuit secondaire");
+                ouvriers.annulerIntervention("circuit secondaire");
               }
               break;
 
@@ -539,7 +537,7 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
               }
               else
               {
-                annulerIntervention("pressuriseur");
+                ouvriers.annulerIntervention("pressuriseur");
               }
               break;
            }
