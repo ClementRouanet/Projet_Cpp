@@ -67,17 +67,25 @@ void SalleDeControle::affichageProdElec(sdl2::window& fenetre, Centrale& central
 
 void SalleDeControle::afficheTauxBorePiscine(sdl2::window& fenetre, Centrale& centrale) const
 {
-  double bore = centrale.tauxBoreActuel();
+  double boreAct = centrale.tauxBoreActuel();
+  double boreDem = centrale.tauxBoreDemande();
 
-  string sBore(to_string(bore));
-  sBore.erase(4,5);
+  string sBoreAct(to_string(boreAct));
+  string sBoreDem(to_string(boreDem));
+
+  sBoreAct.erase(4,5);
+  sBoreDem.erase(4,5);
 
   auto [wph, hph] = fenetre.dimensions();
   sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
-  sdl2::texte texteBore("Taux de bore dans la piscine : " + sBore, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  texteBore.at(0.35*wph,0.77*hph);
 
-  fenetre << texteBore;
+  sdl2::texte texteBoreAct("Taux de bore actuel dans la piscine : " + sBoreAct, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteBoreDem("Taux de bore demandé dans la piscine : " + sBoreDem, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  texteBoreAct.at(0.35*wph,0.75*hph);
+  texteBoreDem.at(0.35*wph,0.79*hph);
+
+  fenetre << texteBoreAct << texteBoreDem;
 }
 
 
@@ -505,12 +513,12 @@ void SalleDeControle::majTauxAcideBorique(sdl2::window& fenetre, Centrale& centr
             break;
 
             case sdl2::event_keyboard::up :
-            acideBorique = centrale.tauxBoreActuel();
+            acideBorique = centrale.tauxBoreDemande();
             centrale.majTauxBoreDemande(acideBorique + 0.05);
             break;
 
             case sdl2::event_keyboard::down :
-            acideBorique = centrale.tauxBoreActuel();
+            acideBorique = centrale.tauxBoreDemande();
             centrale.majTauxBoreDemande(acideBorique - 0.05);
             break;
           }
@@ -702,7 +710,7 @@ void SalleDeControle::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& c
         if (key_ev.code() == 13)
           m_schemaCentrale = false;
 
-      iskey_down = true;
+        iskey_down = true;
       }
     if (key_ev.type_of_event() == sdl2::event::key_up)
       iskey_down = false;

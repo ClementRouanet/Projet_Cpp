@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <string>
 
 #include "niveaux.hpp"
 #include "sdl2.hpp"
