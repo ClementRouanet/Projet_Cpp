@@ -1,5 +1,5 @@
-#ifndef REACTEUR_HPP_
-#define REACTEUR_HPP_
+#ifndef _PROJET_REACTEUR_HPP_
+#define _PROJET_REACTEUR_HPP_
 
 class Reacteur
 {

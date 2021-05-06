@@ -1,7 +1,7 @@
-#include "ouvriers.hpp"
-#include <string>
 #include <random>
-#include <vector>
+
+#include "ouvriers.hpp"
+
 using namespace std;
 
 Ouvriers::Ouvriers() : m_nombreOuvriersDispo(145)
@@ -379,5 +379,4 @@ void Ouvriers::remplacerOuvrierMalade(string lieu)
 
 Ouvriers::~Ouvriers()
 {
-
 }

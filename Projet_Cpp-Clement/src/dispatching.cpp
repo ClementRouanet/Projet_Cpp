@@ -10,7 +10,9 @@
 using namespace std;
 
 
-Dispatching::Dispatching(): m_tourActuel(0), m_score(100), m_nbOrdre(0), m_produire(0), m_ordre(false), m_contreOrdre(false), m_objectif(false), m_tourObjectif(0)
+Dispatching::Dispatching()
+    : m_tourActuel(0), m_score(100), m_nbOrdre(0), m_produire(0), m_ordre(false), m_contreOrdre(false), m_objectif(false), m_tourObjectif(0),
+      m_finPosible(false), m_productionNulle(0)
 {
 }
 
@@ -25,14 +27,14 @@ void Dispatching::ordreInitial(sdl2::window& fenetre)
 {
   auto [wph, hph] = fenetre.dimensions();
 
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
+  sdl2::font fonte_texte("./data/Welbut__.ttf",15);
   sdl2::texte texte1("Mettre la centrale en divergence :", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texte2("- démarrer la réaction en chaîne", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texte3("- démarrer production de vapeur dans le générateur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texte1.at(0.02*wph,0.60*hph);
-  texte2.at(0.023*wph,0.64*hph);
-  texte3.at(0.023*wph,0.68*hph);
+  texte1.at(0.1*wph,0.45*hph);
+  texte2.at(0.1*wph,0.5*hph);
+  texte3.at(0.1*wph,0.55*hph);
 
   fenetre << texte1 << texte2 << texte3;
 }
@@ -68,9 +70,9 @@ void Dispatching::affichageDispatching(sdl2::window& fenetre, Centrale& centrale
 
   if(niveau == 1)
   {
-    sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+    sdl2::font fonte_texte("./data/Welbut__.ttf",20);
     sdl2::texte texte("Amusez-vous !", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-    texte.at(0.02*wph,0.7*hph);
+    texte.at(0.1*wph,0.5*hph);
     fenetre << texte;
   }
   else
@@ -119,9 +121,11 @@ void Dispatching::affichageDispatching(sdl2::window& fenetre, Centrale& centrale
 }
 
 
-void Dispatching::majdispatching(Centrale& centrale)
+bool Dispatching::majdispatching(Centrale& centrale)
 {
   double temperatureVap = centrale.temperatureVapeur();
+  double production = centrale.productionCentrale();
+  bool fin = false;
 
   if(temperatureVap>140 && m_nbOrdre==0)
     m_nbOrdre = 1;
@@ -172,8 +176,42 @@ void Dispatching::majdispatching(Centrale& centrale)
       m_score -= 3;
       m_ordre = false;
     }
+
+    if(production==0 || m_productionNulle!=0)
+    {
+      if(production == 0)
+        m_productionNulle += 1;
+
+      if(production != 0)
+        m_productionNulle = 0;
+
+      if(production==0 && m_productionNulle==6)
+        m_finPosible = true;
+    }
   }
   m_tourActuel += 1;
+  fin = finDispatching();
+
+  return fin;
+}
+
+
+bool Dispatching::finDispatching()
+{
+  bool fin = false;
+
+  if(m_score == 0)
+    fin = true;
+
+  if(m_finPosible == true)
+  {
+    auto RND = ((float)(rand()))/((float)(RAND_MAX));
+
+    if(RND <= 0.5)
+      fin = true;
+  }
+
+  return fin;
 }
 
 

@@ -42,8 +42,8 @@ public:
   void schemaCentrale(sdl2::window& fenetre, Centrale& centrale); // Charge le schéma de la centrale et la fait clignoter
 
   // Met à jour le dspatchinng
-  void majdispatching( Centrale& centrale);
-
+  bool majdispatching( Centrale& centrale); // Met à jour le dispatching
+  int scoreDispatching(); // Renvoie le score du dispatching
 
   ~SalleDeControle(); // Destructeur
 

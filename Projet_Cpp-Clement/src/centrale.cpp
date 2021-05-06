@@ -10,7 +10,7 @@
 using namespace std;
 
 
-Centrale::Centrale():m_etat(1.), m_production(0.)
+Centrale::Centrale():m_etat(1.), m_production(0.), m_productionTot(0.)
 {
 }
 
@@ -110,6 +110,11 @@ double Centrale::productionCentrale() const
   return m_production;
 }
 
+double Centrale::productionTotale() const
+{
+  return m_productionTot;
+}
+
 void Centrale::majEtatCentrale()
 {
   m_etat = (etatCanaux()+2*etatBarresGr()+8*etatCuve()+3*etatPiscine()+etatPompePrim()+etatPompeSec()+5*etatEchangeurChaleur()+4*etatGenerateurVapeur()+etatPressuriseur()+etatResistancePressuriseur()+4*m_etat+8*etatCircuitPrim()+3*etatCircuitSec()+etatInjBore()+etatCondenseur())/44;
@@ -139,6 +144,10 @@ void Centrale::majProductionCentrale()
   }
 }
 
+void Centrale::madProductionTotale()
+{
+  m_productionTot += m_production;
+}
 
 
 
@@ -567,6 +576,85 @@ void Centrale::reparationCircuitSec()
 void Centrale::reparationPressuriseur()
 {
   primaire.reparationPressuriseur();
+}
+
+
+//------------------------------------------POPULATION---------------------------------------//
+double Centrale::evacuation() const
+{
+  return population.evacuation();
+}
+
+int Centrale::contamination() const
+{
+ return population.contamination();
+}
+
+double Centrale::radioactiviteEau() const
+{
+ return population.radioactiviteEau();
+}
+
+double Centrale::radioactiviteAir() const
+{
+ return population.radioactiviteAir();
+}
+
+
+void Centrale::majEvacuation()
+{
+ auto RND = (rand())/(RAND_MAX)*100;
+ if(RND<40)
+ {
+ population.majEvacuation(evacuation()+0.1);
+ }
+}
+
+void Centrale::majContamination()
+{
+ if(radioactiviteEnceinte()<0.1)
+ {
+   population.majContamination(contamination()-(5*(radioactiviteAir()>6))-5*(radioactiviteEau()>1)-8*(radioactiviteEau()>12)-10*(radioactiviteAir()>12));
+ }
+ if(radioactiviteAir()>12)
+ {
+   auto RND = (rand())/(RAND_MAX)*15;
+   population.majContamination(contamination()+4+RND);
+ }
+ if(radioactiviteEau()>12)
+ {
+   auto RND = (rand())/(RAND_MAX)*20;
+   population.majContamination(contamination()+5+RND);
+ }
+ if(radioactiviteAir()>20)
+ {
+   auto RND = (rand())/(RAND_MAX)*20;
+   population.majContamination(contamination()+12+RND);
+ }
+}
+
+void Centrale::majRadioactiviteEau()
+{
+ if((radioactiviteSec()<2)||(etatCondenseur()>0.9))
+ {
+   population.majRadioactiviteEau(0.);
+ }
+ else
+ {
+   population.majRadioactiviteEau((1-etatCondenseur())*radioactiviteSec()/100);
+ }
+}
+
+void Centrale::majRadioactiviteAir()
+{
+ if(etatEnceinte()>0.97)
+ {
+   population.majRadioactiviteAir(0.);
+ }
+ else
+ {
+   population.majRadioactiviteAir((1.-etatEnceinte()*radioactiviteEnceinte()+(1-etatCircuitSec()*10)));
+ }
 }
 
 
