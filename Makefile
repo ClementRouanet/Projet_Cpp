@@ -7,7 +7,7 @@ LIBS = $(LIBSSDL2) -I include
 
 all : $(EXEC)
 
-OBJS = obj/centrale.o obj/reacteur.o obj/circuit.o obj/circuit_primaire.o obj/circuit_secondaire.o obj/pompe.o obj/pressuriseur.o obj/condenseur.o obj/enceinte.o obj/population.o obj/dispatching.o obj/salle_de_controle.o obj/poste_de_securite.o 
+OBJS = obj/centrale.o obj/reacteur.o obj/circuit.o obj/circuit_primaire.o obj/circuit_secondaire.o obj/pompe.o obj/pressuriseur.o obj/condenseur.o obj/enceinte.o obj/population.o obj/ouvriers.o obj/dispatching.o obj/salle_de_controle.o obj/poste_de_securite.o 
 SDL2 = SDL2/sdl2.o SDL2/geometry.o SDL2/window.o SDL2/font.o SDL2/event.o SDL2/texte.o SDL2/image.o SDL2/formated_text.o
 
 SDL2/sdl2.o:	SDL2/sdl2.hpp SDL2/sdl2.cpp
@@ -50,6 +50,9 @@ obj/enceinte.o : include/enceinte.hpp src/enceinte.cpp
 obj/population.o : include/population.hpp src/population.cpp
 	$(CXX) $(CXXFLAGS) -c src/population.cpp -o obj/population.o $(LIBS)
 
+obj/ouvriers.o : include/ouvriers.hpp src/ouvriers.cpp
+	$(CXX) $(CXXFLAGS) -c src/ouvriers.cpp -o obj/ouvriers.o $(LIBS)
+
 obj/circuit.o : include/circuit.hpp include/pompe.hpp src/circuit.cpp
 	$(CXX) $(CXXFLAGS) -c src/circuit.cpp -o obj/circuit.o $(LIBS)
 
@@ -64,6 +67,8 @@ obj/reacteur.o : include/reacteur.hpp src/reacteur.cpp
 
 obj/centrale.o : include/centrale.hpp src/centrale.cpp
 	$(CXX) $(CXXFLAGS) -c src/centrale.cpp -o obj/centrale.o $(LIBS)
+
+
 
 obj/dispatching.o : include/dispatching.hpp src/dispatching.cpp
 	$(CXX) $(CXXFLAGS) -c src/dispatching.cpp -o obj/dispatching.o $(LIBS)
