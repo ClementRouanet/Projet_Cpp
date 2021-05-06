@@ -412,33 +412,16 @@ int menu(sdl2::window fenetre)
 }
 
 
-void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle, int niveau, int nbTour)
+void affichageEtats(sdl2::window fenetre, Centrale& centrale)
 {
+  auto [wph, hph] = fenetre.dimensions();
+  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+
   double etatCentrale = centrale.etatCentrale();
   double etatReacteur = (centrale.etatCuve() + centrale.etatPiscine()  + centrale.etatBarresGr() + centrale.etatCanaux() + centrale.etatInjBore())/5;
   double etatCircuitPrim = (centrale.etatCircuitPrim() + centrale.etatPompePrim() + centrale.etatPressuriseur() + centrale.etatResistancePressuriseur() + centrale.etatEchangeurChaleur())/5;
   double etatCircuitSec = (centrale.etatCircuitSec() + centrale.etatPompeSec() + centrale.etatGenerateurVapeur() + centrale.etatCondenseur())/4;
-  int productionTot = centrale.productionTotale();
-  int productionMoy = productionTot/nbTour;
 
-  int score = salleDeControle.scoreDispatching();
-
-  int radioactiviteEnceinte = centrale.radioactiviteEnceinte();
-  int radioactivitePrim = centrale.radioactivitePrim();
-  int radioactiviteSec = centrale.radioactiviteSec();
-  int radioactiviteEau = centrale.radioactiviteEau();
-  int contamination = centrale.contamination();
-  int radioactiviteAir = centrale.radioactiviteAir();
-
-  auto [wph, hph] = fenetre.dimensions();
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
-
-  sdl2::image image("image/Bilan.jpg", fenetre);
-  image.stretch({wph,hph});
-  fenetre << image;
-
-
-  // Etats
   string sEtatCentrale (to_string(etatCentrale));
   string sEtatReacteur (to_string(etatReacteur));
   string sEtatCircuitPrim (to_string(etatCircuitPrim));
@@ -488,9 +471,17 @@ void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeCon
     texteEtat.at(0.1*wph, 0.87*hph);
     fenetre << texteEtat;
   }
+}
 
 
-  // Production moyenne
+void affichageProduction(sdl2::window fenetre, Centrale& centrale, int nbTour)
+{
+  auto [wph, hph] = fenetre.dimensions();
+  sdl2::font fonte_texte("./data/Simpsonfont.otf",20);
+
+  int productionTot = centrale.productionTotale();
+  int productionMoy = productionTot/nbTour;
+
   string sProductionTot (to_string(productionTot));
   string sProductionMoy (to_string(productionMoy));
 
@@ -535,9 +526,21 @@ void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeCon
     texteProduction.at(0.44*wph,0.32*hph);
     fenetre << texteProduction;
   }
+}
 
 
-  // Radioactivités
+void affichageRadioactivite(sdl2::window fenetre, Centrale& centrale)
+{
+  auto [wph, hph] = fenetre.dimensions();
+  sdl2::font fonte_texte("./data/Simpsonfont.otf",20);
+
+  int radioactiviteEnceinte = centrale.radioactiviteEnceinte();
+  int radioactivitePrim = centrale.radioactivitePrim();
+  int radioactiviteSec = centrale.radioactiviteSec();
+  int radioactiviteEau = centrale.radioactiviteEau();
+  int contamination = centrale.contamination();
+  int radioactiviteAir = centrale.radioactiviteAir();
+
   string sRadioactiviteEnceinte (to_string(radioactiviteEnceinte));
   string sRadioactivitePrim (to_string(radioactivitePrim));
   string sRadioactiviteSec (to_string(radioactiviteSec));
@@ -561,40 +564,52 @@ void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeCon
   texteContamination.at(0.6*wph,0.9*hph);
 
   fenetre << texteRadioactiviteEnceinte << texteRadioactivitePrim << texteRadioactiviteSec << texteRadioactiviteEau << texteRadioactiviteAir << texteContamination;
+}
 
 
-  // Score Dispatching
-  if(niveau == 2)
+void affichageScore(sdl2::window fenetre, SalleDeControle& salleDeControle)
+{
+  auto [wph, hph] = fenetre.dimensions();
+  sdl2::font fonte_texte("./data/Simpsonfont.otf",20);
+
+  int score = salleDeControle.scoreDispatching();
+
+  string sScore (to_string(score));
+
+  sdl2::texte texteScoreDispatching("Score du dispatching national : " + sScore, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  texteScoreDispatching.at(0.4*wph,0.45*hph);
+  fenetre << texteScoreDispatching;
+
+  if(score > 8)
   {
-    string sScore (to_string(score));
-
-    sdl2::texte texteScoreDispatching("Score du dispatching national : " + sScore, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-    texteScoreDispatching.at(0.4*wph,0.45*hph);
-    fenetre << texteScoreDispatching;
-
-    if(score > 8)
-    {
-      sdl2::texte texteScore("→ Performences correctes !", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
-      texteScore.at(0.44*wph,0.52*hph);
-      fenetre << texteScore;
-    }
-
-    if(score<=8 && score>5)
-    {
-      sdl2::texte texteScore("→ Performences moyennes !", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
-      texteScore.at(0.44*wph,0.52*hph);
-      fenetre << texteScore;
-    }
-
-    if(score <= 5)
-    {
-      sdl2::texte texteScore("→ Performences décevantes !", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
-      texteScore.at(0.44*wph,0.52*hph);
-      fenetre << texteScore;
-    }
+    sdl2::texte texteScore("→ Performences correctes !", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
+    texteScore.at(0.44*wph,0.52*hph);
+    fenetre << texteScore;
   }
 
-  fenetre << sdl2::flush;
+  if(score<=8 && score>5)
+  {
+    sdl2::texte texteScore("→ Performences moyennes !", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
+    texteScore.at(0.44*wph,0.52*hph);
+    fenetre << texteScore;
+  }
+
+  if(score <= 5)
+  {
+    sdl2::texte texteScore("→ Performences décevantes !", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
+    texteScore.at(0.44*wph,0.52*hph);
+    fenetre << texteScore;
+  }
+}
+
+
+void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle, int niveau, int nbTour)
+{
+  auto [wph, hph] = fenetre.dimensions();
+  sdl2::image image("image/Bilan.jpg", fenetre);
+  image.stretch({wph,hph});
+
+  int fenetreActuelle = 1;
 
   bool quitter = false;
   bool iskey_down = false;
@@ -602,6 +617,29 @@ void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeCon
 
   while (not quitter)
   {
+    fenetre << image;
+
+    switch(fenetreActuelle)
+    {
+      case 1 :
+        affichageEtats(fenetre, centrale);
+        break;
+
+      case 2 :
+        affichageProduction(fenetre,centrale, nbTour);
+        break;
+
+      case 3 :
+        affichageRadioactivite(fenetre, centrale);
+        break;
+
+      case 4 :
+        affichageScore(fenetre, salleDeControle);
+        break;
+    }
+
+    fenetre << sdl2::flush;
+
     auto events = queue.pull_events();
     for ( const auto& e : events)
     {
@@ -616,6 +654,26 @@ void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeCon
         {
           if(key_ev.code() == 13)
             quitter = true;
+
+          if(key_ev.code() == sdl2::event_keyboard::up)
+          {
+            if(fenetreActuelle > 1)
+              fenetreActuelle -= 1;
+          }
+
+          if(key_ev.code() == sdl2::event_keyboard::down)
+          {
+            if(niveau == 1)
+            {
+              if(fenetreActuelle < 3)
+                fenetreActuelle += 1;
+            }
+            else
+            {
+              if(fenetreActuelle < 4)
+                fenetreActuelle += 1;
+            }
+          }
 
           iskey_down = true;
         }

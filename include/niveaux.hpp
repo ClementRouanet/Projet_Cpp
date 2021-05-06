@@ -14,7 +14,13 @@ int niveau2(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeCo
 int niveau3(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle, PosteDeSecurite& posteDeSecurite);
 
 int menu(sdl2::window fenetreMenu);
+
+void affichageEtats(sdl2::window fenetre, Centrale& centrale);
+void affichageProduction(sdl2::window fenetre, Centrale& centrale, int nbTour);
+void affichageRadioactivite(sdl2::window fenetre, Centrale& centrale);
+void affichageScore(sdl2::window fenetre, SalleDeControle& salleDeControle);
 void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle, int niveau, int nbTour);
+
 
 void jeu();
 

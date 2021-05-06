@@ -32,7 +32,7 @@ void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale)
   affichePressionEnceinte(fenetre, centrale);
   afficheSystRefroidissement(fenetre, centrale);
   afficheEtatBarreGraphite(fenetre, centrale);
-  afficheCommandes(fenetre);
+  //afficheCommandes(fenetre);
 
   if(m_schemaCentrale == true)
     affichageSchemaCentrale(fenetre, centrale);
@@ -42,7 +42,7 @@ void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale)
 
 void SalleDeControle::cadre(sdl2::window& fenetre) const
 {
-  sdl2::image cadre("image/Cadre.jpg", fenetre);
+  sdl2::image cadre("image/Salle de contrôle.jpg", fenetre);
 
   auto [wph, hph] = fenetre.dimensions();
   cadre.stretch({wph,hph});
@@ -58,9 +58,9 @@ void SalleDeControle::affichageProdElec(sdl2::window& fenetre, Centrale& central
   string sProduction(to_string(production));
 
   auto [wph, hph] = fenetre.dimensions();
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::font fonte_texte("./data/Welbut__.ttf",15);
   sdl2::texte texteProduction("Production électrique : " + sProduction + " MW", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  texteProduction.at(0.37*wph,0.14*hph);
+  texteProduction.at(0.415*wph,0.195*hph);
 
   fenetre << texteProduction;
 }
@@ -77,13 +77,13 @@ void SalleDeControle::afficheTauxBorePiscine(sdl2::window& fenetre, Centrale& ce
   sBoreDem.erase(4,5);
 
   auto [wph, hph] = fenetre.dimensions();
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::font fonte_texte("./data/Welbut__.ttf",13);
 
   sdl2::texte texteBoreAct("Taux de bore actuel dans la piscine : " + sBoreAct, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteBoreDem("Taux de bore demandé dans la piscine : " + sBoreDem, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texteBoreAct.at(0.35*wph,0.75*hph);
-  texteBoreDem.at(0.35*wph,0.79*hph);
+  texteBoreAct.at(0.73*wph,0.395*hph);
+  texteBoreDem.at(0.73*wph,0.4275*hph);
 
   fenetre << texteBoreAct << texteBoreDem;
 }
@@ -111,19 +111,19 @@ void SalleDeControle::afficheCircuitPrim(sdl2::window& fenetre, Centrale& centra
 
   auto [wph, hph] = fenetre.dimensions();
 
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
+  sdl2::font fonte_texte("./data/Welbut__.ttf",15);
 
   sdl2::texte texteRendement("Rendement de la pompe : " + sRendement + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteTemperature("Température dans le circuit : " + sTemperature + " °C", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteDebit("Débit de l'eau : " + sDebit + " m^3/s", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte textePression("Pression : " + sPression + " bar", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteRadioactivite("Radioactivité : " + sRadioactivite + " becquerel", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteRadioactivite("Radioactivité : " + sRadioactivite + " becquerels", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texteRendement.at(0.02*wph,0.25*hph);
-  texteTemperature.at(0.02*wph,0.3*hph);
-  texteDebit.at(0.02*wph,0.35*hph);
-  textePression.at(0.02*wph,0.4*hph);
-  texteRadioactivite.at(0.02*wph,0.45*hph);
+  texteRendement.at(0.045*wph,0.135*hph);
+  texteTemperature.at(0.045*wph,0.175*hph);
+  texteDebit.at(0.045*wph,0.215*hph);
+  textePression.at(0.045*wph,0.255*hph);
+  texteRadioactivite.at(0.045*wph,0.295*hph);
 
   fenetre << texteRendement << texteTemperature << texteDebit << textePression << texteRadioactivite;
 }
@@ -158,7 +158,7 @@ void SalleDeControle::afficheCircuitSec(sdl2::window& fenetre, Centrale& central
 
   auto [wph, hph] = fenetre.dimensions();
 
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
+  sdl2::font fonte_texte("./data/Welbut__.ttf",15);
 
   sdl2::texte texteRendement("Rendement de la pompe : " + sRendement + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteTemperature1("Température dans le circuit : " + sTemperature, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
@@ -167,12 +167,12 @@ void SalleDeControle::afficheCircuitSec(sdl2::window& fenetre, Centrale& central
   sdl2::texte textePression("Pression : " + sPression + " bar", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteRadioactivite("Radioactivité : " + sRadioactivite + " becquerel", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texteRendement.at(0.73*wph,0.25*hph);
-  texteDebit.at(0.73*wph,0.3*hph);
-  textePression.at(0.73*wph,0.35*hph);
-  texteRadioactivite.at(0.73*wph,0.4*hph);
-  texteTemperature1.at(0.73*wph,0.45*hph);
-  texteTemperature2.at(0.73*wph,0.45*hph);
+  texteRendement.at(0.75*wph,0.1375*hph);
+  texteDebit.at(0.75*wph,0.1775*hph);
+  textePression.at(0.75*wph,0.2175*hph);
+  texteRadioactivite.at(0.75*wph,0.2575*hph);
+  texteTemperature1.at(0.75*wph,0.2975*hph);
+  texteTemperature2.at(0.75*wph,0.3375*hph);
 
   if(temperature < 120)
     fenetre << texteRendement << texteTemperature1 << texteDebit << textePression << texteRadioactivite;
@@ -189,9 +189,9 @@ void SalleDeControle::affichePressionEnceinte(sdl2::window& fenetre, Centrale& c
   sPression.erase(4,5);
 
   auto [wph, hph] = fenetre.dimensions();
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
+  sdl2::font fonte_texte("./data/Welbut__.ttf",15);
   sdl2::texte textePression("Pression sur l'enceinte de confinement : " + sPression, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  textePression.at(0.33*wph,0.26*hph);
+  textePression.at(0.37*wph,0.32*hph);
 
   fenetre << textePression;
 }
@@ -213,15 +213,15 @@ void SalleDeControle::afficheSystRefroidissement(sdl2::window& fenetre, Centrale
 
   auto [wph, hph] = fenetre.dimensions();
 
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
+  sdl2::font fonte_texte("./data/Welbut__.ttf",15);
 
   sdl2::texte texteRendement("Rendement pompe condenseur : " + sRendement + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteDebit("Débit eau condenseur: " + sDebit + " m^3/s", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteDifference("Différence température E-S : " + sDifference + " °C", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texteRendement.at(0.02*wph,0.84*hph);
-  texteDebit.at(0.02*wph,0.89*hph);
-  texteDifference.at(0.02*wph,0.94*hph);
+  texteRendement.at(0.045*wph,0.83*hph);
+  texteDebit.at(0.045*wph,0.87*hph);
+  texteDifference.at(0.045*wph,0.91*hph);
 
   fenetre << texteRendement << texteDebit << texteDifference;
 }
@@ -242,15 +242,15 @@ void SalleDeControle::afficheEtatBarreGraphite(sdl2::window& fenetre, Centrale& 
   sProportionA.erase(4,5);
 
   auto [wph, hph] = fenetre.dimensions();
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
+  sdl2::font fonte_texte("./data/Welbut__.ttf",14);
 
   sdl2::texte texteBarresGr("Etat des barres de graphite : " + sbarresGr + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteProportionD("Proportion demandée de graphite hors de l'eau : " + sProportionD + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteProportionA("Proportion actuelle de graphite hors de l'eau : " + sProportionA + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texteBarresGr.at(0.3*wph,0.85*hph);
-  texteProportionA.at(0.3*wph,0.89*hph);
-  texteProportionD.at(0.3*wph,0.93*hph);
+  texteBarresGr.at(0.35*wph,0.855*hph);
+  texteProportionA.at(0.35*wph,0.89*hph);
+  texteProportionD.at(0.35*wph,0.925*hph);
 
   fenetre << texteBarresGr << texteProportionD << texteProportionA;
 }

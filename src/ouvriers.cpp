@@ -1,25 +1,32 @@
 #include <random>
+#include <iostream>
 
+#include <algorithm>
 #include "ouvriers.hpp"
 
 using namespace std;
 
 Ouvriers::Ouvriers() : m_nombreOuvriersDispo(145)
 {
-
+   fill(m_etatSante.begin(),m_etatSante.end(),1);
+   m_etatMission = {0};
+   fill(m_lieuMission.begin(),m_lieuMission.end(),"reserve");
+   fill(m_estDispo.begin(),m_estDispo.end(),1);
+   m_etatReparation = {0};
 }
 
-vector<int> Ouvriers::getEtatSante() const
+
+array<int,145> Ouvriers::getEtatSante() const
 {
   return m_etatSante;
 }
 
-vector<int> Ouvriers::getEtatMission() const
+array<int,145> Ouvriers::getEtatMission() const
 {
   return m_etatMission;
 }
 
-vector<string> Ouvriers::getLieuMission() const
+array<string,145> Ouvriers::getLieuMission() const
 {
   return m_lieuMission;
 }
@@ -29,13 +36,14 @@ int Ouvriers::getNombreOuvriersDispo() const
   return m_nombreOuvriersDispo;
 }
 
-vector<int> Ouvriers::getEtatReparation() const
+array<int,8> Ouvriers::getEtatReparation() const
 {
   return m_etatReparation;
 }
 
 void Ouvriers::majEtatSante(Centrale& centrale)
 {
+
   for(int i=0;i<145;i++)
   {
     auto RND = ((float)(rand()))/((float)(RAND_MAX))*100;
@@ -58,12 +66,16 @@ void Ouvriers::majEtatSante(Centrale& centrale)
     {
       m_etatSante[i] = 0; m_etatMission[i] = 1;
     }
+
   }
+
 }
 
 int Ouvriers::majNombreOuvriersDispo()
 {
+
   m_nombreOuvriersDispo = 0;
+
   for(int i=0;i<145;i++)
   {
     if(m_etatSante[i]==1 && m_etatMission[i]==0)
@@ -78,18 +90,21 @@ int Ouvriers::majNombreOuvriersDispo()
     {
       m_nombreOuvriersDispo++;
     }
+
   }
+
   return m_nombreOuvriersDispo;
 }
 
 void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
 {
+
   if(interventionPossible(centrale, lieu)!=0)
   {
     m_nombreOuvriersDispo = majNombreOuvriersDispo();
     if(lieu=="pompe primaire" && m_nombreOuvriersDispo>=8)
     {
-      m_etatReparation[1] = 1;
+      m_etatReparation[0] = 1;
       int compteur = 0;
       for(int i=0;i<145;i++)
       {
@@ -103,7 +118,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
     }
     if(lieu=="pompe secondaire" && m_nombreOuvriersDispo>=8)
     {
-      m_etatReparation[2] = 1;
+      m_etatReparation[1] = 1;
       int compteur = 0;
       for(int i=0;i<145;i++)
       {
@@ -117,7 +132,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
     }
     if(lieu=="condenseur" && m_nombreOuvriersDispo>=20)
     {
-      m_etatReparation[3] = 1;
+      m_etatReparation[2] = 1;
       int compteur = 0;
       for(int i=0;i<145;i++)
       {
@@ -131,7 +146,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
     }
     if(lieu=="generateur de vapeur" && m_nombreOuvriersDispo>=60)
     {
-      m_etatReparation[4] = 1;
+      m_etatReparation[3] = 1;
       int compteur = 0;
       for(int i=0;i<145;i++)
       {
@@ -145,7 +160,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
     }
     if(lieu=="injecteur Bore" && m_nombreOuvriersDispo>=5)
     {
-      m_etatReparation[5] = 1;
+      m_etatReparation[4] = 1;
       int compteur = 0;
       for(int i=0;i<145;i++)
       {
@@ -159,7 +174,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
     }
     if(lieu=="circuit primaire" && m_nombreOuvriersDispo>=45)
     {
-      m_etatReparation[6] = 1;
+      m_etatReparation[5] = 1;
       int compteur = 0;
       for(int i=0;i<145;i++)
       {
@@ -173,7 +188,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
     }
     if(lieu=="circuit secondaire" && m_nombreOuvriersDispo>=20)
     {
-      m_etatReparation[7] = 1;
+      m_etatReparation[6] = 1;
       int compteur = 0;
       for(int i=0;i<145;i++)
       {
@@ -187,7 +202,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
     }
     if(lieu=="pressuriseur" && m_nombreOuvriersDispo>=10)
     {
-      m_etatReparation[8] = 1;
+      m_etatReparation[7] = 1;
       int compteur = 0;
       for(int i=0;i<145;i++)
       {
@@ -200,30 +215,34 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
       m_nombreOuvriersDispo = majNombreOuvriersDispo();
     }
   }
+
 }
 
 void Ouvriers::reparer(Centrale& centrale)
 {
-  if(m_etatReparation[1]==1)
+
+  if(m_etatReparation[0]==1)
     centrale.reparationPompePrim();
-  if(m_etatReparation[2]==1)
+  if(m_etatReparation[1]==1)
     centrale.reparationPompeSec();
-  if(m_etatReparation[3]==1)
+  if(m_etatReparation[2]==1)
     centrale.reparationCondenseur();
-  if(m_etatReparation[4]==1)
+  if(m_etatReparation[3]==1)
     centrale.reparationGenerateurVapeur();
-  if(m_etatReparation[5]==1)
+  if(m_etatReparation[4]==1)
     centrale.reparationInjecteurBore();
-  if(m_etatReparation[6]==1)
+  if(m_etatReparation[5]==1)
     centrale.reparationCircuitPrim();
-  if(m_etatReparation[7]==1)
+  if(m_etatReparation[6]==1)
     centrale.reparationCircuitSec();
-  if(m_etatReparation[8]==1)
+  if(m_etatReparation[7]==1)
     centrale.reparationPressuriseur();
+
 }
 
 void Ouvriers::rappelerOuvriers(Centrale& centrale)
 {
+
   for(int i=0;i<145;i++)
   {
     if(m_lieuMission[i]=="pompe primaire" && centrale.etatPompePrim()==1 && m_etatSante[i]==1)
@@ -259,10 +278,12 @@ void Ouvriers::rappelerOuvriers(Centrale& centrale)
       m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
     }
   }
+
 }
 
 void Ouvriers::guerir()
 {
+
   auto RND = ((float)(rand()))/((float)(RAND_MAX))*100;
   for(int i=0;i<145;i++)
   {
@@ -271,17 +292,22 @@ void Ouvriers::guerir()
       m_etatSante[i] = 1;
     }
   }
+
 }
 
 int Ouvriers::nombreEnIntervention()
 {
+
   int n(0);
+
   for(int i=0;i<145;i++)
   {
     if(m_etatMission[i]==1)
       n++;
   }
+
   return n;
+
 }
 
 int Ouvriers::nombreEnInterventionOrgane(string lieu)
@@ -312,25 +338,25 @@ void Ouvriers::annulerIntervention(string lieu)
   {
     if(m_lieuMission[i]==lieu && m_etatMission[i]==1)
     {
-      m_etatMission[i] = 0; m_lieuMission[i] = "reserve";
+      m_etatMission[i] = 0; m_lieuMission[i] = "reserve"; m_estDispo[i] = 1;
     }
   }
   if(lieu=="pompe primaire")
-    m_etatReparation[1] = 0;
+    m_etatReparation[0] = 0;
   if(lieu=="pompe secondaire")
-    m_etatReparation[2] = 0;
+    m_etatReparation[1] = 0;
   if(lieu=="condenseur")
-    m_etatReparation[3] = 0;
+    m_etatReparation[2] = 0;
   if(lieu=="generateur de vapeur")
-    m_etatReparation[4] = 0;
+    m_etatReparation[3] = 0;
   if(lieu=="injecteur de Bore")
-    m_etatReparation[5] = 0;
+    m_etatReparation[4] = 0;
   if(lieu=="circuit primaire")
-    m_etatReparation[6] = 0;
+    m_etatReparation[5] = 0;
   if(lieu=="circuit secondaire")
-    m_etatReparation[7] = 0;
+    m_etatReparation[6] = 0;
   if(lieu=="pressuriseur")
-    m_etatReparation[8] = 0;
+    m_etatReparation[7] = 0;
 }
 
 int Ouvriers::nombreOuvriersBlesses()
@@ -343,6 +369,7 @@ int Ouvriers::nombreOuvriersBlesses()
       n++;
     }
   }
+
   return n;
 }
 
