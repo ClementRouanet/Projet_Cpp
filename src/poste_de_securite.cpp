@@ -485,6 +485,8 @@ void PosteDeSecurite::bilanOuvriers(sdl2::window& fenetre, Centrale& centrale)
   bool iskey_down = true;
   sdl2::event_queue queue;
 
+  afficherBilan(fenetre,centrale);
+
   while (iskey_down == true)
   {
     auto events = queue.pull_events();
@@ -494,10 +496,8 @@ void PosteDeSecurite::bilanOuvriers(sdl2::window& fenetre, Centrale& centrale)
       {
         auto& key_ev = dynamic_cast<sdl2::event_keyboard&>(*e);
 
-        afficherBilan(fenetre,centrale);
-
         if (key_ev.type_of_event() == sdl2::event::key_up)
-        iskey_down = false;
+          iskey_down = false;
       }
     }
   }
@@ -533,104 +533,69 @@ void PosteDeSecurite::afficherBilan(sdl2::window& fenetre, Centrale& centrale)
   auto x = 4*wph/6, y = 4*hph/6;
   auto xx = x/4, yy = y/4;
 
-  sdl2::image image("image/Blanc.jpg", fenetre);
+  sdl2::image image("image/ActiviteOuvriere.jpg", fenetre);
   image.stretch({x,y});
   image.at(xx,yy);
   fenetre << image;
 
   sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
-  sdl2::font fonte_titre("./data/Lato-Bold.ttf",20);
 
-  sdl2::texte textePompePrim("Pompe du circuit primaire :", fonte_titre, fenetre, {0xFF,0x00,0x00,0x00});
-  sdl2::texte textePompeSec("Pompe du circuit secondaire :", fonte_titre, fenetre, {0xFF,0x00,0x00,0x00});
-  sdl2::texte texteCondenseur("Condenseur :", fonte_titre, fenetre, {0xFF,0x00,0x00,0x00});
-  sdl2::texte texteGenerateur("Générateur de vapeur :", fonte_titre, fenetre, {0xFF,0x00,0x00,0x00});
-  sdl2::texte texteInjecteur("Injecteur d’acide borique : ", fonte_titre, fenetre, {0xFF,0x00,0x00,0x00});
-  sdl2::texte texteCircuitPrim("Circuit primaire :", fonte_titre, fenetre, {0xFF,0x00,0x00,0x00});
-  sdl2::texte texteCircuitSec("Circuit secondaire :", fonte_titre, fenetre, {0xFF,0x00,0x00,0x00});
-  sdl2::texte textePressuriseur("Pressuriseur : ", fonte_titre, fenetre, {0xFF,0x00,0x00,0x00});
+  sdl2::texte texteOui("oui", fonte_texte, fenetre, {0x00,0xFF,0x00,0x00});
+  sdl2::texte texteNon("non", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
 
-  textePompePrim.at(xx+0.1*x,yy+0.1*y);
-  textePompeSec.at(xx+0.5*x,yy+0.1*y);
-  texteCondenseur.at(xx+0.1*x,yy+0.3*y);
-  texteGenerateur.at(xx+0.5*x,yy+0.3*y);
-  texteInjecteur.at(xx+0.1*x,yy+0.5*y);
-  texteCircuitPrim.at(xx+0.5*x,yy+0.5*y);
-  texteCircuitSec.at(xx+0.1*x,yy+0.7*y);
-  textePressuriseur.at(xx+0.5*x,yy+0.7*y);
-
-  fenetre << textePompePrim << textePompeSec;
-  fenetre << texteCondenseur << texteGenerateur;
-  fenetre << texteInjecteur << texteCircuitPrim;
-  fenetre << texteCircuitSec << textePressuriseur;
-
-  sdl2::texte textePompePrimInterv("Intervention possible : oui", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteCircuitPrimInterv("Intervention possible : oui", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-
-  if(interventionPrimaire == 0 && interventionCentrale == 0)
+  if(interventionPrimaire == 0 || interventionCentrale == 0)
   {
-    sdl2::texte textePompePrimInterv("Intervention possible : non", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-    sdl2::texte texteCircuitPrimInterv("Intervention possible : non", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+    texteNon.at(xx+0.24*x,yy+0.2*y); fenetre << texteNon; // Pompe primaire
+    texteNon.at(xx+0.71*x,yy+0.57*y); fenetre << texteNon;  // Circuit primaire
   }
-
-  sdl2::texte textePompeSecInterv("Intervention possible : oui", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteCondenseurInterv("Intervention possible : oui", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteGenerateurInterv("Intervention possible : oui", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteInjecteurInterv("Intervention possible : oui", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteCircuitSecInterv("Intervention possible : oui", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte textePressuriseurInterv("Intervention possible : oui", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  else
+  {
+    texteOui.at(xx+0.24*x,yy+0.2*y); fenetre << texteOui; // Pompe primaire
+    texteOui.at(xx+0.71*x,yy+0.57*y); fenetre << texteOui;  // Circuit primaire
+  }
 
   if(interventionCentrale == 0)
   {
-    sdl2::texte textePompeSecInterv("Intervention possible : non", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-    sdl2::texte texteCondenseurInterv("Intervention possible : non", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-    sdl2::texte texteGenerateurInterv("Intervention possible : non", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-    sdl2::texte texteInjecteurInterv("Intervention possible : non", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-    sdl2::texte texteCircuitSecInterv("Intervention possible : non", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-    sdl2::texte textePressuriseurInterv("Intervention possible : non", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+    texteNon.at(xx+0.71*x,yy+0.2*y); fenetre << texteNon; // Pompe secondaire
+    texteNon.at(xx+0.24*x,yy+0.38*y); fenetre << texteNon;  // Condenseur
+    texteNon.at(xx+0.71*x,yy+0.38*y); fenetre << texteNon; // Génératuer vapeur
+    texteNon.at(xx+0.24*x,yy+0.565*y); fenetre << texteNon;  // Injecteur
+    texteNon.at(xx+0.24*x,yy+0.745*y); fenetre << texteNon; // Circuit secondaire
+    texteNon.at(xx+0.71*x,yy+0.745*y); fenetre << texteNon;  // Pressuriseur
+  }
+  else
+  {
+    texteOui.at(xx+0.71*x,yy+0.2*y); fenetre << texteOui; // Pompe secondaire
+    texteOui.at(xx+0.24*x,yy+0.38*y); fenetre << texteOui;  // Condenseur
+    texteOui.at(xx+0.71*x,yy+0.38*y); fenetre << texteOui; // Génératuer vapeur
+    texteOui.at(xx+0.24*x,yy+0.565*y); fenetre << texteOui;  // Injecteur
+    texteOui.at(xx+0.24*x,yy+0.745*y); fenetre << texteOui; // Circuit secondaire
+    texteOui.at(xx+0.71*x,yy+0.745*y); fenetre << texteOui;  // Pressuriseur
   }
 
-  textePompePrimInterv.at(xx+0.12*x,yy+0.15*y);
-  texteCircuitPrimInterv.at(xx+0.52*x,yy+0.55*y);
-  textePompeSecInterv.at(xx+0.52*x,yy+0.15*y);
-  texteCondenseurInterv.at(xx+0.12*x,yy+0.35*y);
-  texteGenerateurInterv.at(xx+0.52*x,yy+0.35*y);
-  texteInjecteurInterv.at(xx+0.12*x,yy+0.55*y);
-  texteCircuitSecInterv.at(xx+0.12*x,yy+0.75*y);
-  textePressuriseurInterv.at(xx+0.52*x,yy+0.75*y);
-
-  fenetre << textePompePrimInterv << texteCircuitPrimInterv;
-  fenetre << textePompeSecInterv << texteCondenseurInterv;
-  fenetre << texteGenerateurInterv << texteInjecteurInterv;
-  fenetre << texteCircuitSecInterv << textePressuriseurInterv;
-
-  sdl2::texte texteOuvriersDispo("Nombre d'ouvriers disponibles : " + snbOuvriersDispo, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  texteOuvriersDispo.at(xx+0.32*x,yy+0.9*y);
+  sdl2::texte texteOuvriersDispo(snbOuvriersDispo, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  texteOuvriersDispo.at(xx+0.625*x,yy+0.91*y);
   fenetre << texteOuvriersDispo;
 
-  sdl2::texte textePompePrimOuvriers("Nombre ouvriers en cours d'intervention : " + souvriersPompePrim, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte textePompeSecOuvriers("Nombre ouvriers en cours d'intervention : " + souvriersPompeSec, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteCondenseurOuvriers("Nombre ouvriers en cours d'intervention : " + souvriersCondenseur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteGenerateurOuvriers("Nombre ouvriers en cours d'intervention : " + souvriersGenerateur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteInjecteurOuvriers("Nombre ouvriers en cours d'intervention : " + souvriersInjecteur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteCircuitPrimOuvriers("Nombre ouvriers en cours d'intervention : " + souvriersCircuitPrim, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteCircuitSecOuvriers("Nombre ouvriers en cours d'intervention : " + souvriersCircuitSec, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte textePressuriseurOuvriers("Nombre ouvriers en cours d'intervention : " + souvriersPressuriseur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte textePompePrimOuvriers(souvriersPompePrim, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte textePompeSecOuvriers(souvriersPompeSec, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteCondenseurOuvriers(souvriersCondenseur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteGenerateurOuvriers(souvriersGenerateur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteInjecteurOuvriers(souvriersInjecteur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteCircuitPrimOuvriers(souvriersCircuitPrim, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteCircuitSecOuvriers(souvriersCircuitSec, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte textePressuriseurOuvriers(souvriersPressuriseur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  textePompePrimOuvriers.at(xx+0.12*x,yy+0.2*y);
-  textePompeSecOuvriers.at(xx+0.52*x,yy+0.2*y);
-  texteCondenseurOuvriers.at(xx+0.12*x,yy+0.4*y);
-  texteGenerateurOuvriers.at(xx+0.52*x,yy+0.4*y);
-  texteInjecteurOuvriers.at(xx+0.12*x,yy+0.6*y);
-  texteCircuitPrimOuvriers.at(xx+0.52*x,yy+0.6*y);
-  texteCircuitSecOuvriers.at(xx+0.12*x,yy+0.8*y);
-  textePressuriseurOuvriers.at(xx+0.52*x,yy+0.8*y);
+  textePompePrimOuvriers.at(xx+0.39*x,yy+0.26*y);
+  textePompeSecOuvriers.at(xx+0.86*x,yy+0.26*y);
+  texteCondenseurOuvriers.at(xx+0.39*x,yy+0.44*y);
+  texteGenerateurOuvriers.at(xx+0.86*x,yy+0.44*y);
+  texteInjecteurOuvriers.at(xx+0.39*x,yy+0.62*y);
+  texteCircuitPrimOuvriers.at(xx+0.86*x,yy+0.62*y);
+  texteCircuitSecOuvriers.at(xx+0.39*x,yy+0.805*y);
+  textePressuriseurOuvriers.at(xx+0.86*x,yy+0.805*y);
 
-  fenetre << textePompePrimOuvriers << textePompeSecOuvriers;
-  fenetre << texteCondenseurOuvriers << texteGenerateurOuvriers;
-  fenetre << texteInjecteurOuvriers << texteCircuitPrimOuvriers;
-  fenetre << texteCircuitSecOuvriers << textePressuriseurOuvriers;
-
+  fenetre << textePompePrimOuvriers << textePompeSecOuvriers << texteCondenseurOuvriers << texteGenerateurOuvriers << texteInjecteurOuvriers << texteCircuitPrimOuvriers << texteCircuitSecOuvriers << textePressuriseurOuvriers;
   fenetre << sdl2::flush;
 }
 

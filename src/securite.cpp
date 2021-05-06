@@ -382,9 +382,9 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
 
     if(m_fenetreActuelle != 0 && m_fenetreActuelle != m_nbFenetres - 1)
     {
-      sdl2::texte texte1(alertes[m_fenetreActuelle*3], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
-      sdl2::texte texte2(alertes[m_fenetreActuelle*3 + 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
-      sdl2::texte texte3(alertes[m_fenetreActuelle*3 + 2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+      sdl2::texte texte1(alertes[m_fenetreActuelle*3], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
+      sdl2::texte texte2(alertes[m_fenetreActuelle*3 + 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
+      sdl2::texte texte3(alertes[m_fenetreActuelle*3 + 2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
 
       texte1.at(0.25*wph,0.43*hph);
       texte2.at(0.25*wph,0.51*hph);
@@ -400,7 +400,7 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
       {
         if(nbMessages_fin == 1)
         {
-          sdl2::texte texte1(alertes[0], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+          sdl2::texte texte1(alertes[0], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
 
           texte1.at(0.25*wph,0.43*hph);
 
@@ -409,8 +409,8 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
         }
         if(nbMessages_fin == 2)
         {
-          sdl2::texte texte1(alertes[0], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
-          sdl2::texte texte2(alertes[1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+          sdl2::texte texte1(alertes[0], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
+          sdl2::texte texte2(alertes[1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
 
           texte1.at(0.25*wph,0.43*hph);
           texte2.at(0.25*wph,0.51*hph);
@@ -421,9 +421,9 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
       }
       else
       {
-        sdl2::texte texte1(alertes[0], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
-        sdl2::texte texte2(alertes[1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
-        sdl2::texte texte3(alertes[2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+        sdl2::texte texte1(alertes[0], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
+        sdl2::texte texte2(alertes[1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
+        sdl2::texte texte3(alertes[2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
 
         texte1.at(0.25*wph,0.43*hph);
         texte2.at(0.25*wph,0.51*hph);
@@ -438,7 +438,7 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
     {
       if(nbMessages_fin == 1)
       {
-        sdl2::texte texte1(alertes[m_nbMessages - 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+        sdl2::texte texte1(alertes[m_nbMessages - 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
 
         texte1.at(0.25*wph,0.43*hph);
 
@@ -447,8 +447,8 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
       }
       if(nbMessages_fin == 2)
       {
-        sdl2::texte texte1(alertes[m_nbMessages - 2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
-        sdl2::texte texte2(alertes[m_nbMessages - 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+        sdl2::texte texte1(alertes[m_nbMessages - 2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
+        sdl2::texte texte2(alertes[m_nbMessages - 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
 
         texte1.at(0.25*wph,0.43*hph);
         texte2.at(0.25*wph,0.51*hph);
@@ -458,9 +458,9 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
       }
       if(nbMessages_fin == 0)
       {
-        sdl2::texte texte1(alertes[m_nbMessages - 3], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
-        sdl2::texte texte2(alertes[m_nbMessages - 2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
-        sdl2::texte texte3(alertes[m_nbMessages - 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xFF,0xFF,0xFF,0xFF});
+        sdl2::texte texte1(alertes[m_nbMessages - 3], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
+        sdl2::texte texte2(alertes[m_nbMessages - 2], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
+        sdl2::texte texte3(alertes[m_nbMessages - 1], fonte_texte2, fenetre, 0.45*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
 
         texte1.at(0.25*wph,0.43*hph);
         texte2.at(0.25*wph,0.51*hph);

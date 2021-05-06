@@ -42,7 +42,7 @@ void SalleDeControle::majAffichage(sdl2::window& fenetre, Centrale& centrale)
 
 void SalleDeControle::cadre(sdl2::window& fenetre) const
 {
-  sdl2::image cadre("image/Cadre.png", fenetre);
+  sdl2::image cadre("image/Cadre.jpg", fenetre);
 
   auto [wph, hph] = fenetre.dimensions();
   cadre.stretch({wph,hph});
