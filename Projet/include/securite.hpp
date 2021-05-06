@@ -25,7 +25,7 @@ public:
 private:
   int m_nbMessages;
   int m_fenetreActuelle;
-  int m_nbFenetres;
+ int m_nbFenetres;
 };
 
 #endif

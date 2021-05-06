@@ -1,6 +1,6 @@
 #include "circuit.hpp"
 #include "pompe.hpp"
-
+#include <iostream>
 using namespace std;
 
 

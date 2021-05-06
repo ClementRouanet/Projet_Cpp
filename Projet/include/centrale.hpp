@@ -5,6 +5,7 @@
 #include "circuit_primaire.hpp"
 #include "circuit_secondaire.hpp"
 #include "reacteur.hpp"
+#include "population.hpp"
 #include "sdl2.hpp"
 
 
@@ -27,10 +28,11 @@ public:
   // FONCTION DE LA CENTRALE
   double etatCentrale() const;
   double productionCentrale() const;
+  double productionTotale() const;
 
   void majEtatCentrale(); // met à jour l'état général de la centrale
   void majProductionCentrale(); // met à jour la production générale de la centrale
-
+  void madProductionTotale();  //met à jour la production totale de la centrale
 
   // FONCTION DU CIRCUIT PRIMAIRE
   double etatCircuitPrim() const; // Renvoie l'état du circuit
@@ -127,6 +129,18 @@ public:
   void reparationPressuriseur();
 
 
+  // FONCTION DE LA Population
+    double evacuation() const;
+    double radioactiviteEau() const;
+    int contamination() const;
+    double radioactiviteAir() const;
+
+    void majEvacuation();
+    void majRadioactiviteEau();
+    void majRadioactiviteAir();
+    void majContamination();
+
+
   //fini
   ~Centrale(); //Destructeur
 
@@ -135,7 +149,9 @@ private:
   CircuitSec secondaire;
   Reacteur reacteur;
   Enceinte enceinte;
+  Population population;
   double m_etat;
   double m_production;
+  double m_productionTot;
 };
 #endif

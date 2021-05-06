@@ -88,8 +88,10 @@ void CircuitSec::majDebitEau()
 
   double Z = m_etatCircuit*(etatCondenseur+0.1)*m_etatGenerateurVapeur*regimePompe*0.85;
 
-  if(m_temperatureVapeur>3 && Z<3)
+  if(m_temperatureVapeur>3 && Z<3){
     m_debit = m_etatCircuit*(etatCondenseur+0.1)*m_etatGenerateurVapeur*1.3;
+    cout << m_debit << endl;
+  }
   else
     m_debit = Z;
 }
