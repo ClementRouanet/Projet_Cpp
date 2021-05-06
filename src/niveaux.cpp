@@ -38,7 +38,7 @@ void miseAJour(Centrale& centrale)
 }
 
 
-int niveau1(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle, PosteDeSecurite& posteDeSecurite)
+int niveau1(sdl2::window& fenetre, Centrale& centrale, SalleDeControle& salleDeControle, PosteDeSecurite& posteDeSecurite)
 {
   salleDeControle.niveau(1);
 
@@ -130,7 +130,7 @@ int niveau1(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeCo
 }
 
 
-int niveau2(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle, PosteDeSecurite& posteDeSecurite)
+int niveau2(sdl2::window& fenetre, Centrale& centrale, SalleDeControle& salleDeControle, PosteDeSecurite& posteDeSecurite)
 {
   salleDeControle.niveau(2);
 
@@ -224,7 +224,7 @@ int niveau2(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeCo
 }
 
 
-int niveau3(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle, PosteDeSecurite& posteDeSecurite)
+int niveau3(sdl2::window& fenetre, Centrale& centrale, SalleDeControle& salleDeControle, PosteDeSecurite& posteDeSecurite)
 {
   salleDeControle.niveau(2);
 
@@ -343,7 +343,7 @@ int niveau3(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeCo
 }
 
 
-int menu(sdl2::window fenetre)
+int menu(sdl2::window& fenetre)
 {
   bool entrer = false;
   int position = 0;
@@ -412,7 +412,7 @@ int menu(sdl2::window fenetre)
 }
 
 
-void affichageEtats(sdl2::window fenetre, Centrale& centrale)
+void affichageEtats(sdl2::window& fenetre, Centrale& centrale)
 {
   auto [wph, hph] = fenetre.dimensions();
   sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
@@ -474,7 +474,7 @@ void affichageEtats(sdl2::window fenetre, Centrale& centrale)
 }
 
 
-void affichageProduction(sdl2::window fenetre, Centrale& centrale, int nbTour)
+void affichageProduction(sdl2::window& fenetre, Centrale& centrale, int nbTour)
 {
   auto [wph, hph] = fenetre.dimensions();
   sdl2::font fonte_texte("./data/Simpsonfont.otf",20);
@@ -529,7 +529,7 @@ void affichageProduction(sdl2::window fenetre, Centrale& centrale, int nbTour)
 }
 
 
-void affichageRadioactivite(sdl2::window fenetre, Centrale& centrale)
+void affichageRadioactivite(sdl2::window& fenetre, Centrale& centrale)
 {
   auto [wph, hph] = fenetre.dimensions();
   sdl2::font fonte_texte("./data/Simpsonfont.otf",20);
@@ -567,7 +567,7 @@ void affichageRadioactivite(sdl2::window fenetre, Centrale& centrale)
 }
 
 
-void affichageScore(sdl2::window fenetre, SalleDeControle& salleDeControle)
+void affichageScore(sdl2::window& fenetre, SalleDeControle& salleDeControle)
 {
   auto [wph, hph] = fenetre.dimensions();
   sdl2::font fonte_texte("./data/Simpsonfont.otf",20);
@@ -603,7 +603,7 @@ void affichageScore(sdl2::window fenetre, SalleDeControle& salleDeControle)
 }
 
 
-void bilan(sdl2::window fenetre, Centrale& centrale, SalleDeControle& salleDeControle, int niveau, int nbTour)
+void bilan(sdl2::window& fenetre, Centrale& centrale, SalleDeControle& salleDeControle, int niveau, int nbTour)
 {
   auto [wph, hph] = fenetre.dimensions();
   sdl2::image image("image/Bilan.jpg", fenetre);
@@ -690,39 +690,30 @@ void jeu()
   int x = 1400;
   int y = 750;
 
-  sdl2::window fenetreMenu("Nuclear Alert menu", {x,y});
+  sdl2::window fenetre("Nuclear Alert", {x,y});
 
   Centrale centrale;
   SalleDeControle salleDeControle;
   PosteDeSecurite posteDeSecurite;
 
-  int niveau = menu(fenetreMenu);
+  int niveau = menu(fenetre);
   int nbTour = 1;
 
   if(niveau == 1) //49
   {
-    sdl2::window fenetreJeu("Nuclear Alert", {x,y});
-    nbTour = niveau1(fenetreJeu,centrale,salleDeControle,posteDeSecurite);
-
-    sdl2::window fenetreBilan("Nuclear Alert bilan", {x,y});
-    bilan(fenetreBilan,centrale,salleDeControle,niveau,nbTour);
+    nbTour = niveau1(fenetre,centrale,salleDeControle,posteDeSecurite);
+    bilan(fenetre,centrale,salleDeControle,niveau,nbTour);
   }
 
   if(niveau == 2) //50
   {
-    sdl2::window fenetreJeu("Nuclear Alert", {x,y});
-    nbTour = niveau2(fenetreJeu,centrale,salleDeControle,posteDeSecurite);
-
-    sdl2::window fenetreBilan("Nuclear Alert bilan", {x,y});
-    bilan(fenetreBilan,centrale,salleDeControle,niveau,nbTour);
+    nbTour = niveau2(fenetre,centrale,salleDeControle,posteDeSecurite);
+    bilan(fenetre,centrale,salleDeControle,niveau,nbTour);
   }
 
   if(niveau == 3) //51
   {
-    sdl2::window fenetreJeu("Nuclear Alert", {x,y});
-    nbTour = niveau3(fenetreJeu,centrale,salleDeControle,posteDeSecurite);
-
-    sdl2::window fenetreBilan("Nuclear Alert bilan", {x,y});
-    bilan(fenetreBilan,centrale,salleDeControle,niveau,nbTour);
+    nbTour = niveau3(fenetre,centrale,salleDeControle,posteDeSecurite);
+    bilan(fenetre,centrale,salleDeControle,niveau,nbTour);
   }
 }
