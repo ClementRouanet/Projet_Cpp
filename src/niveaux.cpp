@@ -43,14 +43,14 @@ int niveau1(sdl2::window& fenetre, Centrale& centrale, SalleDeControle& salleDeC
   salleDeControle.niveau(1);
 
   int nbTour = 0;
-  vector<int> sortie = {0, 0}; // Premier : changement, second : fin session
+  vector<int> sortie = {0, 0}; // Premier : changement poste/salle, second : fin session
 
   bool iskey_down = false;
   sdl2::event_queue queue;
 
   while (sortie[1] == 0)
   {
-    while (sortie[0] == 0 && sortie[1] == 0) // Boucle salle de commande
+    while (sortie[0] == 0 && sortie[1] == 0) // Boucle salle de controle
     {
       auto start = chrono::system_clock::now();
 
@@ -226,7 +226,7 @@ int niveau2(sdl2::window& fenetre, Centrale& centrale, SalleDeControle& salleDeC
 
 int niveau3(sdl2::window& fenetre, Centrale& centrale, SalleDeControle& salleDeControle, PosteDeSecurite& posteDeSecurite)
 {
-  salleDeControle.niveau(2);
+  salleDeControle.niveau(3);
 
   int nbTour = 0, tourCatastrophe = 0;
   bool catastrophePossible = false;
@@ -415,7 +415,7 @@ int menu(sdl2::window& fenetre)
 void affichageEtats(sdl2::window& fenetre, Centrale& centrale)
 {
   auto [wph, hph] = fenetre.dimensions();
-  sdl2::font fonte_texte("./data/Simpsonfont.otf",27);
+  sdl2::font fonte_texte("./data/Simpson.ttf",27);
 
   double etatCentrale = centrale.etatCentrale();
   double etatReacteur = (centrale.etatCuve() + centrale.etatPiscine()  + centrale.etatBarresGr() + centrale.etatCanaux() + centrale.etatInjBore())/5;
@@ -432,10 +432,10 @@ void affichageEtats(sdl2::window& fenetre, Centrale& centrale)
   sEtatCircuitPrim.erase(4,5);
   sEtatCircuitSec.erase(4,5);
 
-  sdl2::texte texteEtatCentrale("ETAT  DE  LA  CENTRALE : " + sEtatCentrale, fonte_texte, fenetre, {255,244,0,0});
-  sdl2::texte texteEtatReacteur("ETAT  DU  REACTEUR : " + sEtatReacteur, fonte_texte, fenetre, {255,244,0,0});
-  sdl2::texte texteEtatCircuitPrim("ETAT  DU  CIRCUIT  PRIMAIRE : " + sEtatCircuitPrim, fonte_texte, fenetre, {255,244,0,0});
-  sdl2::texte texteEtatCircuitSec("ETAT  DU  CIRCUIT  SECONDAIRE : " + sEtatCircuitSec, fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteEtatCentrale("ETAT  DE  LA  CENTRALE  :  " + sEtatCentrale, fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteEtatReacteur("ETAT  DU  REACTEUR  :  " + sEtatReacteur, fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteEtatCircuitPrim("ETAT  DU  CIRCUIT  PRIMAIRE  :  " + sEtatCircuitPrim, fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteEtatCircuitSec("ETAT  DU  CIRCUIT  SECONDAIRE  :  " + sEtatCircuitSec, fonte_texte, fenetre, {255,244,0,0});
 
   texteEtatCentrale.at(0.28*wph,0.36*hph);
   texteEtatReacteur.at(0.28*wph,0.44*hph);
@@ -453,7 +453,7 @@ void affichageEtats(sdl2::window& fenetre, Centrale& centrale)
 
   if(etatCentrale<=0.8 && etatCentrale>0.5)
   {
-    sdl2::texte texteEtat("→  LA CENTRALE EST ASSEZ ENDOMMAGEES !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteEtat("LA CENTRALE EST ASSEZ ENDOMMAGEE !", fonte_texte, fenetre, {210,200,0,0});
     texteEtat.at(0.3*wph, 0.68*hph);
     fenetre << texteEtat;
   }
@@ -477,7 +477,7 @@ void affichageEtats(sdl2::window& fenetre, Centrale& centrale)
 void affichageProduction(sdl2::window& fenetre, Centrale& centrale, int nbTour)
 {
   auto [wph, hph] = fenetre.dimensions();
-  sdl2::font fonte_texte("./data/Simpsonfont.otf",27);
+  sdl2::font fonte_texte("./data/Simpson.ttf",26);
 
   int productionTot = centrale.productionTotale();
   int productionMoy = productionTot/nbTour;
@@ -485,8 +485,8 @@ void affichageProduction(sdl2::window& fenetre, Centrale& centrale, int nbTour)
   string sProductionTot (to_string(productionTot));
   string sProductionMoy (to_string(productionMoy));
 
-  sdl2::texte texteProductionTot("PRODUCTION  TOTALE  ELECTRICITE : " + sProductionTot + "  MW", fonte_texte, fenetre, {255,244,0,0});
-  sdl2::texte texteProductionMoy("PRODUCTION  MOYENNE  ELECTRICITE : " + sProductionMoy + "  MW", fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteProductionTot("PRODUCTION  TOTALE  ELECTRICITE  :  " + sProductionTot + "  MW", fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteProductionMoy("PRODUCTION  MOYENNE  ELECTRICITE  :  " + sProductionMoy + "  MW", fonte_texte, fenetre, {255,244,0,0});
 
   texteProductionTot.at(0.25*wph,0.44*hph);
   texteProductionMoy.at(0.25*wph,0.52*hph);
@@ -532,7 +532,7 @@ void affichageProduction(sdl2::window& fenetre, Centrale& centrale, int nbTour)
 void affichageRadioactivite(sdl2::window& fenetre, Centrale& centrale)
 {
   auto [wph, hph] = fenetre.dimensions();
-  sdl2::font fonte_texte("./data/Simpsonfont.otf",27);
+  sdl2::font fonte_texte("./data/Simpson.ttf",23);
 
   int radioactiviteEnceinte = centrale.radioactiviteEnceinte();
   int radioactivitePrim = centrale.radioactivitePrim();
@@ -548,20 +548,20 @@ void affichageRadioactivite(sdl2::window& fenetre, Centrale& centrale)
   string sRadioactiviteAir (to_string(radioactiviteAir));
   string sContamination (to_string(contamination));
 
-  sdl2::texte texteRadioactiviteEnceinte("RADIOACTIVITE  ENCEINTE : " + sRadioactiviteEnceinte + "  rem/h", fonte_texte, fenetre, {255,244,0,0});
-  sdl2::texte texteRadioactivitePrim("RADIOACTIVITE  CIRCUIT  PRIMAIRE : " + sRadioactivitePrim + "  becquerel", fonte_texte, fenetre, {255,244,0,0});
-  sdl2::texte texteRadioactiviteSec("RADIOACTIVITE  CIRCUIT  SECONDAIRE : " + sRadioactiviteSec + "  becquerel", fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteRadioactiviteEnceinte("RADIOACTIVITE  ENCEINTE  :  " + sRadioactiviteEnceinte + "  rem/h", fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteRadioactivitePrim("RADIOACTIVITE  CIRCUIT  PRIMAIRE  :  " + sRadioactivitePrim + "  becquerel", fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteRadioactiviteSec("RADIOACTIVITE  CIRCUIT  SECONDAIRE  :  " + sRadioactiviteSec + "  becquerel", fonte_texte, fenetre, {255,244,0,0});
 
-  sdl2::texte texteRadioactiviteEau("RADIOACTIVITE  EAU  AUTOUR  CENTRALE : " + sRadioactiviteEau + "  rem/h", fonte_texte, fenetre, {255,244,0,0});
-  sdl2::texte texteRadioactiviteAir("RADIOACTIVITE  AIR  AUTOUR  CENTRALE : " + sRadioactiviteAir + "  rem/h", fonte_texte, fenetre, {255,244,0,0});
-  sdl2::texte texteContamination("CONTAMINATION  POPULATION : " + sContamination, fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteRadioactiviteEau("RADIOACTIVITE  EAU  AUTOUR  CENTRALE  :  " + sRadioactiviteEau + "  rem/h", fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteRadioactiviteAir("RADIOACTIVITE  AIR  AUTOUR  CENTRALE  :  " + sRadioactiviteAir + "  rem/h", fonte_texte, fenetre, {255,244,0,0});
+  sdl2::texte texteContamination("CONTAMINATION  POPULATION  :  " + sContamination, fonte_texte, fenetre, {255,244,0,0});
 
-  texteRadioactiviteEnceinte.at(0.28*wph,0.36*hph);
-  texteRadioactivitePrim.at(0.28*wph,0.44*hph);
-  texteRadioactiviteSec.at(0.28*wph,0.52*hph);
-  texteRadioactiviteEau.at(0.28*wph,0.6*hph);
-  texteRadioactiviteAir.at(0.28*wph,0.68*hph);
-  texteContamination.at(0.28*wph,0.76*hph);
+  texteRadioactiviteEnceinte.at(0.25*wph,0.34*hph);
+  texteRadioactivitePrim.at(0.25*wph,0.41*hph);
+  texteRadioactiviteSec.at(0.25*wph,0.48*hph);
+  texteRadioactiviteEau.at(0.25*wph,0.55*hph);
+  texteRadioactiviteAir.at(0.25*wph,0.62*hph);
+  texteContamination.at(0.25*wph,0.69*hph);
 
   fenetre << texteRadioactiviteEnceinte << texteRadioactivitePrim << texteRadioactiviteSec << texteRadioactiviteEau << texteRadioactiviteAir << texteContamination;
 }
@@ -570,34 +570,34 @@ void affichageRadioactivite(sdl2::window& fenetre, Centrale& centrale)
 void affichageScore(sdl2::window& fenetre, SalleDeControle& salleDeControle)
 {
   auto [wph, hph] = fenetre.dimensions();
-  sdl2::font fonte_texte("./data/Simpsonfont.otf",27);
+  sdl2::font fonte_texte("./data/Simpson.ttf",27);
 
   int score = salleDeControle.scoreDispatching();
 
   string sScore (to_string(score));
 
-  sdl2::texte texteScoreDispatching("SCORE  DU  DISPATCHING  NATIONAL : " + sScore, fonte_texte, fenetre, {255,244,0,0});
-  texteScoreDispatching.at(0.28*wph,0.5*hph);
+  sdl2::texte texteScoreDispatching("SCORE  DU  DISPATCHING  NATIONAL  :  " + sScore, fonte_texte, fenetre, {255,244,0,0});
+  texteScoreDispatching.at(0.25*wph,0.47*hph);
   fenetre << texteScoreDispatching;
 
   if(score > 8)
   {
     sdl2::texte texteScore("PERFORMANCES  CORECTES !", fonte_texte, fenetre, {210,200,0,0});
-    texteScore.at(0.3*wph,0.58*hph);
+    texteScore.at(0.27*wph,0.55*hph);
     fenetre << texteScore;
   }
 
   if(score<=8 && score>5)
   {
     sdl2::texte texteScore("PERFORMANCES  MOYENNES !", fonte_texte, fenetre, {210,200,0,0});
-    texteScore.at(0.3*wph,0.58*hph);
+    texteScore.at(0.27*wph,0.55*hph);
     fenetre << texteScore;
   }
 
   if(score <= 5)
   {
     sdl2::texte texteScore("PERFORMANCES  DECEVANTE !", fonte_texte, fenetre, {210,200,0,0});
-    texteScore.at(0.3*wph,0.58*hph);
+    texteScore.at(0.27*wph,0.55*hph);
     fenetre << texteScore;
   }
 }

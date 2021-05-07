@@ -456,7 +456,7 @@ int PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& c
           bilanOuvriers(fenetre, centrale); //Cette commande affiche les différents organes où sont potentiellement réalisable des interventions humaines
           break;
 
-        case 111 :  // o comme olivier
+        case 111 :  // o 
           interventionOuvriers(fenetre, centrale);
           break;
 

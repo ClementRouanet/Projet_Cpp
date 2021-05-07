@@ -290,7 +290,7 @@ void SalleDeControle::afficheCommandes(sdl2::window& fenetre) const
 
 vector<int> SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale)
 {
-  vector<int> sortie = {false, false};
+  vector<int> sortie = {0, 0};
 
   switch (touche)
   {
@@ -323,7 +323,6 @@ vector<int> SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Cen
     break;
 
     case 115 :  // s
-    sortie[0] = 0;
     sortie[1] = finSession();
     break;
 
@@ -333,7 +332,6 @@ vector<int> SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Cen
 
     case 32 : // Espace
     sortie[0] = 1;
-    sortie[1] = 0;
     break;
 
     case sdl2::event_keyboard::left : // flèche gauche
