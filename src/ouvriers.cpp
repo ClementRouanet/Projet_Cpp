@@ -341,6 +341,8 @@ void Ouvriers::annulerIntervention(string lieu)
       m_etatMission[i] = 0; m_lieuMission[i] = "reserve"; m_estDispo[i] = 1;
     }
   }
+  majNombreOuvriersDispo();
+
   if(lieu=="pompe primaire")
     m_etatReparation[0] = 0;
   if(lieu=="pompe secondaire")
