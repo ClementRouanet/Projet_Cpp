@@ -1,7 +1,7 @@
 #include <random>
 #include <iostream>
-
 #include <algorithm>
+
 #include "ouvriers.hpp"
 
 using namespace std;
@@ -90,7 +90,6 @@ int Ouvriers::majNombreOuvriersDispo()
     {
       m_nombreOuvriersDispo++;
     }
-
   }
 
   return m_nombreOuvriersDispo;
@@ -110,7 +109,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
       {
         if(m_estDispo[i]==1 && compteur<8)
         {
-          m_etatMission[i] = 1, m_lieuMission[i] = lieu;
+          m_etatMission[i] = 1; m_lieuMission[i] = lieu;
           compteur++;
         }
       }
@@ -124,7 +123,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
       {
         if(m_estDispo[i]==1 && compteur<8)
         {
-          m_etatMission[i] = 1, m_lieuMission[i] = lieu;
+          m_etatMission[i] = 1; m_lieuMission[i] = lieu;
           compteur++;
         }
       }
@@ -138,7 +137,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
       {
         if(m_estDispo[i]==1 && compteur<20)
         {
-          m_etatMission[i] = 1, m_lieuMission[i] = lieu;
+          m_etatMission[i] = 1; m_lieuMission[i] = lieu;
           compteur++;
         }
       }
@@ -152,7 +151,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
       {
         if(m_estDispo[i]==1 && compteur<60)
         {
-          m_etatMission[i] = 1, m_lieuMission[i] = lieu;
+          m_etatMission[i] = 1; m_lieuMission[i] = lieu;
           compteur++;
         }
       }
@@ -166,7 +165,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
       {
         if(m_estDispo[i]==1 && compteur<5)
         {
-          m_etatMission[i] = 1, m_lieuMission[i] = lieu;
+          m_etatMission[i] = 1; m_lieuMission[i] = lieu;
           compteur++;
         }
       }
@@ -180,7 +179,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
       {
         if(m_estDispo[i]==1 && compteur<45)
         {
-          m_etatMission[i] = 1, m_lieuMission[i] = lieu;
+          m_etatMission[i] = 1; m_lieuMission[i] = lieu;
           compteur++;
         }
       }
@@ -194,7 +193,7 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
       {
         if(m_estDispo[i]==1 && compteur<20)
         {
-          m_etatMission[i] = 1, m_lieuMission[i] = lieu;
+          m_etatMission[i] = 1; m_lieuMission[i] = lieu;
           compteur++;
         }
       }
@@ -208,14 +207,13 @@ void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
       {
         if(m_estDispo[i]==1 && compteur<10)
         {
-          m_etatMission[i] = 1, m_lieuMission[i] = lieu;
+          m_etatMission[i] = 1; m_lieuMission[i] = lieu;
           compteur++;
         }
       }
       m_nombreOuvriersDispo = majNombreOuvriersDispo();
     }
   }
-
 }
 
 void Ouvriers::reparer(Centrale& centrale)

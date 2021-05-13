@@ -5,7 +5,7 @@
 #include "pressuriseur.hpp"
 
 
-class CircuitPrim: public Circuit
+class CircuitPrim: public Circuit     // Circuit primaire hérite de circuit
 {
 public:
   CircuitPrim();  // Constructeur

@@ -18,9 +18,10 @@ Securite::Securite():m_nbMessages(0), m_fenetreActuelle(0)
 
 vector<string> Securite::messages(Centrale& centrale)
 {
-  //m_nbMessages = 10;
+  m_nbMessages = 0;
   vector<string> messages;
 
+  //m_nbMessages = 10;
   // messages.push_back("Température trop élevée dans le circuit primaire\n");
   // messages.push_back("Température trop élevée dans le circuit\n");
   // messages.push_back("Température trop élevée dans le\n");

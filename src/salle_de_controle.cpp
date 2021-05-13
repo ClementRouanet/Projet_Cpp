@@ -172,7 +172,7 @@ void SalleDeControle::afficheCircuitSec(sdl2::window& fenetre, Centrale& central
   textePression.at(0.75*wph,0.2175*hph);
   texteRadioactivite.at(0.75*wph,0.2575*hph);
   texteTemperature1.at(0.75*wph,0.2975*hph);
-  texteTemperature2.at(0.75*wph,0.3375*hph);
+  texteTemperature2.at(0.75*wph,0.2975*hph);
 
   if(temperature < 120)
     fenetre << texteRendement << texteTemperature1 << texteDebit << textePression << texteRadioactivite;

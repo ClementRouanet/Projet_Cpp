@@ -456,7 +456,7 @@ int PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& c
           bilanOuvriers(fenetre, centrale); //Cette commande affiche les différents organes où sont potentiellement réalisable des interventions humaines
           break;
 
-        case 111 :  // o 
+        case 111 :  // o
           interventionOuvriers(fenetre, centrale);
           break;
 
@@ -709,6 +709,14 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
       }
     }
   }
+}
+
+
+void PosteDeSecurite::majOuvriers(Centrale& centrale)
+{
+  ouvriers.majEtatSante(centrale);
+  ouvriers.reparer(centrale);
+  ouvriers.guerir();
 }
 
 

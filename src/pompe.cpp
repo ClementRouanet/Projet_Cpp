@@ -4,20 +4,25 @@
 
 using namespace std;
 
+
+/* Constructeur */
 Pompe::Pompe() : m_etat(1.), m_rendement(0.)
 {
 }
 
+/* renvoie le rendement de la pompe */
 double Pompe::rendement() const
 {
   return m_rendement;
 }
 
+/* Renvoie l'état de la pompe */
 double Pompe::etat() const
 {
   return m_etat;
 }
 
+/* Met à jour le rendement de la pompe */
 void Pompe::majRendement(double valeur, double etat)
 {
   if(valeur>=0 && valeur<=etat)
@@ -28,6 +33,7 @@ void Pompe::majRendement(double valeur, double etat)
     m_rendement = etat;
 }
 
+/* Met à jour l'état de la pompe */
 void Pompe::majEtat(double valeur)
 {
   if(valeur>=0 && valeur<=1)
@@ -38,6 +44,7 @@ void Pompe::majEtat(double valeur)
     m_etat = 1;
 }
 
+/* Répare la pompe lorsque les ouvriers sont sur place */
 void Pompe::reparation()
 {
   if(m_etat > 0.97)
@@ -49,6 +56,7 @@ void Pompe::reparation()
   }
 }
 
+/* Destructeur */
 Pompe::~Pompe()
 {
 }

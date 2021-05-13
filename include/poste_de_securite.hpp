@@ -30,6 +30,8 @@ public:
   void afficherBilan(sdl2::window& fenetre, Centrale& centrale);
   void interventionOuvriers(sdl2::window& fenetre, Centrale& centrale);
 
+  void majOuvriers(Centrale& centrale);
+
   ~PosteDeSecurite(); // Destructeur
 
 private:

@@ -5,7 +5,7 @@
 #include "condenseur.hpp"
 
 
-class CircuitSec: public Circuit
+class CircuitSec: public Circuit     // Circuit secondaire hérite de circuit
 {
 public:
   CircuitSec(); // Constructeur
