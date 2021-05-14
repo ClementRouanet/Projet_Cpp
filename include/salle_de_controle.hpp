@@ -14,11 +14,11 @@ class SalleDeControle
 public:
   SalleDeControle();  // Constructeur
 
-  void niveau(int niveau);
+  void niveau(int niveau);  // Permet de connaitre le niveau du jeu pour le dispatching (niveau1 : pas de dispatching)
 
   // Affichage fenêtre graphique
   void majAffichage(sdl2::window& fenetre, Centrale& centrale); // Met à jour l'affichage de la fenêtre graphique
-  void cadre(sdl2::window& fenetre) const; // Affiche les cadres
+  void cadre(sdl2::window& fenetre) const; // Affiche l'image de font
   void affichageProdElec(sdl2::window& fenetre, Centrale& centrale) const; // Affiche la production d'électricité (en MW)
   void afficheTauxBorePiscine(sdl2::window& fenetre, Centrale& centrale) const;  // Affiche le taux de bore dans la piscine
   void afficheCircuitPrim(sdl2::window& fenetre, Centrale& centrale) const;  // Affiche le circuit primaire (rendement, température, débit, pression, radioactivité)
@@ -26,7 +26,6 @@ public:
   void affichePressionEnceinte(sdl2::window& fenetre, Centrale& centrale) const; // Affiche la pression subit par l'enceinte de confinement
   void afficheSystRefroidissement(sdl2::window& fenetre, Centrale& centrale) const;  // Affiche la pression subit par l'enceinte de confinement
   void afficheEtatBarreGraphite(sdl2::window& fenetre, Centrale& centrale) const;  // Affiche l'état des barres de graphite (pas d'unité)
-  void afficheCommandes(sdl2::window& fenetre) const;  // Affiche les commandes disponibles pour effectuer des actions
 
   // Modification valeurs avec les commandes
   std::vector<int> majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale); // Appelle les fonction dessous en fonction de la touche associée
@@ -48,8 +47,8 @@ public:
   ~SalleDeControle(); // Destructeur
 
 private:
-  bool m_schemaCentrale;
-  int m_niveau;
+  bool m_schemaCentrale;  // Vaut true si on a appuyé sur 'Entrée', false sinon
+  int m_niveau; // Score du dispatching
   Securite securite;
   Dispatching dispatching;
 };

@@ -6,6 +6,8 @@
 
 using namespace std;
 
+
+/* Constructeur */
 Ouvriers::Ouvriers() : m_nombreOuvriersDispo(145)
 {
    fill(m_etatSante.begin(),m_etatSante.end(),1);
@@ -31,8 +33,9 @@ array<string,145> Ouvriers::getLieuMission() const
   return m_lieuMission;
 }
 
-int Ouvriers::getNombreOuvriersDispo() const
+int Ouvriers::getNombreOuvriersDispo()
 {
+  m_nombreOuvriersDispo = majNombreOuvriersDispo();
   return m_nombreOuvriersDispo;
 }
 
@@ -43,7 +46,6 @@ array<int,8> Ouvriers::getEtatReparation() const
 
 void Ouvriers::majEtatSante(Centrale& centrale)
 {
-
   for(int i=0;i<145;i++)
   {
     auto RND = ((float)(rand()))/((float)(RAND_MAX))*100;
@@ -66,14 +68,11 @@ void Ouvriers::majEtatSante(Centrale& centrale)
     {
       m_etatSante[i] = 0; m_etatMission[i] = 1;
     }
-
   }
-
 }
 
 int Ouvriers::majNombreOuvriersDispo()
 {
-
   m_nombreOuvriersDispo = 0;
 
   for(int i=0;i<145;i++)
@@ -97,7 +96,6 @@ int Ouvriers::majNombreOuvriersDispo()
 
 void Ouvriers::envoyerOuvriers(string lieu, Centrale& centrale)
 {
-
   if(interventionPossible(centrale, lieu)!=0)
   {
     m_nombreOuvriersDispo = majNombreOuvriersDispo();
@@ -243,40 +241,40 @@ void Ouvriers::rappelerOuvriers(Centrale& centrale)
 
   for(int i=0;i<145;i++)
   {
-    if(m_lieuMission[i]=="pompe primaire" && centrale.etatPompePrim()==1 && m_etatSante[i]==1)
+    if(m_lieuMission[i]=="pompe primaire" && centrale.etatPompePrim()==1 && m_etatSante[i]==1 && m_etatMission[i] == 1)
     {
-      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve"; m_etatMission[i] = 0; m_etatReparation[0] = 0;
     }
-    if(m_lieuMission[i]=="pompe secondaire" && centrale.etatPompeSec()==1 && m_etatSante[i]==1)
+    if(m_lieuMission[i]=="pompe secondaire" && centrale.etatPompeSec()==1 && m_etatSante[i]==1 && m_etatMission[i] == 1)
     {
-      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve"; m_etatMission[i] = 0; m_etatReparation[1] = 0;
     }
-    if(m_lieuMission[i]=="condenseur" && centrale.etatCondenseur()==1 && m_etatSante[i]==1)
+    if(m_lieuMission[i]=="condenseur" && centrale.etatCondenseur()==1 && m_etatSante[i]==1 && m_etatMission[i] == 1)
     {
-      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve"; m_etatMission[i] = 0; m_etatReparation[2] = 0;
     }
-    if(m_lieuMission[i]=="generateur de vapeur" && centrale.etatGenerateurVapeur()==1 && m_etatSante[i]==1)
+    if(m_lieuMission[i]=="generateur de vapeur" && centrale.etatGenerateurVapeur()==1 && m_etatSante[i]==1 && m_etatMission[i] == 1)
     {
-      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve"; m_etatMission[i] = 0; m_etatReparation[3] = 0;
     }
-    if(m_lieuMission[i]=="injecteur Bore" && centrale.etatInjBore()==1 && m_etatSante[i]==1)
+    if(m_lieuMission[i]=="injecteur Bore" && centrale.etatInjBore()==1 && m_etatSante[i]==1 && m_etatMission[i] == 1)
     {
-      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve"; m_etatMission[i] = 0; m_etatReparation[4] = 0;
     }
-    if(m_lieuMission[i]=="circuit primaire" && centrale.etatCircuitPrim()==1 && m_etatSante[i]==1)
+    if(m_lieuMission[i]=="circuit primaire" && centrale.etatCircuitPrim()==1 && m_etatSante[i]==1 && m_etatMission[i] == 1)
     {
-      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve"; m_etatMission[i] = 0; m_etatReparation[5] = 0;
     }
-    if(m_lieuMission[i]=="circuit secondaire" && centrale.etatCircuitSec()==1 && m_etatSante[i]==1)
+    if(m_lieuMission[i]=="circuit secondaire" && centrale.etatCircuitSec()==1 && m_etatSante[i]==1 && m_etatMission[i] == 1)
     {
-      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve"; m_etatMission[i] = 0; m_etatReparation[6] = 0;
     }
-    if(m_lieuMission[i]=="pressuriseur" && centrale.etatPressuriseur()==1 && m_etatSante[i]==1)
+    if(m_lieuMission[i]=="pressuriseur" && centrale.etatPressuriseur()==1 && m_etatSante[i]==1 && m_etatMission[i] == 1)
     {
-      m_estDispo[i] = 1; m_lieuMission[i] = "reserve";
+      m_estDispo[i] = 1; m_lieuMission[i] = "reserve"; m_etatMission[i] = 0; m_etatReparation[7] = 0;
     }
   }
-
+  m_nombreOuvriersDispo = majNombreOuvriersDispo();
 }
 
 void Ouvriers::guerir()

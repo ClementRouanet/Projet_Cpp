@@ -7,19 +7,19 @@ class Enceinte
 public :
   Enceinte(); //constructeur
 
-  double etat() const;
-  double pression() const;
-  double radioactivite() const;
-  void majEtat(double valeur);
-  void majPression(double valeur);
-  void majRadioactivite(double valeur);
+  double etat() const; //retourne l'état de l'enceinte
+  double pression() const; //retourne la pression de l'enceinte
+  double radioactivite() const; //retourne la radioactivité de l'enceinte
+  void majEtat(double valeur); //affecte une nouvelle valeur à l'état de l'enceinte
+  void majPression(double valeur); //affecte une nouvelle valeur à la pression
+  void majRadioactivite(double valeur); //affecte une nouvelle valeur à la  radioactivité
 
   ~Enceinte(); //destructeur
 
 private:
-  double m_etat;
-  double m_pression;
-  double m_radioactivite;
+  double m_etat; //état de l'enceinte
+  double m_pression; //pression subit par l'enceinte
+  double m_radioactivite; //radioactivité dans l'enceinte
 };
 
 #endif

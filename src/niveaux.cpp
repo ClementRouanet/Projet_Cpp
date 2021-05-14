@@ -36,6 +36,13 @@ void miseAJour(Centrale& centrale, PosteDeSecurite& posteDeSecurite)
   centrale.majTauxBoreAct();  // Met à jour le taux de borre demandé dans l'eau du cirucit
   centrale.majRadPiscine(); // Met à jour la radiation de la piscine
 
+  centrale.majRadioactiviteEau(); // Modifie la radioactivité de l'eau avoisinant la centrale
+  centrale.majRadioactiviteAir(); // Modifie la radioactivité de l'air avoisinant la centrale
+  centrale.majContamination(); // Modifie le nombre de personnes contaminées
+
+  if (posteDeSecurite.evacuationPossible() == true)
+    centrale.majEvacuation(); // Modifie le nombre de personnes contaminées
+
   posteDeSecurite.majOuvriers(centrale);  // Met à jour les différentes fonctions des ouvriers
 }
 
@@ -243,7 +250,7 @@ int niveau3(sdl2::window& fenetre, Centrale& centrale, SalleDeControle& salleDeC
 
   int nbTour = 0, tourCatastrophe = 0; // Initialisation du nombre de tours du jeu et du nombre de tours des catastrophes
   bool catastrophePossible = false; // Vaut vrai si une catastrophe est possible (production >= 900)
-  vector<int> sortie = {0, 0}; // Premier : changement, second : fin session
+  vector<int> sortie = {0, 0}; // Premier : changement poste/salle, second : fin session
   bool finDispatching = false;  // Vaut faux si c'est la fin du dispatching (score à 0 ou production nulle), vrai sinon
 
   bool iskey_down = false;  // Vaut faux si la touche n'est pas enfoncée, vrai sinon
@@ -468,28 +475,28 @@ void affichageEtats(sdl2::window& fenetre, Centrale& centrale)
   // Affiche un message en fonction de l'état de la centrale
   if(etatCentrale > 0.8)
   {
-    sdl2::texte texteEtat("LA  CENTRALE  EST  EN  BON  ETAT  !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteEtat("LA  CENTRALE  EST  EN  BON  ETAT  !", fonte_texte, fenetre, {255,0,0,0});
     texteEtat.at(0.3*wph, 0.68*hph);
     fenetre << texteEtat;
   }
 
   if(etatCentrale<=0.8 && etatCentrale>0.5)
   {
-    sdl2::texte texteEtat("LA CENTRALE EST ASSEZ ENDOMMAGEE !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteEtat("LA CENTRALE EST ASSEZ ENDOMMAGEE !", fonte_texte, fenetre, {255,0,0,0});
     texteEtat.at(0.3*wph, 0.68*hph);
     fenetre << texteEtat;
   }
 
   if(etatCentrale<=0.5 && etatCentrale>0.2)
   {
-    sdl2::texte texteEtat("LA  CENTRALE  EST  PRESQUE  DETRUITE  !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteEtat("LA  CENTRALE  EST  PRESQUE  DETRUITE  !", fonte_texte, fenetre, {255,0,0,0});
     texteEtat.at(0.3*wph, 0.68*hph);
     fenetre << texteEtat;
   }
 
   if(etatCentrale <= 0.2)
   {
-    sdl2::texte texteEtat("LA  CENTRALE  EST  DETRUITE  !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteEtat("LA  CENTRALE  EST  DETRUITE  !", fonte_texte, fenetre, {255,0,0,0});
     texteEtat.at(0.3*wph, 0.68*hph);
     fenetre << texteEtat;
   }
@@ -523,35 +530,35 @@ void affichageProduction(sdl2::window& fenetre, Centrale& centrale, int nbTour)
   // Affiche un message en fonction de la production de la centrale
   if(productionMoy < 300)
   {
-    sdl2::texte texteProduction("PRODUCTION  FAIBLE !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteProduction("PRODUCTION  FAIBLE !", fonte_texte, fenetre, {255,0,0,0});
     texteProduction.at(0.3*wph,0.6*hph);
     fenetre << texteProduction;
   }
 
   if(productionMoy>=300  && productionMoy<900)
   {
-    sdl2::texte texteProduction("PrRODUCTION  PEU  RENTABLE !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteProduction("PrRODUCTION  PEU  RENTABLE !", fonte_texte, fenetre, {255,0,0,0});
     texteProduction.at(0.3*wph,0.6*hph);
     fenetre << texteProduction;
   }
 
   if(productionMoy>=900  && productionMoy<1200)
   {
-    sdl2::texte texteProduction("PRODUCTION  CORRECTE !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteProduction("PRODUCTION  CORRECTE !", fonte_texte, fenetre, {255,0,0,0});
     texteProduction.at(0.3*wph,0.6*hph);
     fenetre << texteProduction;
   }
 
   if(productionMoy>=1200  && productionMoy<1400)
   {
-    sdl2::texte texteProduction("PRODUCTION  EXCELLENTE !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteProduction("PRODUCTION  EXCELLENTE !", fonte_texte, fenetre, {255,0,0,0});
     texteProduction.at(0.3*wph,0.6*hph);
     fenetre << texteProduction;
   }
 
   if(productionMoy >= 1400)
   {
-    sdl2::texte texteProduction("PRODUCTION HORS NORME !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteProduction("PRODUCTION HORS NORME !", fonte_texte, fenetre, {255,0,0,0});
     texteProduction.at(0.3*wph,0.6*hph);
     fenetre << texteProduction;
   }
@@ -622,21 +629,21 @@ void affichageScore(sdl2::window& fenetre, SalleDeControle& salleDeControle)
   // Affiche un message en fonction du score du dispatching
   if(score > 8)
   {
-    sdl2::texte texteScore("PERFORMANCES  CORRECTES !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteScore("PERFORMANCES  CORRECTES !", fonte_texte, fenetre, {255,0,0,0});
     texteScore.at(0.27*wph,0.55*hph);
     fenetre << texteScore;
   }
 
   if(score<=8 && score>5)
   {
-    sdl2::texte texteScore("PERFORMANCES  MOYENNES !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteScore("PERFORMANCES  MOYENNES !", fonte_texte, fenetre, {255,0,0,0});
     texteScore.at(0.27*wph,0.55*hph);
     fenetre << texteScore;
   }
 
   if(score <= 5)
   {
-    sdl2::texte texteScore("PERFORMANCES  DECEVANTE !", fonte_texte, fenetre, {210,200,0,0});
+    sdl2::texte texteScore("PERFORMANCES  DECEVANTE !", fonte_texte, fenetre, {255,0,0,0});
     texteScore.at(0.27*wph,0.55*hph);
     fenetre << texteScore;
   }
@@ -649,21 +656,33 @@ void bilan(sdl2::window& fenetre, Centrale& centrale, SalleDeControle& salleDeCo
   sdl2::image image("image/Bilan.jpg", fenetre); // Initialisation de l'image de font du bilan
   image.stretch({wph,hph}); // Taille de l'image de font du bilan
 
-  sdl2::image poster("image/poster.jpg", fenetre); // Initialisation du poster 'Nuclear Power'
-  poster.stretch({3*wph/20,3*hph/20}); // Taille de l'image de font du bilan
-  poster.at(0.02*wph,0.15*hph); // Emplacement de l'image
+  sdl2::image hugo("image/Hugo.png", fenetre); // Initialisation de la photo
+  hugo.stretch({2*wph/20,7*hph/20}); // Taille de l'image
+  hugo.at(0.05*wph,0.07*hph); // Emplacement de l'image
+
+  sdl2::image saro("image/Sarobidy.png", fenetre); // Initialisation de la photo
+  saro.stretch({2*wph/20,7*hph/20}); // Taille de l'image
+  saro.at(0.78*wph,0.04*hph); // Emplacement de l'image
+
+  sdl2::image alex("image/Alexandre.png", fenetre); // Initialisation de la photo
+  alex.stretch({2*wph/20,7*hph/20}); // Taille de l'image
+  alex.at(0.05*wph,0.5*hph); // Emplacement de l'image
+
+  sdl2::image clem("image/Clement.png", fenetre); // Initialisation de la photo
+  clem.stretch({2*wph/20,7*hph/20}); // Taille de l'image
+  clem.at(0.88*wph,0.4*hph); // Emplacement de l'image
 
   sdl2::image telecommandeHaut("image/telecommande_haut.jpg", fenetre); // Initialisation de l'image de la télécommande avec flèche du haut
   telecommandeHaut.stretch({3*wph/20,3*hph/20}); // Taille de l'image de la télécommande avec flèche du haut
-  telecommandeHaut.at(0.85*wph,0.6*hph); // Emplacement de l'image
+  telecommandeHaut.at(0.45*wph,0.75*hph); // Emplacement de l'image
 
   sdl2::image telecommandeBas("image/telecommande_bas.jpg", fenetre); // Initialisation de l'image de la télécommande avec flèche du bas
   telecommandeBas.stretch({3*wph/20,3*hph/20}); // Taille de l'image de font de la télécommande avec flèche du bas
-  telecommandeBas.at(0.85*wph,0.6*hph); // Emplacement de l'image
+  telecommandeBas.at(0.45*wph,0.75*hph); // Emplacement de l'image
 
   sdl2::image telecommande("image/telecommande.jpg", fenetre); // Initialisation de l'image de la télécommande avec flèche du haut/bas
   telecommande.stretch({3*wph/20,3*hph/20}); // Taille de l'image de font de la télécommande avec flèche du haut/bas
-  telecommande.at(0.85*wph,0.6*hph); // Emplacement de l'image
+  telecommande.at(0.45*wph,0.75*hph); // Emplacement de l'image
 
   int fenetreActuelle = 1;  //Initialisation de la fenetre actuelle sur la première position (affichage des états)
 
@@ -673,7 +692,7 @@ void bilan(sdl2::window& fenetre, Centrale& centrale, SalleDeControle& salleDeCo
 
   while (not quitter)  // Tant qu'on ne clique pa sur la croix ou qu'on n'appuie pas sur 'Entrée'
   {
-  fenetre << image << poster; // Affichage de l'image de font et du poster
+  fenetre << image << hugo << alex << saro << clem; // Affichage de l'image de font et du poster
 
     switch(fenetreActuelle) // Fenetre sur laquelle on se situe (en focntion des touches flèche haut/bas)
     {

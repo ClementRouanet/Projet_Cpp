@@ -603,8 +603,8 @@ double Centrale::radioactiviteAir() const
 
 void Centrale::majEvacuation()
 {
- auto RND = (rand())/(RAND_MAX)*100;
- if(RND<40)
+ auto RND = ((float)(rand()))/((float)(RAND_MAX));
+ if(RND<0.4 && evacuation() <= 0.9)
  {
  population.majEvacuation(evacuation()+0.1);
  }

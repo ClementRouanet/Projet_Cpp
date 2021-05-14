@@ -1,3 +1,14 @@
+/*
+Projet de :
+  Chautard Alexandre
+  De Gieter Hugo
+  Randimbiarison Sarobidy
+  Rouanet Clément
+
+  MACS 2
+*/
+
+
 #include <iostream>
 #include <chrono>
 
