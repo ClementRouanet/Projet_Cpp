@@ -7,6 +7,10 @@
 using namespace std;
 
 
+/* La syntaxe pour les catastrophe est la meme pour toutes : pour chaque catastrophe, nous avons une liste de dégradation à mettre à jour avec ou sans condition.
+
+La ligne "RND = ((float)(rand()))/((float)(RAND_MAX))*valeur;" affecte à RND un float entre 0 et valeur */
+
 void catastrophe1(Centrale& centrale)
 {
   auto RND = ((float)(rand()))/((float)(RAND_MAX))*0.15;
@@ -166,9 +170,9 @@ void catastrophe5(Centrale& centrale)
 
 void catastrophe(Centrale& centrale)
 {
-  if (centrale.productionCentrale()<900){
-    auto RND = ((float)(rand()))/((float)(RAND_MAX));
-    if (RND<=0.2){
+  if (centrale.productionCentrale()<900){ // La fonction est effective que si la production actuelle de la centrale est inférieure à 900 MW
+    auto RND = ((float)(rand()))/((float)(RAND_MAX)); // On prend un float entre 0 et 1
+    if (RND<=0.2){ // Distribution uniforme entre les 5 catastrophes
       RND = ((float)(rand()))/((float)(RAND_MAX));
       if (RND<=0.2)
         catastrophe1(centrale);

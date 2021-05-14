@@ -23,14 +23,13 @@ public:
   void affichageOuvriers(sdl2::window& fenetre); // Affiche les effectifs humains à notre disposition
   void affichageActivite(sdl2::window& fenetre,Centrale& centrale) const; // Affiche le signalement de divers niveaux de contaminations
   void affichageOrdinateur(sdl2::window& fenetre,Centrale& centrale) const; // Affiche l'état courant de la centrale et des alentours
-  void affichageCommandes(sdl2::window& fenetre,Centrale& centrale) const;  // Affiche les commandes disponibles pour effectuer des actions
-  int majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale);
-  void evacuationPopulation(sdl2::window& fenetre, Centrale& centrale);
-  void bilanOuvriers(sdl2::window& fenetre, Centrale& centrale);
-  void afficherBilan(sdl2::window& fenetre, Centrale& centrale);
-  void interventionOuvriers(sdl2::window& fenetre, Centrale& centrale);
+  int majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale); //met à jour les commandes
+  void evacuationPopulation(sdl2::window& fenetre, Centrale& centrale); //met en route l'évacuation de la population
+  void bilanOuvriers(sdl2::window& fenetre, Centrale& centrale); //affiche les différents organes où sont potentiellement réalisable des interventions humaines
+  void afficherBilan(sdl2::window& fenetre, Centrale& centrale); //affiche le bilan des effectifs ouvriers
+  void interventionOuvriers(sdl2::window& fenetre, Centrale& centrale); //affecte les ouvriers à leurs interventions
 
-  void majOuvriers(Centrale& centrale);
+  void majOuvriers(Centrale& centrale); // met à jour tout ce qui concerne les ouvriers
 
   ~PosteDeSecurite(); // Destructeur
 

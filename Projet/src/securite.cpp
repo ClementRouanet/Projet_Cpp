@@ -451,7 +451,7 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
         fenetre << texte1 << texte2;
         affichagePoints(fenetre);
       }
-      if(nbMessages_fin == 0) // 
+      if(nbMessages_fin == 0) // Si le nombre d'alertes est congru à 3, on affiche les trois dernières alertes
       {
         sdl2::texte texte1(alertes[m_nbMessages - 3], fonte_texte2, fenetre, 0.35*wph, 0.08*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
         sdl2::texte texte2(alertes[m_nbMessages - 2], fonte_texte2, fenetre, 0.35*wph, 0.08*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
@@ -468,6 +468,7 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
   }
 }
 
+/* Les deux fonction suivantes mettent à jour le numéro de la fenêtre sur laquelle nous sommes sur l'écran Sécurité */
 
 void Securite::majSecuriteDroite()
 {
@@ -487,22 +488,22 @@ void Securite::majSecuriteGauche()
 
 void Securite::affichagePoints(sdl2::window& fenetre)
 {
-  if(m_nbMessages > 3)
+  if(m_nbMessages > 3) // La fonction est effective que s'il y a plus d'une fenêtre, i.e. s'il y a plus de trois alertes.
   {
     auto [wph, hph] = fenetre.dimensions();
 
     sdl2::font fonte_texte("./data/Welbut__.ttf", 50);
 
-    for(int i=0; i < m_nbFenetres; i++)
+    for(int i=0; i < m_nbFenetres; i++) // boucle affichant m_nbFenetres points
     {
-      if(i == m_fenetreActuelle)
+      if(i == m_fenetreActuelle) // affiche le curseur rouge (point rouge) de la fenêtre actuelle.
       {
         sdl2::texte point(".", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
         point.at(((0.51 - (m_nbFenetres*0.03)/2) + i*(0.03))*wph, 0.7*hph);
 
         fenetre << point;
       }
-      else
+      else // affiches les autres points en noir.
       {
         sdl2::texte point(".", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
         point.at(((0.51 - (m_nbFenetres*0.03)/2) + i*(0.03))*wph, 0.7*hph);

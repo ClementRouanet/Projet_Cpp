@@ -16,7 +16,7 @@ void PosteDeSecurite::majAffichage(sdl2::window& fenetre, Centrale& centrale) //
 {
 
 
-  cadre(fenetre);
+  cadre(fenetre); // Affiche un cadre
   affichageReacteur(fenetre,centrale); // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
   affichageCircuitPrim(fenetre,centrale);  // Affiche le circuit primaire (état, pompe, pressuriseur, résistances électriques et l'injecteur)
   affichageCircuitSec(fenetre,centrale); //Affiche le circuit secondaire (état, pompe, générateur de vapeur, échangeur de chaleur)
@@ -25,11 +25,11 @@ void PosteDeSecurite::majAffichage(sdl2::window& fenetre, Centrale& centrale) //
   affichageOuvriers(fenetre); // Affiche les effectifs humains à notre disposition
   affichageActivite(fenetre,centrale); // Affiche le signalement de divers niveaux de contaminations
   affichageOrdinateur(fenetre,centrale); // Affiche l'état courant de la centrale et des alentours
-  //affichageCommandes(fenetre,centrale);  // Affiche les commandes disponibles pour effectuer des actions
+
 
 
   if(m_schemaCentrale == true)
-    affichageSchemaCentrale(fenetre, centrale);
+    affichageSchemaCentrale(fenetre, centrale); //Affichage du schéma de la centrale
 
   fenetre << sdl2::flush;
 }
@@ -46,7 +46,7 @@ void PosteDeSecurite::cadre(sdl2::window& fenetre) const // Affiche un cadre
 }
 
 
-void PosteDeSecurite::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& centrale)
+void PosteDeSecurite::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& centrale)//Affichage du schéma de la centrale
 {
   bool iskey_down = false;
   sdl2::event_queue queue;
@@ -73,8 +73,9 @@ void PosteDeSecurite::affichageSchemaCentrale(sdl2::window& fenetre, Centrale& c
 }
 
 
-void PosteDeSecurite::schemaCentrale(sdl2::window& fenetre, Centrale& centrale)
+void PosteDeSecurite::schemaCentrale(sdl2::window& fenetre, Centrale& centrale) //affiche les différentes composantes de la centrale
 {
+  //récupération des états des différentes composantes de la centrale
   double etatCentrale = centrale.etatCentrale();
   double etatReacteur = centrale.etatCuve();
   double etatCircuitPrim = centrale.etatCircuitPrim();
@@ -83,27 +84,27 @@ void PosteDeSecurite::schemaCentrale(sdl2::window& fenetre, Centrale& centrale)
 
   auto [wph, hph] = fenetre.dimensions();
 
-  sdl2::image schema("image/Centrale nucleaire.jpg", fenetre);
+  sdl2::image schema("image/Centrale nucleaire.jpg", fenetre); //affiche le schéma entier de la centrale
   schema.stretch({4*wph/6,4*hph/6});
   schema.at(wph/6,hph/6);
 
-  sdl2::image centraleNucl("image/Centrale.png", fenetre);
+  sdl2::image centraleNucl("image/Centrale.png", fenetre);//affiche la centrale nucleaire en rouge
   centraleNucl.stretch({4*wph/6,4*hph/6});
   centraleNucl.at(wph/6,hph/6);
 
-  sdl2::image reacteur("image/Reacteur.png", fenetre);
+  sdl2::image reacteur("image/Reacteur.png", fenetre);//affiche le reacteur en rouge
   reacteur.stretch({4*wph/6,4*hph/6});
   reacteur.at(wph/6,hph/6);
 
-  sdl2::image circuitPrim("image/Circuit_primaire.png", fenetre);
+  sdl2::image circuitPrim("image/Circuit_primaire.png", fenetre);//affiche le circuit primaire en rouge
   circuitPrim.stretch({4*wph/6,4*hph/6});
   circuitPrim.at(wph/6,hph/6);
 
-  sdl2::image circuitSec("image/Circuit_secondaire.png", fenetre);
+  sdl2::image circuitSec("image/Circuit_secondaire.png", fenetre);//affiche le circuit secondaire en rouge
   circuitSec.stretch({4*wph/6,4*hph/6});
   circuitSec.at(wph/6,hph/6);
 
-  sdl2::image condenseur("image/Circuit_refroidissement.png", fenetre);
+  sdl2::image condenseur("image/Circuit_refroidissement.png", fenetre);//affiche le condenseur en rouge
   condenseur.stretch({4*wph/6,4*hph/6});
   condenseur.at(wph/6,hph/6);
 
@@ -111,9 +112,10 @@ void PosteDeSecurite::schemaCentrale(sdl2::window& fenetre, Centrale& centrale)
 
   this_thread::sleep_for(chrono::milliseconds(500));
 
+// si l'état de la centrale est inférieur à 0,5, on l'affiche en rouge
   if(etatCentrale < 0.5)
     fenetre << centraleNucl;
-
+// si l'état des différentes composantes est inférieur à 0,3, on les affiche en rouge
   if(etatReacteur < 0.3)
     fenetre << reacteur;
 
@@ -128,23 +130,26 @@ void PosteDeSecurite::schemaCentrale(sdl2::window& fenetre, Centrale& centrale)
 
   fenetre << sdl2::flush;
 
-  this_thread::sleep_for(chrono::milliseconds(400));
+  this_thread::sleep_for(chrono::milliseconds(400)); // met le programme en pause pendant 400 milliseconds
 }
 
 
 //----------------------------------------------CADRAN REACTEUR --------------------------------------------------------------//
 void PosteDeSecurite::affichageReacteur(sdl2::window& fenetre, Centrale& centrale) const // Affichage du réacteur (état canaux, barres de graphite, piscine et cuve)
 {
+  //récupération des états des composants du reacteur
   double EtatCanaux = centrale.etatCanaux();
   double EtatBarresGr = centrale.etatBarresGr();
   double EtatPiscine = centrale.etatPiscine();
   double EtatCuve = centrale.etatCuve();
 
+ //transformation en chaine de caractère
   string sEtatCanaux(to_string(EtatCanaux));
   string sEtatBarresGr(to_string(EtatBarresGr));
   string sEtatPiscine(to_string(EtatPiscine));
   string sEtatCuve(to_string(EtatCuve));
 
+ //on garde 2 chiffres après la virgule
   sEtatCanaux.erase(4,7);
   sEtatBarresGr.erase(4,7);
   sEtatPiscine.erase(4,7);
@@ -155,9 +160,11 @@ void PosteDeSecurite::affichageReacteur(sdl2::window& fenetre, Centrale& central
   //Ajouter la fonte du titre et des textes
   sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+  //affichage de la barre représentant l'état des composants
   sdl2::rectangle r1({static_cast<short unsigned int>(0.165*x),static_cast<short unsigned int>(0.13*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatCanaux)),20}, {static_cast<uint8_t>(255*(1-EtatCanaux)),static_cast<uint8_t>(255*EtatCanaux),0}, true);
   sdl2::rectangle r2({static_cast<short unsigned int>(0.165*x),static_cast<short unsigned int>(0.13*y)}, {80,20}, {0,0,0,0}, false);
 
+  //affichage du texte et de la valeur de l'état du composant
   sdl2::texte texteCanaux("Etat des canaux : " + sEtatCanaux, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
   sdl2::rectangle r3({static_cast<short unsigned int>(0.194*x),static_cast<short unsigned int>(0.18*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatBarresGr)),20}, {static_cast<uint8_t>(255*(1-EtatBarresGr)),static_cast<uint8_t>(255*EtatBarresGr),0}, true);
@@ -209,6 +216,7 @@ void PosteDeSecurite::affichageCircuitPrim(sdl2::window& fenetre,Centrale& centr
  //Ajouter la fonte du titre et des textes
  sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+//affichage de la barre représentant l'état des composants
  sdl2::rectangle r1({static_cast<short unsigned int>(0.158*x),static_cast<short unsigned int>(0.44*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatCircuit)),20}, {static_cast<uint8_t>(255*(1-EtatCircuit)),static_cast<uint8_t>(255*EtatCircuit),0}, true);
  sdl2::rectangle r2({static_cast<short unsigned int>(0.158*x),static_cast<short unsigned int>(0.44*y)}, {80,20}, {0,0,0,0}, false);
 
@@ -265,6 +273,7 @@ void PosteDeSecurite::affichageCircuitSec(sdl2::window& fenetre,Centrale& centra
   //Ajouter la fonte du titre et des textes
   sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+//affichage de la barre représentant l'état des composants
   sdl2::rectangle r1({static_cast<short unsigned int>(0.158*x),static_cast<short unsigned int>(0.76*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatCircuit)),20}, {static_cast<uint8_t>(255*(1-EtatCircuit)),static_cast<uint8_t>(255*EtatCircuit),0}, true);
   sdl2::rectangle r2({static_cast<short unsigned int>(0.158*x),static_cast<short unsigned int>(0.76*y)}, {80,20}, {0,0,0,0}, false);
 
@@ -308,6 +317,7 @@ void PosteDeSecurite::affichageEnceinteConfinement(sdl2::window& fenetre,Central
  //Ajouter la fonte du titre et des textes
  sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+//affichage de la barre représentant l'état des composants
  sdl2::rectangle r1({static_cast<short unsigned int>(0.505*x),static_cast<short unsigned int>(0.92*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatEnceinte)),20}, {static_cast<uint8_t>(255*(1-EtatEnceinte)),static_cast<uint8_t>(255*EtatEnceinte),0}, true);
  sdl2::rectangle r2({static_cast<short unsigned int>(0.505*x),static_cast<short unsigned int>(0.92*y)}, {80,20}, {0,0,0,0}, false);
 
@@ -331,6 +341,7 @@ void PosteDeSecurite::affichageCondenseur(sdl2::window& fenetre,Centrale& centra
   //Ajouter la fonte du titre et des textes
   sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+//affichage de la barre représentant l'état des composants
   sdl2::rectangle r1({static_cast<short unsigned int>(0.518*x),static_cast<short unsigned int>(0.82*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatCondenseur)),20}, {static_cast<uint8_t>(255*(1-EtatCondenseur)),static_cast<uint8_t>(255*EtatCondenseur),0}, true);
   sdl2::rectangle r2({static_cast<short unsigned int>(0.518*x),static_cast<short unsigned int>(0.82*y)}, {80,20}, {0,0,0,0}, false);
 
@@ -420,11 +431,11 @@ void PosteDeSecurite::affichageOrdinateur(sdl2::window& fenetre,Centrale& centra
   double EtatCentrale = centrale.etatCentrale();
   int Contamination = centrale.contamination();
   int Evacuation = centrale.evacuation();
-  //affichage du niveau d'alerte
+
   string sEtatCentrale(to_string(EtatCentrale));
   string sContamination(to_string(Contamination));
   string sEvacuation(to_string(Evacuation));
-  //string niveau d'alerte
+
 
 
   sEtatCentrale.erase(4,7);
@@ -434,6 +445,7 @@ void PosteDeSecurite::affichageOrdinateur(sdl2::window& fenetre,Centrale& centra
   //Ajouter la fonte du titre et des textes
   sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+//affichage de la barre représentant l'état des composants
   sdl2::rectangle r1({static_cast<short unsigned int>(0.495*x),static_cast<short unsigned int>(0.2*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatCentrale)),20}, {static_cast<uint8_t>(255*(1-EtatCentrale)),static_cast<uint8_t>(255*EtatCentrale),0}, true);
   sdl2::rectangle r2({static_cast<short unsigned int>(0.495*x),static_cast<short unsigned int>(0.2*y)}, {80,20}, {0,0,0,0}, false);
 
@@ -451,43 +463,6 @@ void PosteDeSecurite::affichageOrdinateur(sdl2::window& fenetre,Centrale& centra
 
 
 
-
-
-//--------------------------------------------------AFFICHAGE COMMANDE ------------------------------------//
-/*
-void PosteDeSecurite::affichageCommandes(sdl2::window& fenetre,Centrale& centrale) const  // Affiche les commandes disponibles pour effectuer des actions
-{
-  auto [wph, hph] = fenetre.dimensions();
-  sdl2::font fonte_texte("./data/Lato-Bold.ttf",20);
-  sdl2::texte texteTab("Tab : affiche schéma centrale", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteEspace("Espace : passer salle de contrôle", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteB1("B :  Bilan actiivité ouvrière", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteP1("P :  Demande évacuation population", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteO("O : Interventions ouvrier", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texte1("1 :  pompe circuit primaire", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texte2("2 :  pompe circuit secondaire", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteB2("B :  injecteur d'acide borique", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteP2("P :  pressuriseur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteI("I : circuit primaire", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteR("R : circuit secondaire", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteG("G  : générateur de vapeur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteC("C  : Condenseur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-texteTab.at(3*wph/4,330);
-texteEspace.at(3*wph/4,330);
-texteB1.at(3*wph/4,330);
-texteP1.at(3*wph/4,330);
-texteO.at(3*wph/4,330);
-texte1.at(3*wph/4,330);
-texte2.at(3*wph/4,330);
-texteB2.at(3*wph/4,330);
-texteP2.at(3*wph/4,330);
-texteI.at(3*wph/4,330);
-texteR.at(3*wph/4,330);
-texteG.at(3*wph/4,330);
-texteC.at(3*wph/4,330);
-  fenetre << texteTab << texteEspace << texteB1 << texteP1 << texteO << texte1 << texte2 << texteB2 << texteP2 << texteI << texteR << texteG << texteC;
-}
-*/
 
 int PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale)
 {
@@ -521,7 +496,7 @@ int PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& c
 
 void PosteDeSecurite::evacuationPopulation(sdl2::window& fenetre, Centrale& centrale)
 {
-
+ //on a appuyé sur p pour accéder à l'évacuation de la population
   bool quitter = false;
   bool iskey_down = false;
   sdl2::event_queue queue;
@@ -539,8 +514,8 @@ void PosteDeSecurite::evacuationPopulation(sdl2::window& fenetre, Centrale& cent
         {
           switch (key_ev.code())
           {
-              case 13 ://entrer
-              centrale.majEvacuation();
+              case 13 :// si on appuie sur entrer, on valide l'évacuation
+              centrale.majEvacuation(); // met à jour l'évacuation de la population
               quitter = true;
               break;
            }
@@ -581,12 +556,15 @@ void PosteDeSecurite::bilanOuvriers(sdl2::window& fenetre, Centrale& centrale)
 // --------------------------------------AFFICHAGE BILAN OUVRIER --------------------------------------------------//
 void PosteDeSecurite::afficherBilan(sdl2::window& fenetre, Centrale& centrale)
 {
+  // on regarde si les interventions sont possibles : 1 si possible et 0 sinon
   int interventionPrimaire = ouvriers.interventionPossible(centrale,"circuit primaire");
   int interventionCentrale = ouvriers.interventionPossible(centrale,"centrale");
 
+ //on récupère le nombre d'ouvriers disponibles
   int nbOuvriersDispo = ouvriers.getNombreOuvriersDispo();
   string snbOuvriersDispo(to_string(nbOuvriersDispo));
 
+ //on récupère le nombre d'ouvriers en interventions selon les organes
   int ouvriersPompePrim = ouvriers.nombreEnInterventionOrgane("pompe primaire");
   int ouvriersPompeSec = ouvriers.nombreEnInterventionOrgane("pompe secondaire");
   int ouvriersCondenseur = ouvriers.nombreEnInterventionOrgane("condenseur");
@@ -616,10 +594,10 @@ void PosteDeSecurite::afficherBilan(sdl2::window& fenetre, Centrale& centrale)
 
   sdl2::font fonte_texte("./data/Lato-Bold.ttf",15);
 
-  sdl2::texte texteOui("oui", fonte_texte, fenetre, {0x00,0xFF,0x00,0x00});
-  sdl2::texte texteNon("non", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
+  sdl2::texte texteOui("oui", fonte_texte, fenetre, {0x00,0xFF,0x00,0x00}); //texte "oui" en vert
+  sdl2::texte texteNon("non", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00}); //texte "non" en rouge
 
-  if(interventionPrimaire == 0 || interventionCentrale == 0)
+  if(interventionPrimaire == 0 || interventionCentrale == 0) //intervention dans la pope primaire impossible
   {
     texteNon.at(xx+0.24*x,yy+0.2*y); fenetre << texteNon; // Pompe primaire
     texteNon.at(xx+0.71*x,yy+0.57*y); fenetre << texteNon;  // Circuit primaire
@@ -630,7 +608,7 @@ void PosteDeSecurite::afficherBilan(sdl2::window& fenetre, Centrale& centrale)
     texteOui.at(xx+0.71*x,yy+0.57*y); fenetre << texteOui;  // Circuit primaire
   }
 
-  if(interventionCentrale == 0)
+  if(interventionCentrale == 0) // intervention dans toute la centrale impossible
   {
     texteNon.at(xx+0.71*x,yy+0.2*y); fenetre << texteNon; // Pompe secondaire
     texteNon.at(xx+0.24*x,yy+0.38*y); fenetre << texteNon;  // Condenseur
@@ -662,6 +640,7 @@ void PosteDeSecurite::afficherBilan(sdl2::window& fenetre, Centrale& centrale)
   sdl2::texte texteCircuitSecOuvriers(souvriersCircuitSec, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte textePressuriseurOuvriers(souvriersPressuriseur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
+ // placement du texte dans le cadran
   textePompePrimOuvriers.at(xx+0.39*x,yy+0.26*y);
   textePompeSecOuvriers.at(xx+0.86*x,yy+0.26*y);
   texteCondenseurOuvriers.at(xx+0.39*x,yy+0.44*y);
@@ -696,10 +675,10 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
           switch (key_ev.code())
           {
               case 49 : //1
-                if(ouvriers.InterventionEnCours("pompe primaire") == false)
-                  ouvriers.envoyerOuvriers("pompe primaire",centrale);
+                if(ouvriers.InterventionEnCours("pompe primaire") == false) // on regarde si des ouvriers sont déjà en intervention
+                  ouvriers.envoyerOuvriers("pompe primaire",centrale); // on envoie les ouvriers
                 else
-                  ouvriers.annulerIntervention("pompe primaire");
+                  ouvriers.annulerIntervention("pompe primaire");//on rappelle les ouvriers
                 break;
 
               case 50 :  //2
@@ -751,7 +730,7 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
                   ouvriers.annulerIntervention("pressuriseur");
                 break;
 
-                case 13 :
+                case 13 : // on quitte la boucle en appuyant sur entrer
                   quitter = true;
                   break;
            }
@@ -766,11 +745,11 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
 }
 
 
-void PosteDeSecurite::majOuvriers(Centrale& centrale)
+void PosteDeSecurite::majOuvriers(Centrale& centrale) //mise à jour des ouvriers
 {
-  ouvriers.majEtatSante(centrale);
-  ouvriers.reparer(centrale);
-  ouvriers.guerir();
+  ouvriers.majEtatSante(centrale); // met à jour l'état de santé
+  ouvriers.reparer(centrale); // met à jour les réparations faites par les ouvriers
+  ouvriers.guerir(); // met à jour la guérison des ouvriers
 }
 
 

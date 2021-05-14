@@ -16,23 +16,23 @@ public:
 
 
   // FONCTIONS DE L'ENCEINTE
-  double etatEnceinte() const;
-  double pressionEnceinte() const;
-  double radioactiviteEnceinte() const;
+  double etatEnceinte() const; // Renvoie l'etat de l'enceinte de confinement
+  double pressionEnceinte() const; // Renvoie la Pression subit par l'enceinte de confinement
+  double radioactiviteEnceinte() const; // Renvoie la radioactivité de l'enceinte de confinement
 
-  void majEtatEnceinte(double valeur);
-  void majPressionEnceinte(); // met à jour la Pression subit par l'enceinte de Confinement
-  void majRadioactiviteEnceinte(); // met à jour la radioactivité de l'enceinte de confinement
+  void majEtatEnceinte(double valeur); // Modifie l'etat de l'enceinte de confinement
+  void majPressionEnceinte(); // Modifie la Pression subit par l'enceinte de confinement
+  void majRadioactiviteEnceinte(); // Modifie la radioactivité de l'enceinte de confinement
 
 
   // FONCTION DE LA CENTRALE
-  double etatCentrale() const;
-  double productionCentrale() const;
-  double productionTotale() const;
+  double etatCentrale() const; // Renvoie l'état général de la centrale
+  double productionCentrale() const; // Renvoie la production générale de la centrale
+  double productionTotale() const; // Renvoie la production totale de la centrale
 
-  void majEtatCentrale(); // met à jour l'état général de la centrale
-  void majProductionCentrale(); // met à jour la production générale de la centrale
-  void madProductionTotale();  //met à jour la production totale de la centrale
+  void majEtatCentrale(); // Modifie l'état général de la centrale
+  void majProductionCentrale(); // Modifie la production générale de la centrale
+  void madProductionTotale(); // Modifie la production totale de la centrale
 
   // FONCTION DU CIRCUIT PRIMAIRE
   double etatCircuitPrim() const; // Renvoie l'état du circuit
@@ -95,63 +95,64 @@ public:
 
 
   // FONCTIONS DU REACTEUR
-  double propGrActuel() const;
-  double propGrDemande() const;
-  double tauxBoreDemande() const;
-  double tauxBoreActuel() const;
-  double etatCuve() const;
-  double radPiscine() const;
-  double etatPiscine() const;
-  double etatBarresGr() const;
-  double etatCanaux() const;
-  double etatInjBore() const;
+  double propGrActuel() const; // Renvoie la proportion actuelle des barres de graphite hors de l’eau demandé
+  double propGrDemande() const; // Renvoie la proportion des barres de graphite hors de l’eau demandé
+  double tauxBoreDemande() const; // Renvoie le taux de bore demandé dans l’eau du circuit
+  double tauxBoreActuel() const; // Renvoie le taux de bore actuel dans l’eau du circuit
+  double etatCuve() const; // Renvoie l'état de la cuve
+  double radPiscine() const; // Renvoie la radiation de la piscine en becquerel
+  double etatPiscine() const; // Renvoie l'etat de la piscine
+  double etatBarresGr() const; // Renvoie létat des barres de graphite
+  double etatCanaux() const; // Renvoie l'état des canaux guidant les barres
+  double etatInjBore() const; // Renvoie l'état injecteurs d’acide borique
 
-  void majPropGrDemandee(double valeur_demandee);
-  void majPropGrAct();
-  void majTauxBoreDemande(double valeur_demandee);
-  void majTauxBoreAct();
-  void majEtatCuve(double valeur_demandee);
-  void majRadPiscine();
-  void majEtatPiscine(double valeur_demandee);
-  void majEtatBarresGr(double valeur_demandee);
-  void majEtatCanaux(double valeur_demandee);
-  void majEtatInjBore(double valeur_demandee);
+
+  void majPropGrAct(); // Modifie la proportion actuelle des barres de graphite hors de l’eau demandé
+  void majPropGrDemandee(double valeur_demandee); // Modifie la proportion des barres de graphite hors de l’eau demandé
+  void majTauxBoreDemande(double valeur_demandee); // Modifie le taux de bore demandé dans l’eau du circuit
+  void majTauxBoreAct(); // Modifie le taux de bore actuel dans l’eau du circuit
+  void majEtatCuve(double valeur_demandee); // Modifie l'état de la cuve
+  void majRadPiscine(); // Modifie la radiation de la piscine en becquerel
+  void majEtatPiscine(double valeur_demandee); // Modifie l'etat de la piscine
+  void majEtatBarresGr(double valeur_demandee); // Modifie létat des barres de graphite
+  void majEtatCanaux(double valeur_demandee); // Modifie l'état des canaux guidant les barres
+  void majEtatInjBore(double valeur_demandee); // Modifie l'état injecteurs d’acide borique
 
 
   // FONCTIONS DE REPARATION
-  void reparationPompePrim();
-  void reparationPompeSec();
-  void reparationCondenseur();
-  void reparationGenerateurVapeur();
-  void reparationInjecteurBore();
-  void reparationCircuitPrim();
-  void reparationCircuitSec();
-  void reparationPressuriseur();
+  void reparationPompePrim(); // Réparation par les ouvriers de la pompe du circuit pimaire
+  void reparationPompeSec(); // Réparation par les ouvriers de la pompe du circuit secondaire
+  void reparationCondenseur(); // Réparation par les ouvriers du condenseur
+  void reparationGenerateurVapeur(); // Réparation par les ouvriers du générateur de vapeur
+  void reparationInjecteurBore(); // Réparation par les ouvriers des injecteurs d'acide borique
+  void reparationCircuitPrim(); // Réparation par les ouvriers du circuit primaire
+  void reparationCircuitSec(); // Réparation par les ouvriers du circuit secondaire
+  void reparationPressuriseur(); // Réparation par les ouvriers du pressuriseur
 
 
-  // FONCTION DE LA Population
-    double evacuation() const;
-    double radioactiviteEau() const;
-    int contamination() const;
-    double radioactiviteAir() const;
+  // FONCTION DE LA POPULATION
+    double evacuation() const; // Renvoie le nombre d'habitant évacués
+    double radioactiviteEau() const; // Renvoie la radioactivité de l'eau avoisinant la centrale
+    double radioactiviteAir() const; // Renvoie la radioactivité de l'air avoisinant la centrale
+    int contamination() const; // Renvoie le nombre de personnes contaminées
 
-    void majEvacuation();
-    void majRadioactiviteEau();
-    void majRadioactiviteAir();
-    void majContamination();
+    void majEvacuation(); // Modifie le nombre d'habitant évacués
+    void majRadioactiviteEau(); // Modifie la radioactivité de l'eau avoisinant la centrale
+    void majRadioactiviteAir(); // Modifie la radioactivité de l'air avoisinant la centrale
+    void majContamination(); // Modifie le nombre de personnes contaminées
 
 
   //fini
   ~Centrale(); //Destructeur
 
 private:
-  CircuitPrim primaire;
-  CircuitSec secondaire;
-  Reacteur reacteur;
-  Enceinte enceinte;
-  Population population;
-  double m_etat;
-  double m_production;
-  double m_productionTot;
+  CircuitPrim primaire; // Circuit primaire
+  CircuitSec secondaire; // Circuit secondaire
+  Reacteur reacteur; // Reacteur
+  Enceinte enceinte; // Enceinte
+  Population population; // Population
+  double m_etat; // Etat de la centrale
+  double m_production; // Production électrique
+  double m_productionTot; // Production totale de la centrale
 };
 #endif
