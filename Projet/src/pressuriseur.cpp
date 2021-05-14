@@ -5,30 +5,36 @@
 using namespace std;
 
 
+/* Constructeur */
 Pressuriseur::Pressuriseur() : m_etat(1.), m_etatResistance(1.), m_tempDemandee(25), m_tempActuel(25)
 {
 }
 
+/* Renvoie l'état du pressuriseur */
 double Pressuriseur::etat() const
 {
   return m_etat;
 }
 
+/* Renvoie l'état de la résistance du pressuriseur */
 double Pressuriseur::etatResistance() const
 {
   return m_etatResistance;
 }
 
+/* Renvoie la température demandée pour le pressuriseur */
 double Pressuriseur::temperatureDemandee() const
 {
   return m_tempDemandee;
 }
 
+/* Renvoie la température actuelle du pressuriseur */
 double Pressuriseur::temperatureActuel() const
 {
   return m_tempActuel;
 }
 
+/* Met a jour l'état du pressuriseur */
 void Pressuriseur::majEtat(double valeur)
 {
   if(valeur>=0 && valeur<=1)
@@ -39,6 +45,7 @@ void Pressuriseur::majEtat(double valeur)
     m_etat = 1;
 }
 
+/* Met a jour l'état de la résistance du pressuriseur */
 void Pressuriseur::majEtatResistance(double valeur)
 {
   if(m_etatResistance+valeur > m_etat)
@@ -54,6 +61,7 @@ void Pressuriseur::majEtatResistance(double valeur)
   }
 }
 
+/* Met a jour la température demandée pour le pressuriseur */
 void Pressuriseur::majTemperatureDemandee(double valeur)
 {
   if(valeur>=25 && valeur<=100*(m_etat+m_etatResistance))
@@ -64,6 +72,7 @@ void Pressuriseur::majTemperatureDemandee(double valeur)
     m_tempDemandee = 100*(m_etat+m_etatResistance);
 }
 
+/* Met a jour la température actuelle du pressuriseur */
 void Pressuriseur::majTemperatureActuel()
 {
   if(m_tempActuel < m_tempDemandee)
@@ -73,6 +82,7 @@ void Pressuriseur::majTemperatureActuel()
     m_tempActuel -= 1;
 }
 
+/* Répare le pressuriseur lorsque les ouvriers sont sur place */
 void Pressuriseur::reparation()
 {
   if(m_etat > 0.97)
@@ -90,6 +100,7 @@ void Pressuriseur::reparation()
   }
 }
 
+/* Destructeur */
 Pressuriseur::~Pressuriseur()
 {
 }

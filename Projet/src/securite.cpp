@@ -18,22 +18,17 @@ Securite::Securite():m_nbMessages(0), m_fenetreActuelle(0)
 
 vector<string> Securite::messages(Centrale& centrale)
 {
-  m_nbMessages = 10;
-  vector<string> messages;
+  m_nbMessages = 0; // A chaque tour on remet le compteur de message à 0
+  vector<string> messages; // Vecteur de string contenant les alertes qui seront effectives pour le tour
 
-  messages.push_back("Température trop élevée dans le circuit primaire\n");
-  messages.push_back("Température trop élevée dans le circuit\n");
-  messages.push_back("Température trop élevée dans le\n");
-  messages.push_back("Température trop élevée dans ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  messages.push_back("Température trop élevée ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  messages.push_back("Température trop ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh\n");
-  messages.push_back("Températ\n");
-  messages.push_back("Temp\n");
-  messages.push_back("Temp\n");
-  messages.push_back("Temp\n");
+  /* La syntaxe pour l'ajout des alertes dans messages est la même partout :
+
+     if(condition)
+        on ajoute l'alerte dans messages
+        on fait une mise à jour si nécessaire                            */
 
 
-  /*if(400 < centrale.temperatureEau() && centrale.temperatureEau() < 420){
+  if(400 < centrale.temperatureEau() && centrale.temperatureEau() < 420){
     messages.push_back("Température trop élevée dans le circuit primaire");
     m_nbMessages += 1;
   }
@@ -354,7 +349,7 @@ vector<string> Securite::messages(Centrale& centrale)
       RND = ((float)(rand()))/((float)(RAND_MAX))*0.1;
       centrale.majEtatCuve(centrale.etatCuve() - (0.5 + RND));
     }
-  }*/
+  }
   return messages;
 }
 
@@ -363,9 +358,9 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
   auto [wph, hph] = fenetre.dimensions();
   sdl2::font fonte_texte1("./data/Welbut__.ttf", 20);
 
-  vector<string> alertes = messages(centrale);
+  vector<string> alertes = messages(centrale); // On prend les alertes effectives pour le tour dans alertes
 
-  if(m_nbMessages==0)
+  if(m_nbMessages==0) // Condition si il n'y a pas de message d'alerte
   {
     sdl2::texte texteInitial("Il n'y a pas d'alerte de dégradation, tout va bien", fonte_texte1, fenetre, 0.35*wph, 0.08*hph,{0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
     texteInitial.at(0.33*wph,0.5*hph);
@@ -373,14 +368,14 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
     fenetre << texteInitial;
     affichagePoints(fenetre);
   }
-  else
+  else              // On affiche dans la salle de controle sur l'écran Securité 3 messages par 3 messages. On appuie sur flèche de droite ou gauche pour voir les 3 messages suivant ou précédents. Avec la fonction affichagePoints, nous savons sur quelle fenêtre nous sommes grâce à un curseur rouge.
   {
-    int nbMessages_fin = m_nbMessages % 3;
-    m_nbFenetres = m_nbMessages/3 + 1;
+    int nbMessages_fin = m_nbMessages % 3; // Entier qui compte le nombre d'alertes sur la dernière fenêtre.
+    m_nbFenetres = m_nbMessages/3 + 1; // Nombre de fenêtres
 
     sdl2::font fonte_texte2("./data/Welbut__.ttf",16);
 
-    if(m_fenetreActuelle != 0 && m_fenetreActuelle != m_nbFenetres - 1)
+    if(m_fenetreActuelle != 0 && m_fenetreActuelle != m_nbFenetres - 1) // Si nous ne sommes ni sur la première ni sur la dernière fenêtre, on affiches les trois alertes correspondantes.
     {
       sdl2::texte texte1(alertes[m_fenetreActuelle*3], fonte_texte2, fenetre, 0.35*wph, 0.08*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
       sdl2::texte texte2(alertes[m_fenetreActuelle*3 + 1], fonte_texte2, fenetre, 0.35*wph, 0.08*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
@@ -394,9 +389,9 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
       affichagePoints(fenetre);
     }
 
-    if(m_fenetreActuelle == 0)
+    if(m_fenetreActuelle == 0) // Si nous sommes sur la première fenêtre
     {
-      if(m_nbMessages < 3)
+      if(m_nbMessages < 3) // S'il y a mooins de 3 alertes au total
       {
         if(nbMessages_fin == 1)
         {
@@ -419,7 +414,7 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
           affichagePoints(fenetre);
         }
       }
-      else
+      else // S'il y a plus de 3 messages, on affiche les trois premières alertes sur la première fenêtre
       {
         sdl2::texte texte1(alertes[0], fonte_texte2, fenetre, 0.35*wph, 0.08*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
         sdl2::texte texte2(alertes[1], fonte_texte2, fenetre, 0.35*wph, 0.08*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
@@ -434,7 +429,7 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
       }
     }
 
-    if(m_fenetreActuelle == m_nbFenetres - 1)
+    if(m_fenetreActuelle == m_nbFenetres - 1) // Si nous sommes sur la dernière fenêtre
     {
       if(nbMessages_fin == 1)
       {
@@ -456,7 +451,7 @@ void Securite::affichageSecurite(sdl2::window& fenetre, Centrale& centrale)
         fenetre << texte1 << texte2;
         affichagePoints(fenetre);
       }
-      if(nbMessages_fin == 0)
+      if(nbMessages_fin == 0) // 
       {
         sdl2::texte texte1(alertes[m_nbMessages - 3], fonte_texte2, fenetre, 0.35*wph, 0.08*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
         sdl2::texte texte2(alertes[m_nbMessages - 2], fonte_texte2, fenetre, 0.35*wph, 0.08*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});

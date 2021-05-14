@@ -172,7 +172,7 @@ void SalleDeControle::afficheCircuitSec(sdl2::window& fenetre, Centrale& central
   textePression.at(0.75*wph,0.2175*hph);
   texteRadioactivite.at(0.75*wph,0.2575*hph);
   texteTemperature1.at(0.75*wph,0.2975*hph);
-  texteTemperature2.at(0.75*wph,0.3375*hph);
+  texteTemperature2.at(0.75*wph,0.2975*hph);
 
   if(temperature < 120)
     fenetre << texteRendement << texteTemperature1 << texteDebit << textePression << texteRadioactivite;
@@ -216,7 +216,7 @@ void SalleDeControle::afficheSystRefroidissement(sdl2::window& fenetre, Centrale
   sdl2::font fonte_texte("./data/Welbut__.ttf",15);
 
   sdl2::texte texteRendement("Rendement pompe condenseur : " + sRendement + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texteDebit("Débit eau condenseur : " + sDebit + " m^3/s", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texteDebit("Débit eau condenseur: " + sDebit + " m^3/s", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteDifference("Différence température E-S : " + sDifference + " °C", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
   texteRendement.at(0.045*wph,0.83*hph);
@@ -244,6 +244,9 @@ void SalleDeControle::afficheEtatBarreGraphite(sdl2::window& fenetre, Centrale& 
   auto [wph, hph] = fenetre.dimensions();
   sdl2::font fonte_texte("./data/Welbut__.ttf",14);
 
+  sdl2::rectangle r1({static_cast<short unsigned int>(0.515*wph),static_cast<short unsigned int>(0.855*hph)}, {static_cast<short unsigned int>(80 - 80*(1 - barresGr)),20}, {static_cast<uint8_t>(255*(1-barresGr)),static_cast<uint8_t>(255*barresGr),0}, true);
+  sdl2::rectangle r2({static_cast<short unsigned int>(0.515*wph),static_cast<short unsigned int>(0.855*hph)}, {80,20}, {0,0,0,0}, false);
+
   sdl2::texte texteBarresGr("Etat des barres de graphite : " + sbarresGr + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteProportionD("Proportion demandée de graphite hors de l'eau : " + sProportionD + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteProportionA("Proportion actuelle de graphite hors de l'eau : " + sProportionA + " %", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
@@ -252,7 +255,7 @@ void SalleDeControle::afficheEtatBarreGraphite(sdl2::window& fenetre, Centrale& 
   texteProportionA.at(0.35*wph,0.89*hph);
   texteProportionD.at(0.35*wph,0.925*hph);
 
-  fenetre << texteBarresGr << texteProportionD << texteProportionA;
+  fenetre << r1 << r2 << texteBarresGr << texteProportionD << texteProportionA;
 }
 
 
@@ -290,7 +293,7 @@ void SalleDeControle::afficheCommandes(sdl2::window& fenetre) const
 
 vector<int> SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Centrale& centrale)
 {
-  vector<int> sortie = {false, false};
+  vector<int> sortie = {0, 0};
 
   switch (touche)
   {
@@ -323,7 +326,6 @@ vector<int> SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Cen
     break;
 
     case 115 :  // s
-    sortie[0] = 0;
     sortie[1] = finSession();
     break;
 
@@ -333,7 +335,6 @@ vector<int> SalleDeControle::majCommandes(sdl2::window& fenetre, int touche, Cen
 
     case 32 : // Espace
     sortie[0] = 1;
-    sortie[1] = 0;
     break;
 
     case sdl2::event_keyboard::left : // flèche gauche

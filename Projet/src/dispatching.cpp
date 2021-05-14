@@ -28,16 +28,17 @@ void Dispatching::ordreInitial(sdl2::window& fenetre)
   auto [wph, hph] = fenetre.dimensions();
 
   sdl2::font fonte_texte("./data/Welbut__.ttf",15);
-
   sdl2::texte texte1("Mettre la centrale en divergence :", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texte2("- démarrer la réaction en chaîne", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-  sdl2::texte texte3("- démarrer production de vapeur dans le générateur", fonte_texte, fenetre, 0.23*wph, 0.07*hph, {0x00,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
+  sdl2::texte texte3("- démarrer production de vapeur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+  sdl2::texte texte4("dans le générateur", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-  texte1.at(0.045*wph,0.45*hph);
-  texte2.at(0.045*wph,0.5*hph);
-  texte3.at(0.045*wph,0.55*hph);
+  texte1.at(0.05*wph,0.47*hph);
+  texte2.at(0.06*wph,0.52*hph);
+  texte3.at(0.06*wph,0.57*hph);
+  texte4.at(0.067*wph,0.6*hph);
 
-  fenetre << texte1 << texte2 << texte3;
+  fenetre << texte1 << texte2 << texte3 << texte4;
 }
 
 void Dispatching::ordre()
@@ -71,14 +72,14 @@ void Dispatching::affichageDispatching(sdl2::window& fenetre, Centrale& centrale
 
   if(niveau == 1)
   {
-    sdl2::font fonte_texte("./data/Welbut__.ttf",30);
+    sdl2::font fonte_texte("./data/Welbut__.ttf",20);
     sdl2::texte texte("Amusez-vous !", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-    texte.at(0.08*wph,0.5*hph);
+    texte.at(0.1*wph,0.5*hph);
     fenetre << texte;
   }
   else
   {
-    sdl2::font fonte_texte("./data/Welbut__.ttf",13);
+    sdl2::font fonte_texte("./data/Welbut__.ttf",15);
 
     if(temperatureVap<=140 && m_nbOrdre==0)
       ordreInitial(fenetre);
@@ -90,33 +91,32 @@ void Dispatching::affichageDispatching(sdl2::window& fenetre, Centrale& centrale
         sProduire.erase(2,7);
 
         sdl2::texte texteProduire("Produire : " + sProduire + " MW", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
-        texteProduire.at(0.045*wph,0.45*hph);
+        texteProduire.at(0.1*wph,0.5*hph);
 
         fenetre << texteProduire;
 
         if(m_tourActuel>=50)
         {
           sdl2::texte texteAcceleration("Accélérer la procédure", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
-          texteAcceleration.at(0.045*wph,0.5*hph);
+          texteAcceleration.at(0.1*wph,0.55*hph);
           fenetre << texteAcceleration;
         }
       }
       else
       {
-        sdl2::texte texteSucces1("Félicitation vous avez accompli l'ordre", fonte_texte, fenetre, 0.23*wph, 0.07*hph, {0xFF,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
-        sdl2::texte texteSucces2("Attention vous allez recevoir un nouvel ordre", fonte_texte, fenetre, 0.23*wph, 0.07*hph, {0xFF,0x00,0x00,0x00}, {0xE0,0xD2,0xA3,0x00});
+        sdl2::texte texteSucces1("Félicitations vous avez accompli l'ordre", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
+        sdl2::texte texteSucces2("Attention vous allez recevoir un nouvel ordre", fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
-        texteSucces1.at(0.045*wph,0.45*hph);
-        texteSucces2.at(0.045*wph,0.5*hph);
+        texteSucces1.at(0.07*wph,0.475*hph);
+        texteSucces2.at(0.05*wph,0.525*hph);
 
         fenetre << texteSucces1 << texteSucces2;
       }
     }
     else
     {
-      sdl2::font fonte_texte("./data/Welbut__.ttf",20);
       sdl2::texte texteEchec("Vous avez échoué à la procédure !", fonte_texte, fenetre, {0xFF,0x00,0x00,0x00});
-      texteEchec.at(0.045*wph,0.5*hph);
+      texteEchec.at(0.1*wph,0.5*hph);
       fenetre << texteEchec;
     }
   }

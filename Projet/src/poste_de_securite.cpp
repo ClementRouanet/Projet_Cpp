@@ -155,9 +155,24 @@ void PosteDeSecurite::affichageReacteur(sdl2::window& fenetre, Centrale& central
   //Ajouter la fonte du titre et des textes
   sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+  sdl2::rectangle r1({static_cast<short unsigned int>(0.165*x),static_cast<short unsigned int>(0.13*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatCanaux)),20}, {static_cast<uint8_t>(255*(1-EtatCanaux)),static_cast<uint8_t>(255*EtatCanaux),0}, true);
+  sdl2::rectangle r2({static_cast<short unsigned int>(0.165*x),static_cast<short unsigned int>(0.13*y)}, {80,20}, {0,0,0,0}, false);
+
   sdl2::texte texteCanaux("Etat des canaux : " + sEtatCanaux, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  sdl2::rectangle r3({static_cast<short unsigned int>(0.194*x),static_cast<short unsigned int>(0.18*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatBarresGr)),20}, {static_cast<uint8_t>(255*(1-EtatBarresGr)),static_cast<uint8_t>(255*EtatBarresGr),0}, true);
+  sdl2::rectangle r4({static_cast<short unsigned int>(0.194*x),static_cast<short unsigned int>(0.18*y)}, {80,20}, {0,0,0,0}, false);
+
   sdl2::texte texteBarresGr("Etat barres graphite : " + sEtatBarresGr, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  sdl2::rectangle r5({static_cast<short unsigned int>(0.175*x),static_cast<short unsigned int>(0.23*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatPiscine)),20}, {static_cast<uint8_t>(255*(1-EtatPiscine)),static_cast<uint8_t>(255*EtatPiscine),0}, true);
+  sdl2::rectangle r6({static_cast<short unsigned int>(0.175*x),static_cast<short unsigned int>(0.23*y)}, {80,20}, {0,0,0,0}, false);
+
   sdl2::texte textePiscine("Etat de la Piscine : " + sEtatPiscine, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  sdl2::rectangle r7({static_cast<short unsigned int>(0.16*x),static_cast<short unsigned int>(0.28*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatCuve)),20}, {static_cast<uint8_t>(255*(1-EtatCuve)),static_cast<uint8_t>(255*EtatCuve),0}, true);
+  sdl2::rectangle r8({static_cast<short unsigned int>(0.16*x),static_cast<short unsigned int>(0.28*y)}, {80,20}, {0,0,0,0}, false);
+
   sdl2::texte texteCuve("Etat de la Cuve : " + sEtatCuve, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
   //Placement dans le cadran
@@ -166,7 +181,7 @@ void PosteDeSecurite::affichageReacteur(sdl2::window& fenetre, Centrale& central
   textePiscine.at(x*0.05,y*0.23);
   texteCuve.at(x*0.05,y*0.28);
 
-  fenetre<<texteCanaux<<texteBarresGr<<textePiscine<<texteCuve;
+  fenetre<<r1<<r2<<r3<<r4<<r5<<r6<<r7<<r8<<texteCanaux<<texteBarresGr<<textePiscine<<texteCuve;
 }
 
 
@@ -194,9 +209,24 @@ void PosteDeSecurite::affichageCircuitPrim(sdl2::window& fenetre,Centrale& centr
  //Ajouter la fonte du titre et des textes
  sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+ sdl2::rectangle r1({static_cast<short unsigned int>(0.158*x),static_cast<short unsigned int>(0.44*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatCircuit)),20}, {static_cast<uint8_t>(255*(1-EtatCircuit)),static_cast<uint8_t>(255*EtatCircuit),0}, true);
+ sdl2::rectangle r2({static_cast<short unsigned int>(0.158*x),static_cast<short unsigned int>(0.44*y)}, {80,20}, {0,0,0,0}, false);
+
  sdl2::texte texteCircuit("Etat du Circuit : " + sEtatCircuit, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+ sdl2::rectangle r3({static_cast<short unsigned int>(0.167*x),static_cast<short unsigned int>(0.49*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatPompe)),20}, {static_cast<uint8_t>(255*(1-EtatPompe)),static_cast<uint8_t>(255*EtatPompe),0}, true);
+ sdl2::rectangle r4({static_cast<short unsigned int>(0.167*x),static_cast<short unsigned int>(0.49*y)}, {80,20}, {0,0,0,0}, false);
+
  sdl2::texte textePompe("Etat de la pompe : " + sEtatPompe, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+ sdl2::rectangle r5({static_cast<short unsigned int>(0.196*x),static_cast<short unsigned int>(0.54*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatPressuriseur)),20}, {static_cast<uint8_t>(255*(1-EtatPressuriseur)),static_cast<uint8_t>(255*EtatPressuriseur),0}, true);
+ sdl2::rectangle r6({static_cast<short unsigned int>(0.196*x),static_cast<short unsigned int>(0.54*y)}, {80,20}, {0,0,0,0}, false);
+
  sdl2::texte textePressuriseur("Etat du Pressuriseur : " + sEtatPressuriseur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+ sdl2::rectangle r7({static_cast<short unsigned int>(0.224*x),static_cast<short unsigned int>(0.59*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatResistancePressuriseur)),20}, {static_cast<uint8_t>(255*(1-EtatResistancePressuriseur)),static_cast<uint8_t>(255*EtatResistancePressuriseur),0}, true);
+ sdl2::rectangle r8({static_cast<short unsigned int>(0.224*x),static_cast<short unsigned int>(0.59*y)}, {80,20}, {0,0,0,0}, false);
+
  sdl2::texte texteResistance("Etat Resist Pressuriseur : " + sEtatResistancePressuriseur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
  //Placement dans le cadran
@@ -205,7 +235,7 @@ void PosteDeSecurite::affichageCircuitPrim(sdl2::window& fenetre,Centrale& centr
  textePressuriseur.at(x*0.05,y*0.54);
  texteResistance.at(x*0.05,y*0.59);
 
- fenetre<<texteCircuit<<textePompe<<textePressuriseur<<texteResistance;
+ fenetre<<r1<<r2<<r3<<r4<<r5<<r6<<r7<<r8<<texteCircuit<<textePompe<<textePressuriseur<<texteResistance;
 }
 
 
@@ -235,9 +265,24 @@ void PosteDeSecurite::affichageCircuitSec(sdl2::window& fenetre,Centrale& centra
   //Ajouter la fonte du titre et des textes
   sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+  sdl2::rectangle r1({static_cast<short unsigned int>(0.158*x),static_cast<short unsigned int>(0.76*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatCircuit)),20}, {static_cast<uint8_t>(255*(1-EtatCircuit)),static_cast<uint8_t>(255*EtatCircuit),0}, true);
+  sdl2::rectangle r2({static_cast<short unsigned int>(0.158*x),static_cast<short unsigned int>(0.76*y)}, {80,20}, {0,0,0,0}, false);
+
   sdl2::texte texteCircuit("Etat du Circuit : " + sEtatCircuit, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  sdl2::rectangle r3({static_cast<short unsigned int>(0.167*x),static_cast<short unsigned int>(0.81*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatPompe)),20}, {static_cast<uint8_t>(255*(1-EtatPompe)),static_cast<uint8_t>(255*EtatPompe),0}, true);
+  sdl2::rectangle r4({static_cast<short unsigned int>(0.167*x),static_cast<short unsigned int>(0.81*y)}, {80,20}, {0,0,0,0}, false);
+
   sdl2::texte textePompe("Etat de la pompe : " + sEtatPompe, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  sdl2::rectangle r5({static_cast<short unsigned int>(0.218*x),static_cast<short unsigned int>(0.86*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatGenerateurVapeur)),20}, {static_cast<uint8_t>(255*(1-EtatGenerateurVapeur)),static_cast<uint8_t>(255*EtatGenerateurVapeur),0}, true);
+  sdl2::rectangle r6({static_cast<short unsigned int>(0.218*x),static_cast<short unsigned int>(0.86*y)}, {80,20}, {0,0,0,0}, false);
+
   sdl2::texte texteGenerateurVapeur("Etat Generateur Vapeur : " + sEtatGenerateurVapeur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
+
+  sdl2::rectangle r7({static_cast<short unsigned int>(0.2145*x),static_cast<short unsigned int>(0.91*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatEchangeurChaleur)),20}, {static_cast<uint8_t>(255*(1-EtatEchangeurChaleur)),static_cast<uint8_t>(255*EtatEchangeurChaleur),0}, true);
+  sdl2::rectangle r8({static_cast<short unsigned int>(0.2145*x),static_cast<short unsigned int>(0.91*y)}, {80,20}, {0,0,0,0}, false);
+
   sdl2::texte texteEchangeurChaleur("Etat Echangeur Chaleur : " + sEtatEchangeurChaleur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
   //Placement dans le cadran
@@ -246,7 +291,7 @@ void PosteDeSecurite::affichageCircuitSec(sdl2::window& fenetre,Centrale& centra
   texteGenerateurVapeur.at(x*0.05,y*0.86);
   texteEchangeurChaleur.at(x*0.05,y*0.91);
 
-  fenetre<<texteCircuit<<textePompe<<texteGenerateurVapeur<<texteEchangeurChaleur;
+  fenetre<<r1<<r2<<r3<<r4<<r5<<r6<<r7<<r8<<texteCircuit<<textePompe<<texteGenerateurVapeur<<texteEchangeurChaleur;
 }
 
 
@@ -263,12 +308,15 @@ void PosteDeSecurite::affichageEnceinteConfinement(sdl2::window& fenetre,Central
  //Ajouter la fonte du titre et des textes
  sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+ sdl2::rectangle r1({static_cast<short unsigned int>(0.505*x),static_cast<short unsigned int>(0.92*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatEnceinte)),20}, {static_cast<uint8_t>(255*(1-EtatEnceinte)),static_cast<uint8_t>(255*EtatEnceinte),0}, true);
+ sdl2::rectangle r2({static_cast<short unsigned int>(0.505*x),static_cast<short unsigned int>(0.92*y)}, {80,20}, {0,0,0,0}, false);
+
  sdl2::texte texteEnceinte("Etat de l'Enceinte : " + sEtatEnceinte, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
  //Placement dans le cadran : On change après encore
  texteEnceinte.at(x*0.38,y*0.92);
 
- fenetre<<texteEnceinte;
+ fenetre<<r1<<r2<<texteEnceinte;
 }
 
 //-----------------------------------CADRAN CONDENSEUR--------------------------------------------//
@@ -283,12 +331,15 @@ void PosteDeSecurite::affichageCondenseur(sdl2::window& fenetre,Centrale& centra
   //Ajouter la fonte du titre et des textes
   sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+  sdl2::rectangle r1({static_cast<short unsigned int>(0.518*x),static_cast<short unsigned int>(0.82*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatCondenseur)),20}, {static_cast<uint8_t>(255*(1-EtatCondenseur)),static_cast<uint8_t>(255*EtatCondenseur),0}, true);
+  sdl2::rectangle r2({static_cast<short unsigned int>(0.518*x),static_cast<short unsigned int>(0.82*y)}, {80,20}, {0,0,0,0}, false);
+
   sdl2::texte texteCondenseur("Etat du Condenseur : " + sEtatCondenseur, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
 
   //Placement dans le cadran
   texteCondenseur.at(x*0.38,y*0.82);
 
-  fenetre<<texteCondenseur;
+  fenetre<<r1<<r2<<texteCondenseur;
 }
 
 
@@ -383,6 +434,9 @@ void PosteDeSecurite::affichageOrdinateur(sdl2::window& fenetre,Centrale& centra
   //Ajouter la fonte du titre et des textes
   sdl2::font fonte_texte("./data/Welbut__.ttf",17);
 
+  sdl2::rectangle r1({static_cast<short unsigned int>(0.495*x),static_cast<short unsigned int>(0.2*y)}, {static_cast<short unsigned int>(80 - 80*(1-EtatCentrale)),20}, {static_cast<uint8_t>(255*(1-EtatCentrale)),static_cast<uint8_t>(255*EtatCentrale),0}, true);
+  sdl2::rectangle r2({static_cast<short unsigned int>(0.495*x),static_cast<short unsigned int>(0.2*y)}, {80,20}, {0,0,0,0}, false);
+
   sdl2::texte texteCentrale("Etat de la Centrale : " + sEtatCentrale, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteContamination("Population contaminée : " + sContamination, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
   sdl2::texte texteEvacuation("Population évacuée : " + sEvacuation, fonte_texte, fenetre, {0x00,0x00,0x00,0x00});
@@ -392,7 +446,7 @@ void PosteDeSecurite::affichageOrdinateur(sdl2::window& fenetre,Centrale& centra
   texteContamination.at(0.36*x,y*0.25);
   texteEvacuation.at(0.36*x,y*0.30);
 
-  fenetre<<texteCentrale<<texteContamination<<texteEvacuation;
+  fenetre<<r1<<r2<<texteCentrale<<texteContamination<<texteEvacuation;
 }
 
 
@@ -456,7 +510,7 @@ int PosteDeSecurite::majCommandes(sdl2::window& fenetre, int touche, Centrale& c
           bilanOuvriers(fenetre, centrale); //Cette commande affiche les différents organes où sont potentiellement réalisable des interventions humaines
           break;
 
-        case 111 :  // o comme olivier
+        case 111 :  // o
           interventionOuvriers(fenetre, centrale);
           break;
 
@@ -709,6 +763,14 @@ void PosteDeSecurite::interventionOuvriers(sdl2::window& fenetre, Centrale& cent
       }
     }
   }
+}
+
+
+void PosteDeSecurite::majOuvriers(Centrale& centrale)
+{
+  ouvriers.majEtatSante(centrale);
+  ouvriers.reparer(centrale);
+  ouvriers.guerir();
 }
 
 
