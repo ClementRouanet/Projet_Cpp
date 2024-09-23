@@ -1,8 +1,8 @@
 CXX = g++
 CXXFLAGS = -O3 -march=native -Wall -O -std=c++17 `sdl2-config --cflags`
-EXEC = nuclearalert.exe
+EXEC = nuclearalert  # Suppression de l'extension .exe
 
-LIBSSDL2 = `sdl2-config --cflags` -lSDL2_ttf -lSDL2_image  `sdl2-config --libs` -I SDL2
+LIBSSDL2 = `sdl2-config --cflags` -lSDL2_ttf -lSDL2_image `sdl2-config --libs` -I SDL2
 LIBS = $(LIBSSDL2) -I include
 
 all : $(EXEC)
@@ -86,8 +86,8 @@ obj/salle_de_controle.o : include/salle_de_controle.hpp src/salle_de_controle.cp
 obj/niveaux.o : include/niveaux.hpp src/niveaux.cpp
 	$(CXX) $(CXXFLAGS) -c src/niveaux.cpp -o obj/niveaux.o $(LIBS)
 
-nuclearalert.exe : $(OBJS) $(SDL2) src/main.cpp
-	$(CXX) $(CXXFLAGS) $(OBJS) $(SDL2) src/main.cpp -o nuclearalert.exe $(LIBS)
+nuclearalert : $(OBJS) $(SDL2) src/main.cpp
+	$(CXX) $(CXXFLAGS) $(OBJS) $(SDL2) src/main.cpp -o nuclearalert $(LIBS)
 
 clean :
-	@rm -f obj/*.o SDL2/*.o *.exe src/*~ SDL2/*~
+	@rm -f obj/*.o SDL2/*.o nuclearalert src/*~ SDL2/*~

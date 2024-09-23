@@ -111,16 +111,16 @@ void PosteDeSecurite::schemaCentrale(sdl2::window& fenetre, Centrale& centrale) 
   if(etatCentrale < 0.5)
     fenetre << centraleNucl;
 // si l'état des différentes composantes est inférieur à 0,3, on les affiche en rouge
-  if(etatReacteur < 0.3)
+  if(etatReacteur < 0.5)
     fenetre << reacteur;
 
-  if(etatCircuitPrim < 0.3)
+  if(etatCircuitPrim < 0.5)
     fenetre << circuitPrim;
 
-  if(etatCircuitSec < 0.3)
+  if(etatCircuitSec < 0.5)
     fenetre << circuitSec;
 
-  if(etatCondenseur < 0.3)
+  if(etatCondenseur < 0.5)
     fenetre << condenseur;
 
   fenetre << sdl2::flush;
